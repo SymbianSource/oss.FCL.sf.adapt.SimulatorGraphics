@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SystemDefinition schema="3.0.0">
+  <package id="graphics.simulator" name="Graphics Simulator" levels="host guest" version="4.0.0">
+    <meta rel="License">
+      <license type="EPL"><supplier>Nokia</supplier></license>
+    </meta>
+    <collection id="guestrendering" name="Graphics Guest Rendering" level="guest">
+      <component id="guestegl" name="Guest EGL" introduced="^4">
+        <unit bldFile="guestrendering/guestegl/group"/>
+      </component>
+      <component id="guestopengles11" name="Guest OpenGL ES 1.1" introduced="^4">
+        <unit bldFile="guestrendering/guestopengles11/group"/>
+      </component>
+      <component id="guestopenvg" name="Guest OpenVG" introduced="^4">
+        <unit bldFile="guestrendering/guestopenvg/group"/>
+      </component>
+      <component id="guestopenvgu" name="Guest OpenVG Utilities" introduced="^4">
+        <unit bldFile="guestrendering/guestopenvgu/group"/>
+      </component>
+      <component id="guestvideodriver" name="Guest Video Driver" introduced="^4">
+        <unit bldFile="guestrendering/guestvideodriver/group"/>
+      </component>
+      <component id="vghwserialiser" name="Virtual Graphics Hardware Serialiser" introduced="^4">
+        <unit bldFile="guestrendering/vghwserialiser/group"/>
+      </component>
+      <component id="vghwutils" name="Virtual Graphics Hardware Utilities" introduced="^4">
+        <unit bldFile="guestrendering/vghwutils/group"/>
+      </component>
+    </collection>
+    <collection id="hostsupport" name="Graphics Host Support" level="host">
+      <component id="hostegl" name="Host EGL" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/hostegl/group"/>
+      </component>
+      <component id="hostopengles11" name="Host OpenGL ES 1.1" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/hostopengles11/group"/>
+      </component>
+      <component id="hostopenvg" name="Host OpenVG" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/hostopenvg/group"/>
+      </component>
+      <component id="khronosapiwrapper" name="Host Khronos API Wrapper" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/khronosapiwrapper/group"/>
+      </component>
+      <component id="syborggraphicswrapper" name="Host Syborg Graphics Wrapper" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/syborggraphicswrapper/group"/>
+      </component>
+      <component id="hostthreadadapter" name="Host Thread Adapater" target="desktop" introduced="^4">
+        <unit bldFile="hostsupport/hostthreadadapter/group"/>
+      </component>
+    </collection>
+  </package>
+</SystemDefinition>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE SystemDefinition [
+<!ELEMENT SystemDefinition ( systemModel )>
+<!ATTLIST SystemDefinition
+  name CDATA #REQUIRED
+  schema CDATA #REQUIRED
+>
+<!-- all paths are relative to the environment variable specified by the root attribute, or SOURCEROOT if not.  -->
+
+<!-- System Model Section of DTD -->
+<!ELEMENT systemModel (layer+)>
+
+<!ELEMENT layer (block* | collection*)*>
+<!-- Kernel Services, Base Services, OS Services, Etc -->
+<!ATTLIST layer
+  name CDATA #REQUIRED
+  long-name CDATA #IMPLIED
+  levels NMTOKENS #IMPLIED
+  span CDATA #IMPLIED
+>
+
+<!ELEMENT block (subblock* | collection*)*>
+ <!-- Generic OS services, Comms Services, etc -->
+<!ATTLIST block
+  levels NMTOKENS #IMPLIED
+  span CDATA #IMPLIED
+  level NMTOKEN #IMPLIED
+  name CDATA #REQUIRED
+  long-name CDATA #IMPLIED
+>
+
+<!ELEMENT subblock (collection)*>
+<!-- Cellular Baseband Services, Networking Services, etc -->
+<!ATTLIST subblock
+  name CDATA #REQUIRED
+  long-name CDATA #IMPLIED
+>
+
+<!ELEMENT collection (component)*>
+<!-- Screen Driver, Content Handling, etc -->
+<!ATTLIST collection
+  name CDATA #REQUIRED
+  long-name CDATA #IMPLIED
+  level NMTOKEN #IMPLIED
+>
+
+<!ELEMENT component (unit)*>
+<!-- contains units or is a  package or prebuilt -->
+<!ATTLIST component
+  name CDATA #REQUIRED
+  long-name CDATA #IMPLIED
+  deprecated CDATA #IMPLIED
+  introduced CDATA #IMPLIED
+  contract CDATA #IMPLIED
+  plugin (Y|N) "N"
+  filter CDATA #IMPLIED
+  class NMTOKENS #IMPLIED
+  supports CDATA #IMPLIED
+  purpose ( optional | mandatory | development ) "optional"
+>
+
+<!ELEMENT unit EMPTY >
+<!-- must be buildable (bld.inf) -->
+<!-- bldFile  may someday be removed in favour of mrp -->
+<!ATTLIST unit
+  mrp CDATA #IMPLIED
+  filter CDATA #IMPLIED
+  bldFile CDATA #IMPLIED
+  root CDATA #IMPLIED
+  version NMTOKEN #IMPLIED
+  prebuilt NMTOKEN #IMPLIED
+  late (Y|N) #IMPLIED
+  priority CDATA #IMPLIED
+>
+]>
+<SystemDefinition schema="2.0.1" name="Graphics Simulator">
+<systemModel>
+<layer name="anonymous">
+<block name="graphics.simulator" long-name="Graphics Simulator" levels="host guest">
+<collection name="guestrendering" long-name="Graphics Guest Rendering" level="guest">
+<component name="guestegl" long-name="Guest EGL" introduced="^4">
+<unit bldFile="guestrendering/guestegl/group"/>
+</component>
+<component name="guestopengles11" long-name="Guest OpenGL ES 1.1" introduced="^4">
+<unit bldFile="guestrendering/guestopengles11/group"/>
+</component>
+<component name="guestopenvg" long-name="Guest OpenVG" introduced="^4">
+<unit bldFile="guestrendering/guestopenvg/group"/>
+</component>
+<component name="guestopenvgu" long-name="Guest OpenVG Utilities" introduced="^4">
+<unit bldFile="guestrendering/guestopenvgu/group"/>
+</component>
+<component name="guestvideodriver" long-name="Guest Video Driver" introduced="^4">
+<unit bldFile="guestrendering/guestvideodriver/group"/>
+</component>
+<component name="vghwserialiser" long-name="Virtual Graphics Hardware Serialiser" introduced="^4">
+<unit bldFile="guestrendering/vghwserialiser/group"/>
+</component>
+<component name="vghwutils" long-name="Virtual Graphics Hardware Utilities" introduced="^4">
+<unit bldFile="guestrendering/vghwutils/group"/>
+</component>
+</collection>
+<collection name="hostsupport" long-name="Graphics Host Support" level="host">
+<component name="hostegl" long-name="Host EGL" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostegl/group"/>
+</component>
+<component name="hostopengles11" long-name="Host OpenGL ES 1.1" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostopengles11/group"/>
+</component>
+<component name="hostopenvg" long-name="Host OpenVG" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostopenvg/group"/>
+</component>
+<component name="khronosapiwrapper" long-name="Host Khronos API Wrapper" introduced="^4" class="PC">
+<unit bldFile="hostsupport/khronosapiwrapper/group"/>
+</component>
+<component name="syborggraphicswrapper" long-name="Host Syborg Graphics Wrapper" introduced="^4" class="PC">
+<unit bldFile="hostsupport/syborggraphicswrapper/group"/>
+</component>
+<component name="hostthreadadapter" long-name="Host Thread Adapater" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostthreadadapter/group"/>
+</component>
+</collection>
+</block>
+</layer>
+</systemModel>
+</SystemDefinition>
