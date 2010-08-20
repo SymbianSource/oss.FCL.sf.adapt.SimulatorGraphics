@@ -12,10 +12,15 @@
 //
 // Description:
 
-PRJ_PLATFORMS
-DEFAULT -WINSCW
+#ifndef SERIALISEDAPIUIDS_H_
+#define SERIALISEDAPIUIDS_H_
 
-PRJ_EXPORTS
+#define SERIALISED_DRIVER_API_UID 0x2002B6E3
+#define SERIALISED_OPENVG_API_UID 0x2002B6E4
+#define SERIALISED_EGL_API_UID 0x2002B6E5
+#define SERIALISED_OPENGLES_1_1_API_UID 0x2002B6E6
 
-PRJ_MMPFILES
-vghwserialiser.mmp
+//Added for the purpose of perfoming more complex operations from the Command Scheduler
+#define SERIALISED_META_UID 0x2002B6E7
+
+#endif
