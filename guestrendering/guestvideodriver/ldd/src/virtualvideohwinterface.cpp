@@ -263,5 +263,22 @@ void DVirtualVideoHwInterface::SetRegisterValue(
         }
     }
 
+// TODO FAISALMEMON This is the first portion of the port of Jani's
+// Dynamic framebuffer base address code.  Inspect this code, and also
+// put in the rest of the code.
+EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetFrameBase()
+	{
+#ifdef FAISALMEMON_DONE_DYNAMIC_FRAMEBUFFER_PORT 
+	TPhysAddr ret = 0;
+	if(DVirtualVideoHwInterface::pVVHIf != NULL)
+		{
+		ret = DVirtualVideoHwInterface::pVVHIf->iFrameRamPhys;
+		}
+	return ret;
+#else
+	return 0;
+#endif
+}
+
 
 // End of file

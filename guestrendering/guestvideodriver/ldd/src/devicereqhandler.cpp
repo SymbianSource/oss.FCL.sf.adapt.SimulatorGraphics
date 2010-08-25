@@ -216,7 +216,9 @@ DDeviceReqHandler::DDeviceReqHandler(
     iRequestBuffer.InitBuffer();
     //Register this object with the extension
     VVHW_TRACE( "DDeviceReqHandler calling ReqHandlerExtension" );
+#ifdef FAISALMEMON_S4_SGIMAGE
     ReqHandlerExtension::SetReqHandler( this );
+#endif
     }
 
 // -----------------------------------------------------------------------------
@@ -798,6 +800,7 @@ void DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult( TAsyncRequest* a
                 case DriverRFC::EDrvCreatePbufferSg:
                     {
                     VVHW_TRACE( "DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult : EDrvCreatePbufferSg" );
+#ifdef FAISALMEMON_S4_SGIMAGE
                     if( iSchedulerInitiatedTransactionData )
                         {
                         ((TSgImageMetaData*)iSchedulerInitiatedTransactionData)->iPbufferHandle = aReq->iRemoteFunctionCall.Header().iReturnValue;
@@ -812,12 +815,14 @@ void DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult( TAsyncRequest* a
                                                                     aReq->iAsyncClient,
                                                                     aReq->iStatus );
                     *(aReq->iStatus) = 0;//REquestComplete doesn't work
+#endif
                     VVHW_TRACE( "Pbuffer creation RequestComplete" );
                     break;
                     }
                 case DriverRFC::EDrvCreateVGImageSg:
                     {
                     VVHW_TRACE( "DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult : EDrvCreateVGImageSg" );
+#ifdef FAISALMEMON_S4_SGIMAGE
                     if( iSchedulerInitiatedTransactionData )
                         {
                         ((TSgImageMetaData*)iSchedulerInitiatedTransactionData)->iVGImageHandle = aReq->iRemoteFunctionCall.Header().iReturnValue;
@@ -831,6 +836,7 @@ void DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult( TAsyncRequest* a
                                aReq->iAsyncClient,
                                aReq->iStatus );
                     *(aReq->iStatus) = 0;//REquestComplete doesn't work
+#endif
                     VVHW_TRACE( "VGImage creation RequestComplete" );
                     break;
                     }
@@ -909,6 +915,7 @@ void DDeviceReqHandler::ConsumeSchedulerInitiatedRequestResult( TAsyncRequest* a
     VVHW_TRACE("DDeviceReqHandle::ConsumeSchedulerInitiatedRequestResult done.");
     }
 
+#ifdef FAISALMEMON_S4_SGIMAGE
 /**
  * DDeviceReqHandler::CreateSgImagePbuffer
  * @param aInfo the info 
@@ -991,9 +998,7 @@ void DDeviceReqHandler::CreateSgImageVGImage( const TSgImageMetaData& aInfo, TRe
     VVHW_TRACE("DDeviceReqHandler::CreateSgImageVGImage <-");
     return;
     }
-
-
-
+#endif
 
 TInt DDeviceReqHandler::DestroySgImage( const TUint64 aId )
     {
@@ -1430,6 +1435,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
     return alreadyProcessed;
     }
 
+#ifdef FAISALMEMON_S4_SGIMAGE
 HBuf8* DDeviceReqHandler::OpenSgImageMetaData( const TUint64 aId, DSgResource*& aResource )
     {
     VVHW_TRACE("DDeviceReqHandler::OpenSgImageMetaData 0x%lx", aId );
@@ -1449,3 +1455,4 @@ HBuf8* DDeviceReqHandler::OpenSgImageMetaData( const TUint64 aId, DSgResource*& 
         }
     return data;//If there was a problem, this is zero. Ownership belongs to caller
     }
+#endif
