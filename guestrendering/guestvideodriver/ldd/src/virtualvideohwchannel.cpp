@@ -17,20 +17,16 @@
  * =============================================================================
  */
 
-// INCLUDE FILES
 #include <kernel/kernel.h>
 #include <assp.h>
 
-#include "virtualvideohwchannel.h"
-#include "virtualvideohwdeviceinterface.h"
-#include "platsimvideodriverprotocol.h"
-#include "platsimvideodrivercommon.h"
-#include "devicereqhandler.h"
+#include <graphics/virtualvideohwchannel.h>
+#include <graphics/virtualvideohwdeviceinterface.h>
+#include <graphics/guestvideodriverprotocol.h>
+#include <graphics/guestvideodrivercommon.h>
+#include <graphics/devicereqhandler.h>
+
 #include "serializedfunctioncall.h"
-
-
-// CONSTANTS
-// ============================ MEMBER FUNCTIONS ===============================
 
 // -----------------------------------------------------------------------------
 // DVirtualVideoHwChannel::DVirtualVideoHwChannel
@@ -113,7 +109,7 @@ void DVirtualVideoHwChannel::HandleMsg( TMessageBase* aMsgRequest )
 //
 TInt DVirtualVideoHwChannel::DoCreate( TInt /*aUnit*/, const TDesC* /*aInfo*/, const TVersion& aVer )
     {
-    using namespace PlatsimVideoDriver;
+    using namespace GuestVideoDriver;
     TInt err = KErrNone;
     
     if ( ! Kern::QueryVersionSupported(
@@ -141,7 +137,7 @@ TInt DVirtualVideoHwChannel::DoRequest(
         TAny* a1,
         TAny* a2 )
     {
-    using namespace PlatsimVideoDriver;
+    using namespace GuestVideoDriver;
 
     // Default error condition
     TInt err = KErrNone; 
@@ -176,6 +172,7 @@ TInt DVirtualVideoHwChannel::DoRequest(
 
 
 
+#ifdef FAISALMEMON_S4_SGIMAGE
 TInt DVirtualVideoHwChannel::GetSgImageMetaData(TSgImageMetaData& aSgInfo, const TUint64 aId)
 	{
 	VVHW_TRACE("DVirtualVideoHwChannel::OpenSgImageMetaData 0x%lx", aId );
@@ -196,6 +193,7 @@ TInt DVirtualVideoHwChannel::GetSgImageMetaData(TSgImageMetaData& aSgInfo, const
 		}
 	return metaDataErr;
 	}
+#endif
 
 
 // -----------------------------------------------------------------------------
@@ -208,7 +206,7 @@ TInt DVirtualVideoHwChannel::DoControl(
         TAny* a1,
         TAny* a2 )
     {
-    using namespace PlatsimVideoDriver;
+    using namespace GuestVideoDriver;
     
     // Default error condition
     TInt err = KErrNone; 
@@ -242,6 +240,7 @@ TInt DVirtualVideoHwChannel::DoControl(
                 }
             break;
             }
+#ifdef FAISALMEMON_S4_SGIMAGE
         case ERequestSgHandles:
             {
             VVHW_TRACE("DVirtualVideoHwChannel::DoControl - ERequestSgHandles" );
@@ -271,6 +270,7 @@ TInt DVirtualVideoHwChannel::DoControl(
                 }
             break;
             }
+#endif
         default:
             {
             // Other functions are not supported

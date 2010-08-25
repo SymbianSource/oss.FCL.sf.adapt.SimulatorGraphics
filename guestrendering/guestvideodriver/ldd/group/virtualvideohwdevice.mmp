@@ -1,29 +1,25 @@
-/*
-* ==============================================================================
-*  Name        : VirtualVideoHwDevice.mmp
-*  Part of     : aasw / aamm
-*  Description : Project information file for Graphics Hw LDD.
-*  Version     : %version:7 %
-*
-*  Copyright © 2002-2010 Nokia. All rights reserved.
-*  This material, including documentation and any related 
-*  computer programs, is protected by copyright controlled by 
-*  Nokia. All rights are reserved. Copying, including 
-*  reproducing, storing, adapting or translating, any 
-*  or all of this material requires the prior written consent of 
-*  Nokia. This material also contains confidential 
-*  information which may not be disclosed to others without the 
-*  prior written consent of Nokia.
-* ==============================================================================
-*/
+// Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+// All rights reserved.
+// This component and the accompanying materials are made available
+// under the terms of "Eclipse Public License v1.0"
+// which accompanies this distribution, and is available
+// at the URL "http://www.eclipse.org/legal/epl-v10.html".
+//
+// Initial Contributors:
+// Nokia Corporation - initial contribution.
+//
+// Contributors:
+//
+// Description:
+//
 
 #include <kernel/kern_ext.mmh>
 
-TARGET          platsimvideohw.ldd
+TARGET          guestvideohw.ldd
 TARGETTYPE      ldd
  
 UID             0 0x20026A2E //- 0x20026A32
-LINKAS          platsimvideohw.ldd
+LINKAS          guestvideohw.ldd
 VENDORID        0x70000001
 CAPABILITY      all
 
@@ -33,7 +29,6 @@ OS_LAYER_ESTLIB_SYSTEMINCLUDE
 USERINCLUDE     ../inc
 USERINCLUDE     ../../commoninc
 SYSTEMINCLUDE   /epoc32/include/drivers
-SYSTEMINCLUDE   /epoc32/include/internal
 
 SOURCEPATH      ../src
 SOURCE          virtualvideohwdevice.cpp
@@ -41,10 +36,12 @@ SOURCE          virtualvideohwchannel.cpp
 SOURCE          devicereqhandler.cpp
 SOURCE          virtualvideohwinterface.cpp
 
-USERINCLUDE     ../../../serialiser/inc
+USERINCLUDE     ../../../vghwserialiser/inc
+#ifdef FAISALMEMON_S4_SGIMAGE
 USERINCLUDE     ../../../graphicsresourceimplementation/inc
+#endif
 
-SOURCEPATH      ../../../serialiser/src
+SOURCEPATH      ../../../vghwserialiser/src
 SOURCE remotefunctioncall.cpp
 SOURCE serializedfunctioncall.cpp
 SOURCE eglrfc.cpp
@@ -52,17 +49,15 @@ SOURCE openvgrfc.cpp
 SOURCE driverrfc.cpp
 SOURCE opengles11rfc.cpp
 
-#if defined(NCP_COMMON_RAPU_FAMILY)
-LIBRARY         karap.lib
-#else
-LIBRARY         VariantTarget(kanomadik,lib)
-#endif // NCP_COMMON_RAPU_FAMILY
+// We need to link to some ASSP kernel extension here
+// TODO FAISALMEMON Need to confirm the correct library
+LIBRARY kasyborg.lib
 
+#ifdef FAISALMEMON_S4_SGIMAGE
 LIBRARY			reqhandlerextension.lib
 LIBRARY			sgextension.lib
+#endif
 
 start wins
 win32_headers
 end
-// End of file
-

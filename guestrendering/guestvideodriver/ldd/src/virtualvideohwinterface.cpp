@@ -22,9 +22,9 @@
 #include <platform.h>
 #include <kern_priv.h>
 
-#include "virtualvideointerfaceconstants.h"
-#include "virtualvideohwinterface.h"
-#include "virtualvideotracing.h"
+#include <graphics/guestvideodriverinterfaceconstants.h>
+#include <graphics/virtualvideohwinterface.h>
+#include <graphics/virtualvideotracing.h>
 
 
 // CONSTANTS

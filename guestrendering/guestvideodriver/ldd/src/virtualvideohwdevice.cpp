@@ -17,18 +17,16 @@
  * =============================================================================
  */
 
-
-// INCLUDE FILES
 #include <kernel/kernel.h>
 #include <assp.h>
 
-#include "virtualvideohwdevice.h"
-#include "virtualvideohwchannel.h"
-#include "platsimvideodriverprotocol.h"
-#include "platsimvideodrivercommon.h"
-#include "virtualvideohwinterface.h"
-#include "devicereqhandler.h"
-#include "virtualvideotracing.h"
+#include <graphics/guestvideodriverprotocol.h>
+#include <graphics/virtualvideohwdevice.h>
+#include <graphics/virtualvideohwchannel.h>
+#include <graphics/virtualvideohwinterface.h>
+#include <graphics/virtualvideotracing.h>
+#include <graphics/guestvideodrivercommon.h>
+#include <graphics/devicereqhandler.h>
 
 const TInt KPriority = 27; // DfcQue0 has same priority
 
@@ -50,7 +48,7 @@ DVirtualVideoHwDevice::DVirtualVideoHwDevice()
     {
     // No need to set iParseMask as we don't have PDD.
     // Just set the version.
-    using namespace PlatsimVideoDriver;
+    using namespace GuestVideoDriver;
     iVersion = TVersion( KMajorVer, KMinorVer, KBuildVer );
     VVHW_TRACE("DVirtualVideoHwDevice::DVirtualVideoHwDevice");
     }
@@ -62,7 +60,7 @@ DVirtualVideoHwDevice::DVirtualVideoHwDevice()
 TInt DVirtualVideoHwDevice::Install()
     {
     // Our name, used by User::FreeLogicalDevice 
-    TInt err = SetName( &PlatsimVideoDriver::KDeviceName );
+    TInt err = SetName( &GuestVideoDriver::KDeviceName );
     if ( err != KErrNone )
         {
         VVHW_TRACE("DVirtualVideoHwDevice::Install SetName %d", err);
@@ -72,7 +70,7 @@ TInt DVirtualVideoHwDevice::Install()
     // Enter critical section
     NKern::ThreadEnterCS();
     
-    err = Kern::DfcQCreate( iDfcQ, KPriority, &PlatsimVideoDriver::KDfcThreadName );
+    err = Kern::DfcQCreate( iDfcQ, KPriority, &GuestVideoDriver::KDfcThreadName );
 
     // Leave critical section
     NKern::ThreadLeaveCS();

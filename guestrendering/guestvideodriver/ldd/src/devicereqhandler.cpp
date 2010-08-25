@@ -24,10 +24,9 @@
 #include <kernel/kernel.h>
 #include <e32cmn.h>
 
-#include "devicereqhandler.h"
-#include "virtualvideohwinterface.h"
-
-#include "virtualvideotracing.h"
+#include <graphics/devicereqhandler.h>
+#include <graphics/virtualvideohwinterface.h>
+#include <graphics/virtualvideotracing.h>
 
 #include "remotefunctioncall.h"
 #include "serializedfunctioncall.h"
@@ -37,7 +36,7 @@
 #include "opengles11rfc.h" //For the opcodes
 
 
-using namespace PlatsimVideoDriver;
+using namespace GuestVideoDriver;
 
 // LOCAL DATA TYPES
 TInt CmpTPbsIds(const TPbSId& a, const TPbSId& b)
@@ -738,6 +737,7 @@ void DDeviceReqHandler::getVGSyncInOp( TAsyncRequest* aReq, TInt aSgHandleIndexI
         return;//No sgImage handle appended on the client side, just exit
         }
     
+#ifdef FAISALMEMON_S4_SGIMAGE
     if( sgId != NULL )
         {
         VVHW_TRACE( "DDeviceReqHandler::getVGSyncInOp SgImage-backing VGImage found" );
@@ -767,6 +767,7 @@ void DDeviceReqHandler::getVGSyncInOp( TAsyncRequest* aReq, TInt aSgHandleIndexI
         {
         call.AppendParam ( (int)surface );
         }
+#endif
     }
 
 
@@ -1003,6 +1004,7 @@ TInt DDeviceReqHandler::DestroySgImage( const TUint64 aId )
     EGLSurface surface(0);
     VGImage    image(0);
     
+#ifdef FAISALMEMON_S4_SGIMAGE
     DSgResource* resource;
     HBuf8* data = OpenSgImageMetaData( aId, resource );
     if( data )
@@ -1040,6 +1042,8 @@ TInt DDeviceReqHandler::DestroySgImage( const TUint64 aId )
         {
         NKern::Sleep( 20 );
         }
+#endif
+
     VVHW_TRACE("DDeviceReqHandler::DestroySgImage <-");
     return 1;
     }
@@ -1251,6 +1255,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                     
                     call.GetTUint64( id, 0 );
                     call.GetEGLintVectorData( handles, handles_size, 2 );
+#ifdef FAISALMEMON_S4_SGIMAGE
                     DSgResource* resource;
                     VVHW_TRACE("EglRFC::EeglMetaSgGetHandles openSgImageMetaData" );
                     HBuf8* data = OpenSgImageMetaData( id, resource );
@@ -1266,6 +1271,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                         call.SetReturnValue( (int)EGL_FALSE );
                         }
                     alreadyProcessed = EHandled;
+#endif
 					break;
                     }
                 case EglRFC::EeglCreateContext:
@@ -1294,6 +1300,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                     TInt sgIdIndex = iPbufferSgMap.FindInOrder( obj, iPbufferSgMapOrder );
                     if( sgIdIndex != KErrNotFound )
                         {
+#ifdef FAISALMEMON_S4_SGIMAGE
                         DSgResource* resource;
                         HBuf8* data = OpenSgImageMetaData( iPbufferSgMap[sgIdIndex].iSgId, resource );
                         if( data )
@@ -1309,6 +1316,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                                 }
                             delete data;
                             }
+#endif
                         }
                     obj.iPbuffer = read;
                     obj.iSgId = 0;
@@ -1316,6 +1324,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                     sgIdIndex = iPbufferSgMap.FindInOrder( obj, iPbufferSgMapOrder );
                     if( sgIdIndex != KErrNotFound )
                         {
+#ifdef FAISALMEMON_S4_SGIMAGE
                         DSgResource* resource;
                         HBuf8* data = OpenSgImageMetaData( iPbufferSgMap[sgIdIndex].iSgId, resource );
                         if( data )
@@ -1330,6 +1339,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                                 }
                             delete data;
                             }
+#endif
                         }
                     call.AppendEGLint( syncRequirement );
                     call.AppendEGLint( img );
@@ -1350,6 +1360,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                     EglRFC call( aReq->iRemoteFunctionCall );
                     call.GetTUint64( sgId, 0 );//get the sgImage id
                     
+#ifdef FAISALMEMON_S4_SGIMAGE
                     DSgResource* resource;
                     HBuf8* data = OpenSgImageMetaData( sgId, resource );
                     if( data )
@@ -1364,6 +1375,7 @@ DDeviceReqHandler::TRequestMode DDeviceReqHandler::InterpretRequest( TAsyncReque
                         aReq->iRemoteFunctionCall.SetReturnValue( EGL_NO_SURFACE );
                         }
                     //Find the sgimage's pbuffer surface, then return that
+#endif
                     VVHW_TRACE( "EeglCreatePixmapSurfaceSg" );
                     break;
                     }

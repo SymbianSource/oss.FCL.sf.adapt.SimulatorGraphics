@@ -20,4 +20,4 @@ PRJ_MMPFILES
 #ifdef FAISALMEMON_S4_SGIMAGE
 reqhandlerextension.mmp
 #endif
-// now lets tackle virtualvideohwdevice.mmp
+virtualvideohwdevice.mmp
