@@ -19,7 +19,7 @@
 #define USE_SYMBIAN_CLIENT_PANICS
 #include <e32debug.h>
 #include "serialisedapiuids.h"
-// Platsim Serialiser panic codes
+// Guest Serialiser panic codes
 typedef enum
 	{
 	ESerPanicMaxParamCountExceeded=1,

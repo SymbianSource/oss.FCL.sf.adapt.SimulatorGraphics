@@ -1,0 +1,53 @@
+// Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+// All rights reserved.
+// This component and the accompanying materials are made available
+// under the terms of "Eclipse Public License v1.0"
+// which accompanies this distribution, and is available
+// at the URL "http://www.eclipse.org/legal/epl-v10.html".
+//
+// Initial Contributors:
+// Nokia Corporation - initial contribution.
+//
+// Contributors:
+//
+// Description:
+// Project file for vghwutils
+
+TARGET		  vghwutils.dll
+TARGETTYPE	  dll
+UID			 0x1000008d 0x20026A32
+capability      CAP_GENERAL_DLL //All -Tcb
+vendorid        VID_DEFAULT //0x101FB657 //Nokia vendor id 
+
+OS_LAYER_ESTLIB_SYSTEMINCLUDE
+OS_LAYER_SYSTEMINCLUDE
+USERINCLUDE	 ../inc
+SYSTEMINCLUDE   /epoc32/include
+//systeminclude   /epoc32/include/libc	// STDLIB include files
+//systeminclude   /epoc32/include/vg	// OpenVG include files
+USERINCLUDE     ../../vghwserialiser/inc
+// userinclude     ../../platsimvideodriver/api/inc			// Local include files
+// userinclude     ../../platsimvideodriver/commoninc			// Local include files
+
+SOURCEPATH	  ../src
+
+SOURCE		  vghwutils.cpp
+
+// constructors & such for OpenVgRFC and EglRFC objects
+SOURCEPATH      ../../vghwserialiser/src
+SOURCE          eglrfc.cpp
+SOURCE          openvgrfc.cpp
+SOURCE          opengles11rfc.cpp
+
+
+//nostrictdef
+
+LIBRARY euser.lib
+LIBRARY platsimvideohwapi.lib
+LIBRARY vghwserialiser.lib
+
+#ifdef ENABLE_ABIV2_MODE
+DEBUGGABLE_UDEBONLY
+#endif
+
+EPOCALLOWDLLDATA

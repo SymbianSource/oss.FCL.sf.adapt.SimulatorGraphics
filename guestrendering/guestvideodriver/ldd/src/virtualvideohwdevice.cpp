@@ -46,6 +46,8 @@ DVirtualVideoHwDevice::DVirtualVideoHwDevice()
     // Just set the version.
     using namespace GuestVideoDriver;
     iVersion = TVersion( KMajorVer, KMinorVer, KBuildVer );
+	iHwInterface = new DVirtualVideoHwInterface;
+	Kern::Printf("DVirtualVideoHwDevice::DVirtualVideoHwDevice()<");
     VVHW_TRACE("DVirtualVideoHwDevice::DVirtualVideoHwDevice");
     }
 
@@ -77,7 +79,9 @@ TInt DVirtualVideoHwDevice::Install()
         return err;
         }
     
-    iHwInterface = new DVirtualVideoHwInterface;
+	// We have already created this during construction
+    // iHwInterface = new DVirtualVideoHwInterface;
+
     if ( !iHwInterface )
         {
         return KErrNoMemory;

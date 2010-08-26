@@ -89,8 +89,8 @@ public:
         EeglWaitNative, // 30
         EeglSwapBuffers,
         EeglCopyBuffers,
-        EeglPlatsimSetSurfaceParams,
-        EeglPlatsimCopyImageData,
+        EeglSimulatorSetSurfaceParams,
+        EeglSimulatorCopyImageData,
         EeglPixmapSurfaceSizeChanged,
         EeglMakeCurrentSg, //sgImage support
         EeglCreatePixmapSurfaceSg,

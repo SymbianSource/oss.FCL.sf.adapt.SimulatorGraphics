@@ -11,12 +11,14 @@
 // Contributors:
 //
 // Description:
-// Build file for VG Hardware Utilities
 
-PRJ_PLATFORMS
-DEFAULT -WINSCW
 
-PRJ_EXPORTS
+#ifndef PLATSIMVGHWUTILS_IBY
+#define PLATSIMVGHWUTILS_IBY
 
-PRJ_MMPFILES
-vghwutils.mmp
+
+file=ABI_DIR\BUILD_DIR\vghwutils.dll                SHARED_LIB_DIR\vghwutils.dll
+
+#endif // PLATSIMVGHWUTILS_IBY
+
+//  End of File

@@ -21,11 +21,13 @@
 #include <graphics/guestvideodriverinterfaceconstants.h>
 #include <graphics/virtualvideohwinterface.h>
 #include <graphics/virtualvideotracing.h>
+#include "syborg.h"
 
 
 // CONSTANTS
 
 _LIT( KVirtualVideoHwInterfacePanic, "DVirtualVideoHwInterface" );
+DVirtualVideoHwInterface * DVirtualVideoHwInterface::pVVHIf = NULL;
 
 // ============================ LOCAL DATA TYPES ===============================
 
@@ -44,7 +46,9 @@ const TLinAddr KRegisterOffsets[] =
     VVI_R_INPUT_BUFFER_READ_COUNT,
     VVI_R_INPUT_BUFFER_WRITE_COUNT,
     VVI_R_INPUT_BUFFER_MAX_TAIL,
-    VVI_R_REQUEST_ID
+    VVI_R_REQUEST_ID,
+	VVI_R_SHARED_CMD_MEMORY_BASE,
+	VVI_R_SHARED_FRAMEBUFFER_MEMORY_BASE,
     };
 #define ASSERT_PANIC(c,p) __ASSERT_DEBUG(c,Kern::PanicCurrentThread(KVirtualVideoHwInterfacePanic,p));
 
@@ -67,6 +71,24 @@ DVirtualVideoHwInterface::DVirtualVideoHwInterface()
     iInputParametersMemoryChunk = NULL;
     iOutputParametersMemoryChunk = NULL;
     iRegisterMemoryChunk = NULL;
+
+	DVirtualVideoHwInterface::pVVHIf = this;
+
+    Kern::Printf("DVirtualVideoHwInterface::DVirtualVideoHwInterface()>");
+	// Reserve a contiguous memory chunk for graphics usage
+	TUint32 ramSize = VVI_PARAMETERS_INPUT_MEMORY_SIZE +
+						VVI_PARAMETERS_OUTPUT_MEMORY_SIZE + 
+						VVI_FRAMEBUFFER_MEMORY_SIZE + 
+						VVI_REGISTERS_MEMORY_SIZE;
+	TInt r = Epoc::AllocPhysicalRam( ramSize, iVideoRamPhys );
+    VVHW_TRACE("DVirtualVideoHwInterface::DVirtualVideoHwInterface() AllocPhysicalRam %d", r);
+	if (r != KErrNone)
+		{
+	    NKern::ThreadLeaveCS();
+		Kern::Fault("DVirtualVideoHwInterface Allocate Ram %d",r);
+		}
+	iFrameRamPhys = iVideoRamPhys + VVI_FRAMEBUFFER_BASE_ADDRESS;
+	Kern::Printf("DVirtualVideoHwInterface::DVirtualVideoHwInterface()<");
     }
 
 
@@ -104,23 +126,36 @@ DVirtualVideoHwInterface::~DVirtualVideoHwInterface()
 
 TInt DVirtualVideoHwInterface::InitParametersInputMemory()
     {
-    return InitPhysicalMemory( VVI_PARAMETERS_INPUT_BASE_ADDRESS, 
+    TInt ret = InitPhysicalMemory( iVideoRamPhys + VVI_PARAMETERS_INPUT_BASE_ADDRESS, 
             VVI_PARAMETERS_INPUT_MEMORY_SIZE, iInputParametersMemoryChunk, 
             iInputParametersChunkKernelAddress );    
-    }
+    Kern::Printf("DVirtualVideoHwInterface::InitParametersInputMemory - Base phy: 0x%08x lin: 0x%08x ret: %d", 
+    		iVideoRamPhys + VVI_PARAMETERS_INPUT_BASE_ADDRESS, 
+    		iInputParametersChunkKernelAddress, ret );
+    return ret;
+	}
 
 TInt DVirtualVideoHwInterface::InitParametersOutputMemory()
     {
-    return InitPhysicalMemory( VVI_PARAMETERS_OUTPUT_BASE_ADDRESS, 
+    TInt ret = InitPhysicalMemory( iVideoRamPhys + VVI_PARAMETERS_OUTPUT_BASE_ADDRESS, 
             VVI_PARAMETERS_OUTPUT_MEMORY_SIZE, iOutputParametersMemoryChunk, 
-            iOutputParametersChunkKernelAddress );    
+            iOutputParametersChunkKernelAddress );
+    Kern::Printf("DVirtualVideoHwInterface::InitParametersOutputMemory - Base phy: 0x%08x lin: 0x%08x ret: %d", 
+    	iVideoRamPhys + VVI_PARAMETERS_OUTPUT_BASE_ADDRESS, 
+    	iOutputParametersChunkKernelAddress, ret );
+    return ret;
     }
 
 TInt DVirtualVideoHwInterface::InitRegisterMemory()
     {
-    return InitPhysicalMemory( VVI_REGISTERS_BASE_ADDRESS, 
-            VVI_REGISTERS_MEMORY_SIZE, iRegisterMemoryChunk, 
-            iRegisterChunkKernelAddress );        
+    Kern::Printf(" DVirtualVideoHwInterface::InitRegisterMemory>");
+    Kern::Printf("DVirtualVideoHwInterface::InitRegisterMemory - parameter base phy: 0x%08x", iVideoRamPhys );
+ 	SetSharedCmdMemBase( iVideoRamPhys );
+   	Kern::Printf("DVirtualVideoHwInterface::InitRegisterMemory - frame buffer phy: 0x%08x", iFrameRamPhys );
+	SetSharedFramebufferMemBase( iFrameRamPhys );
+
+    Kern::Printf(" DVirtualVideoHwInterface::InitRegisterMemory<");
+    return 0;   
     }
 
 // -----------------------------------------------------------------------------
@@ -218,6 +253,22 @@ void DVirtualVideoHwInterface::IssueCommand( TUint32 aCommand )
     SetRegisterValue( ERegCommand, aCommand );
     }
 
+// DVirtualVideoHwInterface::SetSharedCmdMemBase
+// -----------------------------------------------------------------------------
+//
+void DVirtualVideoHwInterface::SetSharedCmdMemBase( TUint32 aPhysicalAddress )
+    {
+    VVHW_TRACE("DVirtualVideoHwInterface::SetSharedCmdMemBase 0x%08x", aPhysicalAddress);
+    SetRegisterValue( ERegSharedCmdMemBase, aPhysicalAddress );
+    }
+
+void DVirtualVideoHwInterface::SetSharedFramebufferMemBase( TUint32 aPhysicalAddress )
+    {
+    VVHW_TRACE("DVirtualVideoHwInterface::SetSharedFramebufferMemBase 0x%08x", aPhysicalAddress);
+    SetRegisterValue( ERegSharedFramebufferMemBase, aPhysicalAddress );
+    }
+
+
 // -----------------------------------------------------------------------------
 // DVirtualVideoHwInterface::GetRegisterValue
 // -----------------------------------------------------------------------------
@@ -226,11 +277,13 @@ void DVirtualVideoHwInterface::GetRegisterValue(
     TRegister aRegister,
     TUint32& aValue )
     {
-    if ( iRegisterMemoryChunk )
+    if ( 1 /* iRegisterMemoryChunk */ ) // FAISALMEMON check this line of code with Jani.  Can we get rid of it?
         {
         TLinAddr offset = RegisterOffset( aRegister );
-        TUint32* ptr = reinterpret_cast<TUint32*>( iRegisterChunkKernelAddress + offset );
-        aValue = *ptr;
+		// FAISALMEMON check this with Jani.  Will the code still work for platsim or is this now syborg specific?
+        //TUint32* ptr = reinterpret_cast<TUint32*>( iRegisterChunkKernelAddress + offset );
+        //aValue = *ptr;
+		aValue = ReadReg( KHwGraphicsRegBase, offset );
         }
     else
         {
@@ -259,19 +312,12 @@ void DVirtualVideoHwInterface::SetRegisterValue(
         }
     }
 
-// TODO FAISALMEMON This is the first portion of the port of Jani's
-// Dynamic framebuffer base address code.  Inspect this code, and also
-// put in the rest of the code.
 EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetFrameBase()
 	{
-#ifdef FAISALMEMON_DONE_DYNAMIC_FRAMEBUFFER_PORT 
 	TPhysAddr ret = 0;
 	if(DVirtualVideoHwInterface::pVVHIf != NULL)
 		{
 		ret = DVirtualVideoHwInterface::pVVHIf->iFrameRamPhys;
 		}
 	return ret;
-#else
-	return 0;
-#endif
 }

@@ -11,7 +11,7 @@
 // Contributors:
 //
 // Description:
-// Platsim video driver - request handler extension (a.k.a. Command Scheduler extension)
+// Guest video driver - request handler extension (a.k.a. Command Scheduler extension)
 //
 
 #include <kernel/kern_priv.h>

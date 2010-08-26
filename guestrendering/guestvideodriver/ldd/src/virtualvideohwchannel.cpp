@@ -236,6 +236,14 @@ TInt DVirtualVideoHwChannel::DoControl(
                 }
             break;
             }
+        case ERequestFrameBaseAddress:
+            {
+            TPhysAddr physicalAddress(0);
+			physicalAddress = iHwInterface.GetFrameBase();
+            TPckgC<TPhysAddr> address(physicalAddress);
+            err = Kern::ThreadDesWrite(aUserThread, a1, address, 0, 0, aUserThread);
+            break;
+            }
 #ifdef FAISALMEMON_S4_SGIMAGE
         case ERequestSgHandles:
             {
