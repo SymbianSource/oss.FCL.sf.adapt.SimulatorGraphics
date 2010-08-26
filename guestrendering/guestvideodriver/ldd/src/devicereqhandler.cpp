@@ -720,8 +720,6 @@ TBool DDeviceReqHandler::InitiateRequestWithReply( TAsyncRequest* aRec, TAny* aT
 void DDeviceReqHandler::getVGSyncInOp( TAsyncRequest* aReq, TInt aSgHandleIndexInReq, TBool aSetBufferDirty )
     {    
     VVHW_TRACE( "DDeviceReqHandler::getVGSyncInOp" );
-    EGLSurface surface( EGL_NO_SURFACE );//The pbuffer surface to sync from, if needed
-    VGboolean syncNeeded = VG_FALSE;
     OpenVgRFC call( aReq->iRemoteFunctionCall );
     TUint64 sgId(NULL);
     
@@ -735,6 +733,8 @@ void DDeviceReqHandler::getVGSyncInOp( TAsyncRequest* aReq, TInt aSgHandleIndexI
         }
     
 #ifdef FAISALMEMON_S4_SGIMAGE
+    EGLSurface surface( EGL_NO_SURFACE );//The pbuffer surface to sync from, if needed
+    VGboolean syncNeeded = VG_FALSE;
     if( sgId != NULL )
         {
         VVHW_TRACE( "DDeviceReqHandler::getVGSyncInOp SgImage-backing VGImage found" );
@@ -998,13 +998,13 @@ void DDeviceReqHandler::CreateSgImageVGImage( const TSgImageMetaData& aInfo, TRe
 TInt DDeviceReqHandler::DestroySgImage( const TUint64 aId )
     {
     VVHW_TRACE("DDeviceReqHandler::DestroySgImage ->");
+    
+#ifdef FAISALMEMON_S4_SGIMAGE
     TBool allok = ETrue;
     TAsyncRequest* req(0);
     TPckg<TUint32> res( iOpReturn );
     EGLSurface surface(0);
     VGImage    image(0);
-    
-#ifdef FAISALMEMON_S4_SGIMAGE
     DSgResource* resource;
     HBuf8* data = OpenSgImageMetaData( aId, resource );
     if( data )
