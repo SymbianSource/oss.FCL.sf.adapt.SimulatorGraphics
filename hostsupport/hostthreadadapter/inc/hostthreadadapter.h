@@ -11,12 +11,17 @@
 // Contributors:
 //
 // Description:
-// Build meta data for the hostthreadadapter component
+// Host thread adapter header file
 
-PRJ_PLATFORMS
+#ifndef HOSTTHREADADAPTER_H
+#define HOSTTHREADADAPTER_H
 
-TOOLS2
+#pragma once
 
-PRJ_MMPFILES
+#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
+#define _WIN32_WINNT 0x0400
 
-hostthreadadapter.mmp
+#include "platformthreading.h"
+
+#endif // HOSTTHREADADAPTER
+
