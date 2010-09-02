@@ -29,6 +29,8 @@ EXPORTS
 	_ZN10CVghwUtils11VgApiForEglEv @ 28 NONAME
 	_ZN10CVghwUtils15Gles11ApiForEglEv @ 29 NONAME
 	_ZN10CVghwUtils14Gles2ApiForEglEv @ 30 NONAME
+        _ZN10CVghwUtils25GetFrameBufferBaseAddressERm @ 31 NONAME
+
 
 
 

@@ -43,7 +43,7 @@ SOURCE          opengles11rfc.cpp
 //nostrictdef
 
 LIBRARY euser.lib
-LIBRARY platsimvideohwapi.lib
+LIBRARY guestvideohwapi.lib
 LIBRARY vghwserialiser.lib
 
 #ifdef ENABLE_ABIV2_MODE
