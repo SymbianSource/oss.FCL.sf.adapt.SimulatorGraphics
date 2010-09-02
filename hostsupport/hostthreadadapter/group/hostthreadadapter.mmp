@@ -11,12 +11,13 @@
 // Contributors:
 //
 // Description:
-// Build meta data for the hostthreadadapter component
+// hostthreadadapter library build meta data
 
-PRJ_PLATFORMS
+TARGET           hostthreadadapter.lib
 
-TOOLS2
+TARGETTYPE       lib
 
-PRJ_MMPFILES
+SOURCEPATH       ../src
+SOURCE           platformthreading.cpp
 
-hostthreadadapter.mmp
+USERINCLUDE      ../inc
