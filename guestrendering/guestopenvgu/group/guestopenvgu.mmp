@@ -1,0 +1,50 @@
+// Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+// All rights reserved.
+// This component and the accompanying materials are made available
+// under the terms of "Eclipse Public License v1.0"
+// which accompanies this distribution, and is available
+// at the URL "http://www.eclipse.org/legal/epl-v10.html".
+//
+// Initial Contributors:
+// Nokia Corporation - initial contribution.
+//
+// Contributors:
+//
+// Description:
+// Project file for the OpenVGU guest library 
+
+#include <platform_paths.hrh>
+#include <VG/openvguids.hrh> // For uids
+
+TARGET          guestopenvgu.dll
+TARGETTYPE      dll
+LINKAS          libopenvgu.dll
+UID             KUidSharedDllUidValue KUidVGUDllUidValue
+CAPABILITY      CAP_GENERAL_DLL
+VENDORID        VID_DEFAULT
+
+OS_LAYER_SYSTEMINCLUDE
+OS_LAYER_ESTLIB_SYSTEMINCLUDE
+USERINCLUDE     ../inc
+USERINCLUDE     ../../vghwutils/inc
+USERINCLUDE     ../../vghwserialiser/inc
+
+SOURCEPATH      ../../vghwserialiser/src
+SOURCE openvgrfc.cpp
+
+SOURCEPATH      ../src
+SOURCE          openvgu.cpp
+
+LIBRARY euser.lib           // Mandatory
+LIBRARY vghwutils.lib               
+LIBRARY libOpenVG.lib                
+LIBRARY guestopenvg.lib
+LIBRARY vghwserialiser.lib
+
+#ifdef WINS
+DEFFILE         /epoc32/include/def/win32/libopenvgu11.def  // WINS/WINSCW def file
+#else
+DEFFILE         /epoc32/include/def/eabi/libopenvgu11.def   // ARM def file
+#endif // WINS
+
+EPOCALLOWDLLDATA
