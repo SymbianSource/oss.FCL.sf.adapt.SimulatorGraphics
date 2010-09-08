@@ -11,13 +11,13 @@
 // Contributors:
 //
 // Description:
-// Build specification file for the guest OpenGL ES 1.1 implementation
+// Guest OpenGL ES 1.1 Rom IBY file
 
-PRJ_PLATFORMS
-DEFAULT	-WINSCW
+#ifndef __GUEST_OPENGL_IBY__
+#define __GUEST_OPENGL_IBY__
 
-PRJ_EXPORTS
-../rom/guestopengles11.iby  /epoc32/rom/include/guestopengles11.iby
+#include <egl.iby>
 
-PRJ_MMPFILES
-guestopengles11.mmp
+file=ABI_DIR\BUILD_DIR\libGLES_CM.dll    	\sys\bin\libGLES_CM.dll
+file=ABI_DIR\BUILD_DIR\guestopengles11.dll   sys\bin\libGLESv1_CM.dll
+#endif

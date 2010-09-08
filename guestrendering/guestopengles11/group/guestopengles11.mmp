@@ -1,0 +1,48 @@
+// Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+// All rights reserved.
+// This component and the accompanying materials are made available
+// under the terms of "Eclipse Public License v1.0"
+// which accompanies this distribution, and is available
+// at the URL "http://www.eclipse.org/legal/epl-v10.html".
+//
+// Initial Contributors:
+// Nokia Corporation - initial contribution.
+//
+// Contributors:
+//
+// Description:
+// Project file for the Guest OpenGL ES 1.1 implementation
+
+#include <platform_paths.hrh>
+#include <GLES/openglesuids.hrh>                                                // For uids
+
+target          guestopengles11.dll                                           // Destination filename
+targettype      dll                                                             // Binary build type
+linkas          libGLESv1_CM.dll
+uid             KUidSharedDllUidValue KUidOpenGLESv1CommonProfileDllUidValue    // File uids
+capability      CAP_GENERAL_DLL
+vendorid        VID_DEFAULT                                                     //Nokia vendor id
+
+OS_LAYER_ESTLIB_SYSTEMINCLUDE
+
+systeminclude   /epoc32/include                                 // General Symbian include files
+userinclude     ../inc                                          // Local include files
+userinclude     ../../vghwutils/inc                             // Local include files
+
+USERINCLUDE     ../../vghwserialiser/inc
+SOURCEPATH      ../../vghwserialiser/src                            // Relative path to source files
+SOURCE          opengles11rfc.cpp
+
+sourcepath      ../src                                          // Relative path to source files
+source          opengl.cpp
+
+library         euser.lib                                       // Mandatory
+library         vghwutils.lib
+library         guestvideohwapi.lib
+library         vghwserialiser.lib
+LIBRARY         libc.lib            // For strcmp, etc
+
+// standard ARM def file baseline for all implementions
+DEFFILE         /epoc32/include/def/eabi/libglesv1_cm11.def
+
+EPOCALLOWDLLDATA
