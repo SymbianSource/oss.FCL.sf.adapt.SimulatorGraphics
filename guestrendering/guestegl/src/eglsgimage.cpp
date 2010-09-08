@@ -134,12 +134,12 @@ TBool CEglImage::IsDestroyed() const
 	}
 #else
 void CEglImage::Duplicate() {}
-TBool CEglImage::OpenForVgImage(TSize& aSize, VGHandle& aVgHandle, TUint64& aSgImageId) {}
-TBool CEglImage::Close() {}
-TBool CEglImage::Destroy() {}
-TBool CEglImage::IsDestroyed() const {}
-TInt CEglImage::RefCount() {}
-EGLDisplay CEglImage::Display() const {}
+TBool CEglImage::OpenForVgImage(TSize& aSize, VGHandle& aVgHandle, TUint64& aSgImageId) {return ETrue;}
+TBool CEglImage::Close() {return ETrue;}
+TBool CEglImage::Destroy() {return ETrue;}
+TBool CEglImage::IsDestroyed() const {return ETrue;}
+TInt CEglImage::RefCount() {return 0;}
+EGLDisplay CEglImage::Display() const {return ETrue;}
 #endif
 
 

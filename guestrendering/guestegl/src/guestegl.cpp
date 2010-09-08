@@ -32,7 +32,6 @@
 //
 
 // FAISALMEMON STUB CODE
-#define PITCH_OF_TWIPS_PIXELS(a, b) 1 /* This is incorrect; just a stub*/
 #define EGL_CHECK_ERROR(a, b, c)      /* This does no checking; just a stub */
 void CGuestEGL::EglInternalFunction_DestroyWindowSurface(TSurfaceInfo&)
 	{
@@ -766,36 +765,6 @@ TBool CGuestEGL::IsDisplayInitialized(EGLDisplay aDisplay)
 	return result;
 	}
 
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-//
-TInt CGuestEGL::EglInternalFunction_GetPitch(RWindow* aNativeWindow, TInt& aHorizontalPitch, TInt& aVerticalPitch)
-    {
-    RWsSession* ws = aNativeWindow->Session();
-    CWsScreenDevice* screenDevice = new CWsScreenDevice(*ws);
-    if ( !screenDevice )
-        {
-        return KErrNoMemory;
-        }
-    TInt err = screenDevice->Construct();
-
-    if ( KErrNone == err )
-        {
-        TSize pixelSize = screenDevice->SizeInPixels();
-        TSize twipSize  = screenDevice->SizeInTwips();
-
-        aHorizontalPitch = PITCH_OF_TWIPS_PIXELS(twipSize.iWidth , pixelSize.iWidth);
-        aVerticalPitch = PITCH_OF_TWIPS_PIXELS(twipSize.iHeight, pixelSize.iHeight);
-        }
-    delete screenDevice;
-    return err;
-    }
-
-// -----------------------------------------------------------------------------
-//
-// -----------------------------------------------------------------------------
-//
 EGLBoolean CGuestEGL::eglSwapBuffers(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLSurface aSurface)
     {
     EglInternalFunction_SwapWindowSurface(aThreadState, aDisplay, aSurface);

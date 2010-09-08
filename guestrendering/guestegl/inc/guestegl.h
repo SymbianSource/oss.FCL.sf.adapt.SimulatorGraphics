@@ -326,7 +326,6 @@ private:
 	TSurfaceInfo* EglInternalFunction_GetPlatformSurface( EGLDisplay display, EGLSurface surface );
 	void EglInternalFunction_AbortWindowInit(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLSurface aSurface, TSurfaceInfo* ps, RWindow* window, CWsScreenDevice* screenDevice);
 	TBool EglInternalFunction_SwapWindowSurface(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLSurface aSurface);
-	TInt EglInternalFunction_GetPitch( RWindow* aNativeWindow, TInt& aHorizontalPitch, TInt& aVerticalPitch );
 	TBool EglInternalFunction_MetaGetConfigs( TEglThreadState& aThreadState, EGLConfig*& aConfigs, EGLint& aConfigCnt, EGLint*& aConfigAttribs, EGLint& aConfigAttribsLen, TMetaGetConfigsMode aFetchMode = EMetaGetConfigsSg );
 
 	// more private functions
