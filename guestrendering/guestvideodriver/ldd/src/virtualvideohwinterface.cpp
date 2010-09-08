@@ -25,7 +25,9 @@
 
 // CONSTANTS
 
+#ifdef PLATSIM_CONFIG
 _LIT( KVirtualVideoHwInterfacePanic, "DVirtualVideoHwInterface" );
+#endif
 
 // ============================ LOCAL DATA TYPES ===============================
 

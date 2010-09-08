@@ -92,7 +92,7 @@ typedef void (*ExtensionProcPointer)(...);
 class MVgApiForEgl
 	{
 public:
-	virtual ExtensionProcPointer platsimGetVgProcAddress (const char *aProcName) = 0;
+	virtual ExtensionProcPointer guestGetVgProcAddress (const char *aProcName) = 0;
 	};
 
 
@@ -100,7 +100,7 @@ public:
 class MGles11ApiForEgl
 	{
 public:
-	virtual ExtensionProcPointer platsimGetGles11ProcAddress (const char *aProcName) = 0;
+	virtual ExtensionProcPointer guestGetGles11ProcAddress (const char *aProcName) = 0;
 	};
 
 
@@ -108,7 +108,7 @@ public:
 class MGles2ApiForEgl
 	{
 public:
-	virtual ExtensionProcPointer platsimGetGles2ProcAddress (const char *aProcName) = 0;
+	virtual ExtensionProcPointer guestGetGles2ProcAddress (const char *aProcName) = 0;
 	};
 
 
