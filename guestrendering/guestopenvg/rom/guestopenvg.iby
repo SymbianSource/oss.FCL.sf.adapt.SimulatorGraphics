@@ -11,13 +11,13 @@
 // Contributors:
 //
 // Description:
-// Project build file for Guest OpenVG implementation
+// Guest OpenVG IBY File
 
-PRJ_PLATFORMS
-DEFAULT	-WINSCW
+#ifndef __GUEST_OPENVG_IBY__
+#define __GUEST_OPENVG_IBY__
 
-PRJ_EXPORTS
-../rom/guestopenvg.iby  /epoc32/rom/include/guestopenvg.iby
-
-PRJ_MMPFILES
-guestopenvg.mmp
+file=ABI_DIR\BUILD_DIR\guestopenvg.dll   sys\bin\libopenvg.dll
+file=ABI_DIR\BUILD_DIR\guestopenvgu.dll  sys\bin\libopenvgu.dll
+file=ABI_DIR\BUILD_DIR\vghwutils.dll  sys\bin\vghwutils.dll
+file=ABI_DIR\BUILD_DIR\vghwserialiser.dll sys\bin\vghwserialiser.dll
+#endif
