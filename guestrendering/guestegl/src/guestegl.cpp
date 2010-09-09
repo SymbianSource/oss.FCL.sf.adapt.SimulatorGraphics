@@ -67,19 +67,45 @@ Provide support for the Symbian Graphics SHAI for EGL Extensions
 @param aName	Name of extension
 @return			Function pointer, or NULL if not available.
 
-@note  Known extensions:
-   1. EGL_KHR_image
-   2. EGL_KHR_image_base
+@note  Known extensions and their directly associated functions:
+   1. EGL_KHR_image 
+		None
+   2. EGL_KHR_image_base 
+		eglCreateImageKHR,
+		eglDestroyImageKHR
    3. EGL_KHR_image_pixmap
+		None
    4. EGL_KHR_vg_parent_image
+		None
    5. EGL_KHR_gl_texture_2D_image
+		None
    6. EGL_KHR_gl_texture_cubemap_image
-   7. EGL_KHR_lock_surface
+		EGLImageTargetTexture2DOES,
+		EGLImageTargetRenderbufferStorageOES
+   7. EGL_KHR_lock_surface2
+		eglLockSurfaceKHR,
+		eglUnlockSurfaceKHR
    8. EGL_NOK_resource_profiling2
+		eglQueryProfilingDataNOK
    9. EGL_SYMBIAN_composition
+		None
   10. EGL_NOK_image_endpoint
+		eglCreateEndpointNOK,
+		eglDestroyEndpointNOK,
+		eglGetEndpointAttribNOK,
+		eglSetEndpointAttribNOK,
+		eglEndpointBeginStreamingNOK,
+		eglEndpointEndStreamingNOK,
+		eglAcquireImageNOK,
+		eglReleaseImageNOK,
+		eglGetEndpointDirtyAreaNOK,
+		eglEndpointRequestNotificationNOK,
+		eglEndpointCancelNotificationNOK,
+		eglCreateEndpointNOK
   11. NOK_pixmap_type_rsgimage
-  12. eglSwapBuffersRegionNOK
+		None
+  12. EGL_NOK_swap_region
+		eglSwapBuffersRegionNOK
 
 @see Khronos EGL 1.4 Specification, eglGetProcAddress()
 @author Faisal Memon Community EGL project
@@ -87,27 +113,28 @@ Provide support for the Symbian Graphics SHAI for EGL Extensions
 */
 ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
 	{
-    if (strncmp("EGL_KHR_image", aName, strlen("EGL_KHR_image")) == 0)
+    if (strncmp("eglCreateImageKHR", aName, strlen("eglCreateImageKHR")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_KHR_image_base", aName, strlen("EGL_KHR_image_base")) == 0)
+    else if (strncmp("eglDestroyImageKHR", aName, strlen("eglDestroyImageKHR")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_KHR_image_pixmap", aName, strlen("EGL_KHR_image_pixmap")) == 0)
+    else if (strncmp("EGLImageTargetTexture2DOES", aName, strlen("EGLImageTargetTexture2DOES")) == 0)
+None
         {
         return NULL;
         }
-    else if (strncmp("EGL_KHR_vg_parent_image", aName, strlen("EGL_KHR_vg_parent_image")) == 0)
+    else if (strncmp("EGLImageTargetRenderbufferStorageOES", aName, strlen("EGLImageTargetRenderbufferStorageOES")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_KHR_gl_texture_2D_image", aName, strlen("EGL_KHR_gl_texture_2D_image")) == 0)
+    else if (strncmp("eglLockSurfaceKHR", aName, strlen("eglLockSurfaceKHR")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_KHR_gl_texture_cubemap_image", aName, strlen("EGL_KHR_gl_texture_cubemap_image")) == 0)
+    else if (strncmp("eglUnlockSurfaceKHR", aName, strlen("eglUnlockSurfaceKHR")) == 0)
         {
         return NULL;
         }
@@ -115,19 +142,51 @@ ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
         {
         return NULL;
         }
-    else if (strncmp("EGL_NOK_resource_profiling2", aName, strlen("EGL_NOK_resource_profiling2")) == 0)
+    else if (strncmp("eglQueryProfilingDataNOK", aName, strlen("eglQueryProfilingDataNOK")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_SYMBIAN_composition", aName, strlen("EGL_SYMBIAN_composition")) == 0)
+    else if (strncmp("eglCreateEndpointNOK", aName, strlen("eglCreateEndpointNOK")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("EGL_NOK_image_endpoint", aName, strlen("EGL_NOK_image_endpoint")) == 0)
+    else if (strncmp("eglDestroyEndpointNOK", aName, strlen("eglDestroyEndpointNOK")) == 0)
         {
         return NULL;
         }
-    else if (strncmp("NOK_pixmap_type_rsgimage", aName, strlen("NOK_pixmap_type_rsgimage")) == 0)
+    else if (strncmp("eglGetEndpointAttribNOK", aName, strlen("eglGetEndpointAttribNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglEndpointBeginStreamingNOK", aName, strlen("eglEndpointBeginStreamingNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglEndpointEndStreamingNOK", aName, strlen("eglEndpointEndStreamingNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglAcquireImageNOK", aName, strlen("eglAcquireImageNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglReleaseImageNOK", aName, strlen("eglReleaseImageNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglGetEndpointDirtyAreaNOK", aName, strlen("eglGetEndpointDirtyAreaNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglEndpointRequestNotificationNOK", aName, strlen("eglEndpointRequestNotificationNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglEndpointCancelNotificationNOK", aName, strlen("eglEndpointCancelNotificationNOK")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglCreateEndpointNOK", aName, strlen("eglCreateEndpointNOK")) == 0)
         {
         return NULL;
         }
