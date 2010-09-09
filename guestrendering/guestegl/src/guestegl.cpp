@@ -59,9 +59,86 @@ const char * CGuestEGL::EglInternalFunction_QueryExtensionList()
 	{
 	return NULL; // stub code
 	}
-ProcPointer CGuestEGL::eglGetProcAddress(const char*)
+
+/**
+Obtain extension function pointer.
+
+Provide support for the Symbian Graphics SHAI for EGL Extensions
+@param aName	Name of extension
+@return			Function pointer, or NULL if not available.
+
+@note  Known extensions:
+   1. EGL_KHR_image
+   2. EGL_KHR_image_base
+   3. EGL_KHR_image_pixmap
+   4. EGL_KHR_vg_parent_image
+   5. EGL_KHR_gl_texture_2D_image
+   6. EGL_KHR_gl_texture_cubemap_image
+   7. EGL_KHR_lock_surface
+   8. EGL_NOK_resource_profiling2
+   9. EGL_SYMBIAN_composition
+  10. EGL_NOK_image_endpoint
+  11. NOK_pixmap_type_rsgimage
+  12. eglSwapBuffersRegionNOK
+
+@see Khronos EGL 1.4 Specification, eglGetProcAddress()
+@author Faisal Memon Community EGL project
+
+*/
+ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
 	{
-	return NULL; // stub code
+    if (strncmp("EGL_KHR_image", aName, strlen("EGL_KHR_image")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_image_base", aName, strlen("EGL_KHR_image_base")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_image_pixmap", aName, strlen("EGL_KHR_image_pixmap")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_vg_parent_image", aName, strlen("EGL_KHR_vg_parent_image")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_gl_texture_2D_image", aName, strlen("EGL_KHR_gl_texture_2D_image")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_gl_texture_cubemap_image", aName, strlen("EGL_KHR_gl_texture_cubemap_image")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_KHR_lock_surface", aName, strlen("EGL_KHR_lock_surface")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_NOK_resource_profiling2", aName, strlen("EGL_NOK_resource_profiling2")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_SYMBIAN_composition", aName, strlen("EGL_SYMBIAN_composition")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("EGL_NOK_image_endpoint", aName, strlen("EGL_NOK_image_endpoint")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("NOK_pixmap_type_rsgimage", aName, strlen("NOK_pixmap_type_rsgimage")) == 0)
+        {
+        return NULL;
+        }
+    else if (strncmp("eglSwapBuffersRegionNOK", aName, strlen("eglSwapBuffersRegionNOK")) == 0)
+        {
+        return NULL;
+        }
+    else
+        {
+        return NULL;
+        }
 	}
 
 EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState&, int, int, void*, const int*)
