@@ -1,0 +1,49 @@
+
+** Premultiplication:
+
+- Any kind of BLENDING -> all components TO premultiplied. We MUST have the
+  components in internal precision also.
+
+    - This includes all the IMAGE BLENDING operations
+
+    - Corner case: rendering SRC_OVER with all/some alpha == 1.0
+
+- Any FILTERING
+
+- AFTER Color tranformation
+
+    - Unless no absolutely no blending after that, and destination NOT in
+      premultiplied format (-> color interpolation in np format)
+
+** Unpremultiplication:
+
+- BEFORE Color transformation
+
+- Color conversion to dst
+
+    - After blending if dst NOT premultiplied
+
+    - If input PATTERN or IMAGE and NOT premultiplied -> This happens only when
+      the image data is not premultiplied and no filtering is done.
+
+** In internal format if:
+
+- Any BLEND operation
+
+- FILTERING applied to image source
+
+** Description of actions to take:
+
+- Premultiply IMMEDIATELY after any color transforms, if it hasn't been done
+  before that. All the following operations can then assume that the input has
+  been premultiplied. 
+
+- Premultiplication can be only skipped if load is skipped for the pixel. This
+  can only occur when opacity and alpha are both 1.0.
+
+** Color-space conversion
+
+- Before blending, convert generated color into destination color-space.
+
+- gamma srgb -> gamma slum is ungamma, tolum, gamma
+

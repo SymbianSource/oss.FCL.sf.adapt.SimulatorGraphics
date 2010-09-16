@@ -1,0 +1,27 @@
+Detailed todos (part of larger optimizations and not listed in the description
+of those tasks.
+
+- LLVM probably leaks memory because the module-global variables are never
+  destroyed. -> The constant can be destroyed after the function has been
+  compiled, or once the pipeline goes out of scope. (This was tried once but it
+  caused a crash, possibly an ownership issue.)
+
+- Image rendering might fail if paint matrix is singular
+
+- It might make sense to store the polygon start-winding separately (when edges
+  are clipped)
+
+- Investigate if there is some easy way to make the amount of
+  intermediate-representation bits definable at compile-time or if it is useful
+  in some case.
+
+- Dithering!
+
+- Hooks for changing the framebuffer and/or mask format. Send message to:
+  pixel-gen, and lut-gen?
+
+    * This is not required because the state is prepared from scratch every
+      time.
+
+- Avoid path retessellation if possible? 
+
