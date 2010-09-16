@@ -18,7 +18,7 @@ inline void EglRFC::GetTUint64( TUint64& aParam, TInt aIndex )
     TUint32 lower, upper;
     iData.GetParamValue( EglRFC::EEGLint, (TUint8*)&lower, aIndex );
     iData.GetParamValue( EglRFC::EEGLint, (TUint8*)&upper, aIndex+1 );
-    aParam = (upper << 32) + lower;
+    aParam = ((TUint64)upper << 32) + lower;
     }
 inline void EglRFC::GetEGLBoolean( EGLBoolean& aParam, TInt aIndex )
 	{

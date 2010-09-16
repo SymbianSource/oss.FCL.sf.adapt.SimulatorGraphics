@@ -27,6 +27,7 @@
     #include <EGL/egl.h>
 #else
     #include "EGL/egl.h"
+    #include "EGL/eglext.h"
 #endif
 
 #ifdef __SYMBIAN32__
