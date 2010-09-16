@@ -15,17 +15,19 @@
 
 set(WRAPPER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(WRAPPER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
-set(SERIALIZER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../platsim_graphics/serialiser/inc)
-set(SERIALIZER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../platsim_graphics/serialiser/src)
+set(SERIALIZER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../guestrendering/vghwserialiser/inc)
+set(SERIALIZER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../guestrendering/vghwserialiser/src)
 set(SERIALIZATION_COMMON_INC ${CMAKE_CURRENT_SOURCE_DIR}/../../inc)
-set(PLATSIM_VIDEODRIVER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../platsim_graphics/platsimvideodriver/commoninc)
+# For guestvideodriverinterfaceconstants.h file
+set(VIDEODRIVER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(HOSTTHREADADAPTER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../hostsupport/hostthreadadapter/inc)
 
 set(WRAPPER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
 if(WIN32)
 	message("*** KhronosAPIWrapper Win32")
 	set(WRAPPER_SSE_FLAGS "/arch:SSE2")
-	set(WRAPPER_PLATFORM_LINK_LIBRARIES libEGL libOpenVG libGLESv1 hostthreadadapter)
+	set(WRAPPER_PLATFORM_LINK_LIBRARIES libEGL libOpenVG libGLESv1)
 	set(WRAPPER_PLATFORM_SOURCE_DIR "win32")
 else(WIN32)
 	set(WRAPPER_SSE_FLAGS "-msse2 -mfpmath=sse -march=pentium4")
@@ -69,9 +71,10 @@ include_directories(
   ${WRAPPER_INC_DIR}
   ${SERIALIZER_INC_DIR}
   ${KHRONOS_API_INC}
-  ${PLATSIM_VIDEODRIVER_INC_DIR}
+  ${VIDEODRIVER_INC_DIR}
   ${COMMON_INC_DIR}
   ${SERIALIZATION_COMMON_INC}
+  ${HOSTTHREADADAPTER_INC_DIR}
   )
 
 link_directories(${WRAPPER_LIBS_DIR} ${GLOBAL_LIB_DIR})
@@ -80,4 +83,4 @@ add_definitions(-DKHRONOSAPIWRAPPER_EXPORTS)
 
 add_library(KhronosAPIWrapper SHARED ${WRAPPER_SRC_FILES})
 
-target_link_libraries(KhronosAPIWrapper ${WRAPPER_PLATFORM_LINK_LIBRARIES})
+target_link_libraries(KhronosAPIWrapper hostthreadadapter ${WRAPPER_PLATFORM_LINK_LIBRARIES})

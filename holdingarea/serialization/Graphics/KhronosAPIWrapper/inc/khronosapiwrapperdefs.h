@@ -16,7 +16,7 @@
 #ifndef KHRONOSAPIWRAPPERDEFS_H
 #define KHRONOSAPIWRAPPERDEFS_H
 
-#include "VirtualVideoInterfaceConstants.h"
+#include "guestvideodriverinterfaceconstants.h"
 
 const int KMaxStackSize( VVI_PARAMETERS_INPUT_MEMORY_SIZE );//16Mb
 

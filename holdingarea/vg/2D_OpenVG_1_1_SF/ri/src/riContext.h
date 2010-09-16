@@ -62,10 +62,6 @@
 #include "riArray.h"
 #endif
 
-#ifndef __RIJIT_H
-#include "riJIT.h"
-#endif
-
 #ifndef __SFDYNAMICBLITTER_H
 #   include "sfDynamicBlitter.h"
 #endif

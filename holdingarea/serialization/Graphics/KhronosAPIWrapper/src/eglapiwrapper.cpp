@@ -1253,12 +1253,12 @@ int EGLAPIWrapper::DispatchRequest( unsigned long aCode )
             ret = eglCopyBuffers();
             break;
         }
-        case EglRFC::EeglPlatsimSetSurfaceParams:
+        case EglRFC::EeglSimulatorSetSurfaceParams:
         {
             ret = eglPlatsimSetSurfaceParams();
             break;
         }
-		case EglRFC::EeglPlatsimCopyImageData:
+		case EglRFC::EeglSimulatorCopyImageData:
         {
             ret = eglPlatsimCopyImageData();
             break;
