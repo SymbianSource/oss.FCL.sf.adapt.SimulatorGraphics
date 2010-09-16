@@ -13,7 +13,7 @@
 // Description:
 // Cross platform threading support library
 
-#include "platformthreading.h"
+#include "hostthreadadapter.h"
 
 #ifdef WIN32
 #include <windows.h>
