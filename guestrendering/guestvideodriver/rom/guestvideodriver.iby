@@ -19,7 +19,9 @@
 
 file=ABI_DIR\BUILD_DIR\guestvideohwapi.dll                SHARED_LIB_DIR\guestvideohwapi.dll
 
+#ifdef FAISALMEMON_S4_SGIMAGE
 extension[VARID]=KERNEL_DIR\BUILD_DIR\reqhandlerextension.dll   \sys\bin\reqhandlerextension.dll
+#endif
 device[VARID]=KERNEL_DIR\BUILD_DIR\guestvideohw.ldd         \sys\bin\guestvideohw.ldd
 
 #endif // GUESTVIDEODRIVER_IBY

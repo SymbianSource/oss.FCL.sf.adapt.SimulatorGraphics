@@ -2,3 +2,5 @@ holdingarea/build_vs200*
 holdingarea/bin/
 holdingarea/lib/
 holdingarea/vg/bin
+holdingarea/vg/2D_OpenVG_1_1_SF/ri/src/sfGammaLUT.h
+holdingarea/vg/2D_OpenVG_1_1_SF/ri/src/sfAlphaRcp.h

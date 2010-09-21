@@ -17,7 +17,8 @@
 #define PLATSIMVGHWUTILS_IBY
 
 
-file=ABI_DIR\BUILD_DIR\vghwutils.dll                SHARED_LIB_DIR\vghwutils.dll
+file=ABI_DIR\BUILD_DIR\vghwutils.dll           \sys\bin\vghwutils.dll
+
 
 #endif // PLATSIMVGHWUTILS_IBY
 
