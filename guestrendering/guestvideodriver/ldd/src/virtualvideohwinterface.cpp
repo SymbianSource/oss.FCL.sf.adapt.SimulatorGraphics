@@ -315,7 +315,7 @@ void DVirtualVideoHwInterface::SetRegisterValue(
         }
     }
 
-EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetSurfaceBase()
+EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetSurfaceBufferBase()
 	{
 	TPhysAddr ret = 0;
 	if( iVideoRamBasePhys != 0 )

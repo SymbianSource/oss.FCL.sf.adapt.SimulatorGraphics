@@ -33,15 +33,8 @@ OS_LAYER_ESTLIB_SYSTEMINCLUDE
 USERINCLUDE     ../inc
 USERINCLUDE     ../../commoninc
 
-
-// This is a co-dependency between adaptation layer packages.  This needs
-// to be refactored in qemu to be a OS level export
-USERINCLUDE	../../../../../qemu/baseport/syborg/specific
-
-// There is a weird depedency here to satisfy syborg to get to the flexible
-// memory model for its syborg.h header
-SYSTEMINCLUDE   /epoc32/include/platform/memmodel/epoc/multiple/arm
-SYSTEMINCLUDE   /epoc32/include/platform/memmodel/epoc/moving
+#include <../../../../../../adaptation/qemu/baseport/syborg/variant.mmh>
+USERINCLUDE ../../../../../../adaptation/qemu/baseport/syborg/specific
 
 SYSTEMINCLUDE   /epoc32/include/drivers
 

@@ -1085,7 +1085,7 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface AFTER VGHWUtils::MapToHWAddress");
 
 	TUint32 surfaceBufferBaseAddress(0);
-	(void)CVghwUtils::GetSurfaceBufferBaseAddress(frameBufferBaseAddress);
+	(void)CVghwUtils::GetSurfaceBufferBaseAddress(surfaceBufferBaseAddress);
 	EGL_TRACE("CGuestEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
 
     /* Store the pointer to the pixel data */
