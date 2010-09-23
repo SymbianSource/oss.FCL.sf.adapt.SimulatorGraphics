@@ -18,6 +18,5 @@
 
 file=ABI_DIR\BUILD_DIR\guestopenvg.dll   sys\bin\libopenvg.dll
 file=ABI_DIR\BUILD_DIR\guestopenvgu.dll  sys\bin\libopenvgu.dll
-file=ABI_DIR\BUILD_DIR\vghwutils.dll  sys\bin\vghwutils.dll
 file=ABI_DIR\BUILD_DIR\vghwserialiser.dll sys\bin\vghwserialiser.dll
 #endif
