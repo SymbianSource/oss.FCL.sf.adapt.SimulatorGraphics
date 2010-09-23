@@ -50,7 +50,7 @@ const TLinAddr KRegisterOffsets[] =
     VVI_R_INPUT_BUFFER_MAX_TAIL,
     VVI_R_REQUEST_ID,
 	VVI_R_SHARED_CMD_MEMORY_BASE,
-	VVI_R_SHARED_FRAMEBUFFER_MEMORY_BASE
+	VVI_R_SHARED_SURFACEBUFFER_MEMORY_BASE
     };
 #define ASSERT_PANIC(c,p) __ASSERT_DEBUG(c,Kern::PanicCurrentThread(KVirtualVideoHwInterfacePanic,p));
 
@@ -81,7 +81,7 @@ DVirtualVideoHwInterface::DVirtualVideoHwInterface()
 	// Reserve a contiguous memory chunk for graphics usage
 	TUint32 ramSize = VVI_PARAMETERS_INPUT_MEMORY_SIZE +
 						VVI_PARAMETERS_OUTPUT_MEMORY_SIZE + 
-						VVI_FRAMEBUFFER_MEMORY_SIZE;
+						VVI_SURFACEBUFFER_MEMORY_SIZE;
 	TInt r = Epoc::AllocPhysicalRam( ramSize, iVideoRamBasePhys );
     VVHW_TRACE("DVirtualVideoHwInterface::DVirtualVideoHwInterface() AllocPhysicalRam %d", r);
 	if (r != KErrNone)
@@ -90,7 +90,7 @@ DVirtualVideoHwInterface::DVirtualVideoHwInterface()
 		Kern::Fault("DVirtualVideoHwInterface Allocate Ram %d",r);
 		}
  	SetSharedCmdMemBase( iVideoRamBasePhys + VVI_PARAMETERS_INPUT_BASE_ADDRESS );
-	SetSharedFramebufferMemBase( iVideoRamBasePhys + VVI_FRAMEBUFFER_BASE_ADDRESS );
+	SetSharedSurfacebufferMemBase( iVideoRamBasePhys + VVI_SURFACEBUFFER_BASE_ADDRESS );
 
 #endif // PLATSIM_CONFIG
     VVHW_TRACE("DVirtualVideoHwInterface::DVirtualVideoHwInterface()<");
@@ -258,10 +258,10 @@ void DVirtualVideoHwInterface::SetSharedCmdMemBase( TUint32 aPhysicalAddress )
     SetRegisterValue( ERegSharedCmdMemBase, aPhysicalAddress );
     }
 
-void DVirtualVideoHwInterface::SetSharedFramebufferMemBase( TUint32 aPhysicalAddress )
+void DVirtualVideoHwInterface::SetSharedSurfacebufferMemBase( TUint32 aPhysicalAddress )
     {
-    VVHW_TRACE("DVirtualVideoHwInterface::SetSharedFramebufferMemBase 0x%08x", aPhysicalAddress);
-    SetRegisterValue( ERegSharedFramebufferMemBase, aPhysicalAddress );
+    VVHW_TRACE("DVirtualVideoHwInterface::SetSharedSurfacebufferMemBase 0x%08x", aPhysicalAddress);
+    SetRegisterValue( ERegSharedSurfacebufferMemBase, aPhysicalAddress );
     }
 
 // -----------------------------------------------------------------------------
@@ -315,12 +315,12 @@ void DVirtualVideoHwInterface::SetRegisterValue(
         }
     }
 
-EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetFrameBase()
+EXPORT_C TPhysAddr  DVirtualVideoHwInterface::GetSurfaceBase()
 	{
 	TPhysAddr ret = 0;
 	if( iVideoRamBasePhys != 0 )
 		{
-		ret = iVideoRamBasePhys + VVI_FRAMEBUFFER_BASE_ADDRESS;
+		ret = iVideoRamBasePhys + VVI_SURFACEBUFFER_BASE_ADDRESS;
 		}
 	return ret;
     }

@@ -223,13 +223,13 @@ EXPORT_C TInt RGuestVideoDriver::MapToHWAddress( const TInt aChunkHandle, TUint3
     }
 
 // -----------------------------------------------------------------------------
-// RGuestVideDriver::GetFrameBufferBaseAddress
+// RGuestVideDriver::GetSurfaceBufferBaseAddress
 // -----------------------------------------------------------------------------
 //
-EXPORT_C TInt RGuestVideoDriver::GetFrameBufferBaseAddress( TUint32& aFrameBufferBaseAddress )
+EXPORT_C TInt RGuestVideoDriver::GetSurfaceBufferBaseAddress( TUint32& aSurfaceBufferBaseAddress )
     {
-    TPckg<TUint32> address( aFrameBufferBaseAddress );
-    return DoControl( GuestVideoDriver::ERequestFrameBaseAddress, (TAny*)&address );
+    TPckg<TUint32> address( aSurfaceBufferBaseAddress );
+    return DoControl( GuestVideoDriver::ERequestSurfaceBaseAddress, (TAny*)&address );
     }
 
 // -----------------------------------------------------------------------------

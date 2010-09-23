@@ -1089,8 +1089,8 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk->Base() + offsetToFirstBuffer;
     aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk->Base() + offsetToSecondBuffer;
 
-    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) - VVI_FRAMEBUFFER_BASE_ADDRESS;
-    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - VVI_FRAMEBUFFER_BASE_ADDRESS;
+    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) - VVI_SURFACEBUFFER_BASE_ADDRESS;
+    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - VVI_SURFACEBUFFER_BASE_ADDRESS;
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface %u %x %x %x %x",chunkHWBase, offsetToFirstBuffer, offsetToSecondBuffer,
     		aSurfaceInfo.iBuffer0Index,
     		aSurfaceInfo.iBuffer1Index);

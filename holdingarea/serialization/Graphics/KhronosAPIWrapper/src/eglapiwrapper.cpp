@@ -34,11 +34,11 @@ EGLAPIWrapper::EGLAPIWrapper( RemoteFunctionCallData& currentFunctionCallData,
 	APIWrapperStack* stack, 
 	void* result, 
 	MGraphicsVHWCallback* serviceIf, 
-	void* framebuffer,
+	void* surfacebuffer,
 	KhronosAPIWrapper* aAPIWrapper ):
 	APIWrapper( currentFunctionCallData, stack, result, serviceIf ),
 	m_currentFunctionCall( m_currentFunctionCallData ),
-	m_frameBuffer( framebuffer ),
+	m_surfaceBuffer( surfacebuffer ),
 	m_APIWrapper( aAPIWrapper )
 {
     TRACE("EGLAPIWrapper::EGLAPIWrapper()\n");
@@ -838,8 +838,8 @@ int EGLAPIWrapper::eglPlatsimSetSurfaceParams()
     m_currentFunctionCall.GetEGLint( buffer0Offset, 6 );
     m_currentFunctionCall.GetEGLint( buffer1Offset, 7 );
 
-    void* buffer0 = (void*)((EGLint)m_frameBuffer + buffer0Offset);
-    void* buffer1 = (void*)((EGLint)m_frameBuffer + buffer1Offset);
+    void* buffer0 = (void*)((EGLint)m_surfaceBuffer + buffer0Offset);
+    void* buffer1 = (void*)((EGLint)m_surfaceBuffer + buffer1Offset);
 
 	::eglPlatsimSetSurfaceParams(display, surface, width, height, stride, buffer0, buffer1);
 	m_currentFunctionCall.SetReturnValue( 0 );

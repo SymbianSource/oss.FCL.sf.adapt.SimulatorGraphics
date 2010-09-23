@@ -800,19 +800,19 @@ EGLContext TEglThreadState::GlesEglContext()
 	}
 
 // -----------------------------------------------------------------------------
-// Use driver to discover base address of the frame memory.
+// Use driver to discover base address of the surface memory.
 // -----------------------------------------------------------------------------
 //	  
-EXPORT_C TInt CVghwUtils::GetFrameBufferBaseAddress( TUint32& aHWAddress )
+EXPORT_C TInt CVghwUtils::GetSurfaceBufferBaseAddress( TUint32& aHWAddress )
 	{
-	UTIL_TRACE("TVghwUtils::GetFrameBufferBaseAddress");
+	UTIL_TRACE("CVghwUtils::GetSurfaceBufferBaseAddress");
 	if (!iInitialized || !iDriver)
 		{
-		UTIL_TRACE("CVghwUtils::GetFrameBufferBaseAddress called before initialised VghwUtils: iInitialized=%d, iDriver=0x%x", iInitialized, iDriver);
+		UTIL_TRACE("CVghwUtils::GetSurfaceBufferBaseAddress called before initialised VghwUtils: iInitialized=%d, iDriver=0x%x", iInitialized, iDriver);
 		InitStatics();
 		}
 	VGHWPANIC_ASSERT(iInitialized && iDriver, EVghwPanicGraphicsDriverNotOpen);
-	return iDriver->GetFrameBufferBaseAddress( aHWAddress );
+	return iDriver->GetSurfaceBufferBaseAddress( aHWAddress );
 	}
 
 #ifdef _DEBUG

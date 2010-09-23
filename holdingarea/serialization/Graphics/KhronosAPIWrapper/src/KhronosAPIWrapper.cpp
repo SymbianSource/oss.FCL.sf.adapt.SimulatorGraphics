@@ -303,7 +303,7 @@ uint32_t KhronosAPIWrapper::InputBufferWriteCount()
 }
 
 
-KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* framebuffer, void* inputdata, void* outputdata )
+KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer, void* inputdata, void* outputdata )
 {
     TRACE("KhronosAPIWrapper::KhronosAPIWrapper()\n");
 	m_lastVgError = VG_NO_ERROR;
@@ -313,7 +313,7 @@ KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* fr
 	m_lastThreadId = 0;
     m_currentInput = inputdata;
     m_currentResult = outputdata;
-    m_frameBuffer = framebuffer;
+    m_surfaceBuffer = surfacebuffer;
     m_exit = false;
     iServiceIf = aServiceIf;
     m_initDone = false;
@@ -333,7 +333,7 @@ KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* fr
 
 	m_OpenVGWrapper = new OpenVGAPIWrapper( *iRFCData, iStack, m_currentResult, iServiceIf, this );
 	m_OGLESWrapper = new OGLES11Wrapper(*iRFCData, iStack, m_currentResult, iServiceIf);
-	m_EGLWrapper = new EGLAPIWrapper( *iRFCData, iStack, m_currentResult, iServiceIf, m_frameBuffer, this );
+	m_EGLWrapper = new EGLAPIWrapper( *iRFCData, iStack, m_currentResult, iServiceIf, m_surfaceBuffer, this );
 	m_DriverAPIWrapper = new DriverAPIWrapper( *iRFCData, iStack, m_currentResult, iServiceIf, this );
 
 #ifdef KHRONOS_API_W_MULTITHREAD

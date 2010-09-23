@@ -79,7 +79,7 @@ public:
     EGLAPIWrapper( RemoteFunctionCallData& currentFunctionCallData, APIWrapperStack* stack,
 	        void* result,
 			MGraphicsVHWCallback* serviceIf,
-			void* framebuffer, KhronosAPIWrapper* aAPIWrapper );
+			void* surfacebuffer, KhronosAPIWrapper* aAPIWrapper );
 
     int WriteReply();
     int DispatchRequest( unsigned long aCode );
@@ -131,7 +131,7 @@ private://Meta calls
 private:
 	int m_lastEglError;
 	EglRFC m_currentFunctionCall;
-	void* m_frameBuffer;
+	void* m_surfaceBuffer;
 	TSurfaceMap m_windowMap;
 	KhronosAPIWrapper* m_APIWrapper;
 };

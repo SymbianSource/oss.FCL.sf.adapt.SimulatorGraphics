@@ -236,10 +236,10 @@ TInt DVirtualVideoHwChannel::DoControl(
                 }
             break;
             }
-        case ERequestFrameBaseAddress:
+        case ERequestSurfaceBufferBaseAddress:
             {
             TPhysAddr physicalAddress(0);
-			physicalAddress = iHwInterface.GetFrameBase();
+			physicalAddress = iHwInterface.GetSurfaceBufferBase();
             TPckgC<TPhysAddr> address(physicalAddress);
             err = Kern::ThreadDesWrite(aUserThread, a1, address, 0, 0, aUserThread);
             break;
