@@ -199,10 +199,98 @@ ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
         }
 	}
 
-EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState&, int, int, void*, const int*)
+EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLConfig aConfig, 
+		EGLNativeWindowType aNativeWindow, const EGLint *aAttribList)
 	{
-	return 0; // stub code
+
+	// FAISALMEMON NEW
+	/**
+	 * pseudo code:
+	 * 
+	 * surfacemamanger.
+	 * 	open()
+	 *   createsurface(2 buffers, width, height, pixel format,...)
+	 *   map surface -> get chunk
+	 * serialization.eglCreateWindowSurface(..)
+	 * eglinternalfunctioncreatesurface(chunk, width, height, ..)
+	 * egl.... setwindowsurfacebuffers(...)
+	 * surfaceupdatesession.connect()
+	 * wnd.setbackgroundsurface()
+	 */
+	EGL_TRACE( "CGuestEGL::eglCreateWindowSurface");
+	EGL_TRACE_ATTRIB_LIST(aAttribList);
+
+	RWindow* window;
+	window = (RWindow*) aNativeWindow;
+	TSize size = window->Size();
+	
+	EGLSurface newSurfaceId = EGL_NO_SURFACE;
+	TSurfaceInfo* surfaceInfo = NULL;
+	EGLint error = EGL_BAD_DISPLAY;
+	TSurfaceId surfaceId;
+
+    RSurfaceManager::TSurfaceCreationAttributesBuf buf;
+    RSurfaceManager::TSurfaceCreationAttributes& attributes = buf();
+
+    attributes.iSize = size;
+    attributes.iBuffers = 2;           // REQUIREMENT because host side assumes exactly two buffers
+    attributes.iPixelFormat = EUidPixelFormatARGB_8888;  // this is a guess; either query or hardcode to match syborg
+    attributes.iStride = 4 * size.iWidth;          // Number of bytes between start of one line and start of next
+    attributes.iOffsetToFirstBuffer = 0;
+    attributes.iAlignment = EPageAligned;                      // alignment, 1,2,4,8,16,32,64 byte aligned or EPageAligned
+    attributes.iHintCount=0;  
+    attributes.iSurfaceHints = NULL;
+    attributes.iOffsetBetweenBuffers = 0;
+    attributes.iContiguous = ETrue;
+    attributes.iCacheAttrib = RSurfaceManager::ENotCached;      // Cache attributes
+
+	iDisplayMapLock.WriteLock();
+	CEglDisplayInfo** pDispInfo;
+	pDispInfo = iDisplayMap.Find(aDisplay);
+	
+	if (pDispInfo && *pDispInfo)
+			{
+			RHeap* threadHeap = CVghwUtils::SwitchToVghwHeap();
+	
+			surfaceInfo = new TSurfaceInfo();
+			if (surfaceInfo)
+				{
+				surfaceInfo->iConfigId = aConfig;
+				surfaceInfo->iSurfaceManager.Open();
+				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceId);
+				(*pDispInfo)->iSurfaceMap.Insert(surfaceId, surfaceInfo);
+				(void) surfaceInfo->iSurfaceManager.MapSurface(surfaceId, surfaceInfo->iChunk);
+				RemoteFunctionCallData rfcdata;
+				EglRFC eglApiData( rfcdata );
+				eglApiData.Init( EglRFC::EeglCreateWindowSurface);
+				eglApiData.AppendEGLDisplay(aDisplay);
+				eglApiData.AppendEGLConfig(aConfig);
+				eglApiData.AppendEGLNativeWindowType(aNativeWindow);				
+				eglApiData.AppendEGLintVector(aAttribList, TAttribUtils::AttribListLength(aAttribList) );
+				eglApiData.AppendEGLint(size.iWidth);
+				eglApiData.AppendEGLint(size.iHeight);
+				eglApiData.AppendEGLint(1000); // horizontalPitch arbitrary
+				eglApiData.AppendEGLint(1000); // verticalPitch arbitrary
+				surfaceInfo->iHostSurfaceId = aThreadState.ExecEglSurfaceCmd(eglApiData); // todo check if is valid
+				EglInternalFunction_CreateSurface(aThreadState, aDisplay, surfaceInfo->iHostSurfaceId, aConfig, window, *surfaceInfo);
+				surfaceInfo->iSurfaceUpdateSession.Connect();
+				TSurfaceConfiguration surfaceConfig;
+				surfaceConfig.SetSurfaceId(surfaceId);
+				window->SetBackgroundSurface(surfaceConfig, ETrue);
+				}
+			CVghwUtils::SwitchFromVghwHeap(threadHeap);
+			}
+	
+		iDisplayMapLock.Unlock();
+		
+	aThreadState.SetEglError(EGL_SUCCESS);
+
+	return surfaceInfo->iHostSurfaceId;
+	
+	// FAISALMEMON END OF NEW
+	
 	}
+
 const char* CGuestEGL::eglQueryString(EGLDisplay aDisplay, EGLint aName)
 	{
 	return NULL; // stub code
@@ -902,6 +990,15 @@ TBool CGuestEGL::IsDisplayInitialized(EGLDisplay aDisplay)
 
 EGLBoolean CGuestEGL::eglSwapBuffers(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLSurface aSurface)
     {
+	/**
+	 * PSEUDO CODE
+	 * serialization.eglSwapBuffers
+	 * (maybe finish currently bound api)
+	 * surfaceupdatesession.notifywhenavailable
+	 *   .whendisplayed()  (alternative choice from above)
+	 * surfaceupdatesession.submitupdated()
+	 * user:waitforrequestl
+	 */
     EglInternalFunction_SwapWindowSurface(aThreadState, aDisplay, aSurface);
 
     // ToDo when all surfaces are recorded in client validate BEFORE sending cmd to host
@@ -1080,7 +1177,7 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     // FAISALMEMON END OF STUB CODE
     
     TUint32 chunkHWBase = 0;
-    (void)CVghwUtils::MapToHWAddress(aSurfaceInfo.iChunk->Handle(), chunkHWBase);
+    (void)CVghwUtils::MapToHWAddress(aSurfaceInfo.iChunk.Handle(), chunkHWBase);
     // FAISALMEMON write code to handle errors in the above function
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface AFTER VGHWUtils::MapToHWAddress");
 
@@ -1089,8 +1186,8 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
 	EGL_TRACE("CPlatsimEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
 
     /* Store the pointer to the pixel data */
-    aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk->Base() + offsetToFirstBuffer;
-    aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk->Base() + offsetToSecondBuffer;
+    aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk.Base() + offsetToFirstBuffer;
+    aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk.Base() + offsetToSecondBuffer;
 
     aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) -  frameBufferBaseAddress;
     aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - frameBufferBaseAddress;

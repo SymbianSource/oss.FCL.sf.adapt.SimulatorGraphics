@@ -52,12 +52,14 @@ struct TSurfaceInfo
     EGLSurface              iHostSurfaceId;
 	// Note: most member data is only used by Window surfaces
     TSurfaceId              iSurfaceId;        /*<! Target system surface allocated by EGL.                                              */
-    // FAISALMEMON HOLE 0                                                   
+    // FAISALMEMON HOLE 0
+    RSurfaceManager			iSurfaceManager;
+    RSurfaceUpdateSession	iSurfaceUpdateSession;
     void*                   iBuffer0;          /*<! Pointer to the first buffer pixels                                                   */
     void*                   iBuffer1;          /*<! Pointer to the second buffer pixels                                                  */
     TInt                    iBuffer0Index;          /*<! Pointer to the first buffer pixels                                                   */
     TInt                    iBuffer1Index;          /*<! Pointer to the second buffer pixels                                                  */
-    RChunk*                 iChunk;            /*<! chunk of the backbuffer surface memory                                               */
+    RChunk                  iChunk;            /*<! chunk of the backbuffer surface memory                                               */
     // FAISALMEMON HOLE 1
     RWindow*                iNativeWindow;
     EGLint                  iRedBits;
