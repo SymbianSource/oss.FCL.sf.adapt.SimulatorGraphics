@@ -122,7 +122,6 @@ ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
         return NULL;
         }
     else if (strncmp("EGLImageTargetTexture2DOES", aName, strlen("EGLImageTargetTexture2DOES")) == 0)
-None
         {
         return NULL;
         }
@@ -1085,12 +1084,16 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     // FAISALMEMON write code to handle errors in the above function
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface AFTER VGHWUtils::MapToHWAddress");
 
+	TUint32 surfaceBufferBaseAddress(0);
+	(void)CVghwUtils::GetSurfaceBufferBaseAddress(frameBufferBaseAddress);
+	EGL_TRACE("CGuestEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
+
     /* Store the pointer to the pixel data */
     aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk->Base() + offsetToFirstBuffer;
     aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk->Base() + offsetToSecondBuffer;
 
-    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) - VVI_SURFACEBUFFER_BASE_ADDRESS;
-    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - VVI_SURFACEBUFFER_BASE_ADDRESS;
+    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) -  surfaceBufferBaseAddress;
+    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - surfaceBufferBaseAddress;
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface %u %x %x %x %x",chunkHWBase, offsetToFirstBuffer, offsetToSecondBuffer,
     		aSurfaceInfo.iBuffer0Index,
     		aSurfaceInfo.iBuffer1Index);

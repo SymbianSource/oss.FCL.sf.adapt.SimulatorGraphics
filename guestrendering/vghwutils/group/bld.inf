@@ -17,6 +17,7 @@ PRJ_PLATFORMS
 DEFAULT -WINSCW
 
 PRJ_EXPORTS
+../rom/vghwutils.iby           /epoc32/rom/include/vghwutils.iby
 
 PRJ_MMPFILES
 vghwutils.mmp
