@@ -130,7 +130,7 @@ public:
 	IMPORT_C static void DestroyStatics();
 
 	IMPORT_C static TInt MapToHWAddress(const TInt aChunkHandle, TUint32& aHWAddress);
-	IMPORT_C static TInt GetFrameBufferBaseAddress(TUint32& aHWAddress);
+	IMPORT_C static TInt GetSurfaceBufferBaseAddress(TUint32& aHWAddress);
 	IMPORT_C static TInt EglGetSgHandles(const TUint64 aId, TUint64 *aSgHandles);
 
 	// VG Memory Pool APIs (One heap is created for the process, for use by all Simulator Graphics DLLs)

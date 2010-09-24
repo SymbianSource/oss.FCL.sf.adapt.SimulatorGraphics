@@ -1205,16 +1205,16 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     // FAISALMEMON write code to handle errors in the above function
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface AFTER VGHWUtils::MapToHWAddress");
 
-	TUint32 frameBufferBaseAddress(0);
-	(void)CVghwUtils::GetFrameBufferBaseAddress(frameBufferBaseAddress);
+	TUint32 surfaceBufferBaseAddress(0);
+	(void)CVghwUtils::GetSurfaceBufferBaseAddress(surfaceBufferBaseAddress);
 	EGL_TRACE("CPlatsimEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
 
     /* Store the pointer to the pixel data */
     aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk.Base() + offsetToFirstBuffer;
     aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk.Base() + offsetToSecondBuffer;
 
-    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) -  frameBufferBaseAddress;
-    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - frameBufferBaseAddress;
+    aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) -  surfaceBufferBaseAddress;
+    aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - surfaceBufferBaseAddress;
     
     aSurfaceInfo.iFrontBuffer = 0; // Assume host peer also starts rendering buffer 0 as its front buffer
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface %u %x %x %x %x",chunkHWBase, offsetToFirstBuffer, offsetToSecondBuffer,

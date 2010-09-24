@@ -52,7 +52,7 @@ class KHRONOSAPIWRAPPER_API KhronosAPIWrapper: private MRequestBufferBookKeeping
 {
     public:
 
-        KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* framebuffer,
+        KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer,
             void* inputdata, void* outputdata );
         ~KhronosAPIWrapper();
 
@@ -99,7 +99,7 @@ class KHRONOSAPIWRAPPER_API KhronosAPIWrapper: private MRequestBufferBookKeeping
         Psu::PLATFORM_THREAD_T m_threadHandle;
         Psu::PLATFORM_SEMAPHORE_T m_SemapHandle;
         bool m_exit;
-        void* m_frameBuffer;
+        void* m_surfaceBuffer;
 
 //Input buffer
         Psu::PLATFORM_MUTEX_T m_InputBufferMutex;

@@ -96,7 +96,7 @@ int DriverAPIWrapper::CreatePoolContext()
 	}
 
 
-    /* get an appropriate EGL frame buffer configuration */
+    /* get an appropriate EGL surface buffer configuration */
 	if( ::eglChooseConfig(	display,
 							getColorAttributes( EUidPixelFormatXRGB_8888, red, green, blue, alpha ),
 							&config,

@@ -33,15 +33,11 @@ OS_LAYER_ESTLIB_SYSTEMINCLUDE
 USERINCLUDE     ../inc
 USERINCLUDE     ../../commoninc
 
-
-// This is a co-dependency between adaptation layer packages.  This needs
-// to be refactored in qemu to be a OS level export
-USERINCLUDE	../../../../../qemu/baseport/syborg/specific
-
-// There is a weird depedency here to satisfy syborg to get to the flexible
-// memory model for its syborg.h header
-SYSTEMINCLUDE   /epoc32/include/platform/memmodel/epoc/multiple/arm
-SYSTEMINCLUDE   /epoc32/include/platform/memmodel/epoc/moving
+// NOTE the old name was "adaptation".  The new layer name is "adapt".
+// If your repository is off ...adaptation, re-sync it from its new home
+// for example http://developer.symbian.org/oss/FCL/sf/adapt/qemu
+#include <../../../../../../adapt/qemu/baseport/syborg/variant.mmh>
+USERINCLUDE ../../../../../../adapt/qemu/baseport/syborg/specific
 
 SYSTEMINCLUDE   /epoc32/include/drivers
 
