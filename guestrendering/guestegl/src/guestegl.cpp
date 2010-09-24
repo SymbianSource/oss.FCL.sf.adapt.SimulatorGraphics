@@ -255,6 +255,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 			surfaceInfo = new TSurfaceInfo();
 			if (surfaceInfo)
 				{
+				surfaceInfo->iNativeWindow = (RWindow*)aNativeWindow;
 				surfaceInfo->iConfigId = aConfig;
 				surfaceInfo->iSurfaceManager.Open();
 				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceId);
@@ -999,22 +1000,47 @@ EGLBoolean CGuestEGL::eglSwapBuffers(TEglThreadState& aThreadState, EGLDisplay a
 	 * surfaceupdatesession.submitupdated()
 	 * user:waitforrequestl
 	 */
-    EglInternalFunction_SwapWindowSurface(aThreadState, aDisplay, aSurface);
-
-    // ToDo when all surfaces are recorded in client validate BEFORE sending cmd to host
+	
+	RHeap* threadHeap = CVghwUtils::SwitchToVghwHeap();
     TSurfaceInfo* surfaceInfo = EglInternalFunction_GetPlatformSurface( aDisplay, aSurface );
-    EGL_CHECK_ERROR( surfaceInfo, EGL_BAD_SURFACE, EGL_FALSE );
+	RemoteFunctionCallData rfcdata;
+	EglRFC eglApiData( rfcdata );
+	eglApiData.Init(EglRFC::EeglSwapBuffers);
+	TSize size = surfaceInfo->iNativeWindow->Size();
+	
+	eglApiData.AppendEGLDisplay(aDisplay);
+	eglApiData.AppendEGLSurface(surfaceInfo->iHostSurfaceId);
+	eglApiData.AppendEGLint(size.iWidth);
+	eglApiData.AppendEGLint(size.iHeight);
 
-    //Check if surface size has changed
-    TSize size = surfaceInfo->iNativeWindow->Size();
-
+	EGLBoolean result = aThreadState.ExecEglBooleanCmd(eglApiData);
+	TRequestStatus status;
+	TTimeStamp timestampLocalToThread;
+	surfaceInfo->iSurfaceUpdateSession.NotifyWhenDisplayed(status, timestampLocalToThread);
+	surfaceInfo->iSurfaceUpdateSession.SubmitUpdate(surfaceInfo->iNativeWindow->ScreenNumber(),surfaceInfo->iSurfaceId, surfaceInfo->iFrontBuffer);
+	User::WaitForRequest(status);
+	
+	if (surfaceInfo->iFrontBuffer == 0)
+		{
+		surfaceInfo->iFrontBuffer = 1;
+		}
+	else
+		{
+		surfaceInfo->iFrontBuffer = 0;
+		}
+	
     if (size != surfaceInfo->iSize)
         {
 		EGL_TRACE("CGuestEGL::eglSwapBuffers Surface Resized size=%d,%d, surfaceInfo->iSize=%d,%d",
 				size.iHeight, size.iWidth, surfaceInfo->iSize.iHeight, surfaceInfo->iSize.iWidth);
-        return EglInternalFunction_SurfaceResized(aThreadState, *surfaceInfo, aDisplay, aSurface);
+		
+		CVghwUtils::SwitchFromVghwHeap(threadHeap);
+        return EglInternalFunction_SurfaceResized(aThreadState, *surfaceInfo, aDisplay, aSurface); // TODO handling of resize
         }
-    return EGL_TRUE;
+    
+	CVghwUtils::SwitchFromVghwHeap(threadHeap);
+
+	return result;
     }
 
 EGLBoolean CGuestEGL::eglMakeCurrent(TEglThreadState& aThreadState, EGLDisplay aDisplay, EGLSurface aDraw, EGLSurface aRead, EGLContext aContext)
@@ -1191,6 +1217,8 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
 
     aSurfaceInfo.iBuffer0Index = (chunkHWBase + offsetToFirstBuffer) -  frameBufferBaseAddress;
     aSurfaceInfo.iBuffer1Index = (chunkHWBase + offsetToSecondBuffer) - frameBufferBaseAddress;
+    
+    aSurfaceInfo.iFrontBuffer = 0; // Assume host peer also starts rendering buffer 0 as its front buffer
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface %u %x %x %x %x",chunkHWBase, offsetToFirstBuffer, offsetToSecondBuffer,
     		aSurfaceInfo.iBuffer0Index,
     		aSurfaceInfo.iBuffer1Index);

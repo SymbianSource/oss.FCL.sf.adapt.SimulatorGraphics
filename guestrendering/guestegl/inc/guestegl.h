@@ -60,7 +60,7 @@ struct TSurfaceInfo
     TInt                    iBuffer0Index;          /*<! Pointer to the first buffer pixels                                                   */
     TInt                    iBuffer1Index;          /*<! Pointer to the second buffer pixels                                                  */
     RChunk                  iChunk;            /*<! chunk of the backbuffer surface memory                                               */
-    // FAISALMEMON HOLE 1
+    TInt					iFrontBuffer;		// We assume zero based index, 0 -> iBuffer0, 1 -> iBuffer1 should be display
     RWindow*                iNativeWindow;
     EGLint                  iRedBits;
     EGLint                  iGreenBits;
