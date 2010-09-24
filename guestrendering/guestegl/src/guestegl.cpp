@@ -197,6 +197,26 @@ ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
 		{
 		return (ProcPointer)CEglSyncExtension::egl_Private_SignalSyncNOK;
 		}
+	else if (strncmp("eglCreateSyncKHR", aName, strlen("eglCreateSyncKHR")) == 0)
+		{
+		return (ProcPointer)CEglSyncExtension::eglCreateSyncKHR;
+		}
+	else if (strncmp("eglDestroySyncKHR", aName, strlen("eglDestroySyncKHR")) == 0)
+		{
+		return (ProcPointer)CEglSyncExtension::eglDestroySyncKHR;
+		}
+	else if (strncmp("eglClientWaitSyncKHR", aName, strlen("eglClientWaitSyncKHR")) == 0)
+		{
+		return (ProcPointer)CEglSyncExtension::eglClientWaitSyncKHR;
+		}
+	else if (strncmp("eglSignalSyncKHR", aName, strlen("eglSignalSyncKHR")) == 0)
+		{
+		return (ProcPointer)CEglSyncExtension::eglSignalSyncKHR;
+		}
+	else if (strncmp("eglGetSyncAttribKHR", aName, strlen("eglGetSyncAttribKHR")) == 0)
+		{
+		return (ProcPointer)CEglSyncExtension::eglGetSyncAttribKHR;
+		}
     else
         {
         return NULL;
