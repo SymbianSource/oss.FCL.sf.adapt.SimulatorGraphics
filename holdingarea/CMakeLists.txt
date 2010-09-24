@@ -98,9 +98,11 @@ endif(DEV_EXTRAS)
 
 if(WIN32)
     if (PLATSIM_EXTENSIONS)
-        add_subdirectory(serialization/Graphics/KhronosAPIWrapper)	# Platsim serialization
+        add_subdirectory(serialization/Graphics/KhronosAPIWrapper)	# Simulator serialization (host)
         add_dependencies(KhronosAPIWrapper libEGL libGLESv1 libGLESv2 hostthreadadapter)
-        set(ALL_TARGETS libEGL libOpenVG libGLESv1 libGLESv2 hostthreadadapter KhronosAPIWrapper ${DEV_EXTRA_TARGETS})
+		add_subdirectory(syborggraphicswrapper) # Simulator serialization (guest)
+        add_dependencies(syborg-graphicswrapper KhronosAPIWrapper hostthreadadapter)
+        set(ALL_TARGETS libEGL libOpenVG libGLESv1 libGLESv2 hostthreadadapter KhronosAPIWrapper syborg-graphicswrapper ${DEV_EXTRA_TARGETS})
     else(PLATSIM_EXTENSIONS)
         set(ALL_TARGETS libEGL libOpenVG libGLESv1 libGLESv2 ${DEV_EXTRA_TARGETS})
     endif(PLATSIM_EXTENSIONS)
