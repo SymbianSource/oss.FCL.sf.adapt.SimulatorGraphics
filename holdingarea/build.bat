@@ -8,6 +8,7 @@ set PLATSIM_EXTENSIONS=ON
 set VISUAL_STUDIO_VERSION=2005
 set CMAKE_BUILD_TARGET=Release
 set VISUAL_STUDIO_SOLUTION=OFF
+set BUILD=ON
 
 :PARSECOMMANDLINE
 IF '%1'=='/h' goto PRINTUSAGE
@@ -23,6 +24,8 @@ IF '%1'=='/solution' goto ENABLESOLUTION
 IF '%1'=='/SOLUTION' goto ENABLESOLUTION
 IF '%1'=='/debug' goto ENABLEDEBUG
 IF '%1'=='/DEBUG' goto ENABLEDEBUG
+IF '%1'=='/nobuild' goto DISABLEBUILD
+IF '%1'=='/NOBUILD' goto DISABLEBUILD
 
 if "%VISUAL_STUDIO_SOLUTION%"=="ON" (
 	set GENERATOR=Visual Studio 8 2005
@@ -38,6 +41,7 @@ echo PLATSIM_EXTENSIONS    = %PLATSIM_EXTENSIONS%
 echo VISUAL_STUDIO_VERSION = %VISUAL_STUDIO_VERSION%
 echo GENERATOR             = %GENERATOR%
 echo CMAKE_BUILD_TARGET    = %CMAKE_BUILD_TARGET%
+echo BUILD                 = %BUILD%
 echo.
 
 rem Execute
@@ -47,10 +51,12 @@ mkdir build
 cd build
 cmake -DUSE_MINI_EGL:Bool=%USE_MINI_EGL% -DPLATSIM_EXTENSIONS:Bool=%PLATSIM_EXTENSIONS% -DVISUAL_STUDIO_VERSION:String=%VISUAL_STUDIO_VERSION% -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TARGET% -G "%GENERATOR%" ../..
 @echo off
+if "%BUILD%"=="ON" (
 if "%GENERATOR%"=="NMake Makefiles" (
 	echo on
 	nmake
 	@echo off
+)
 )
 @echo off
 cd ..
@@ -67,6 +73,8 @@ echo                         supported versions = 2005, 2008 (default: 2005)
 echo     [/SOLUTION]         just generate VIsual Studio solution files
 echo                             (default: generate NMake makefiles and build)
 echo     [/DEBUG]            configure for debug build (default: release)
+echo     [/NOBUILD]          call cmake but do not call nmake
+echo                             note: has no effect if /SOLUTION is specified
 goto END
 
 :ENABLEMINIEGL
@@ -92,6 +100,11 @@ goto PARSECOMMANDLINE
 
 :ENABLEDEBUG
 set CMAKE_BUILD_TARGET=Debug
+shift
+goto PARSECOMMANDLINE
+
+:DISABLEBUILD
+set BUILD=OFF
 shift
 goto PARSECOMMANDLINE
 
