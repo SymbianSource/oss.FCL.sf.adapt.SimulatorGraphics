@@ -66,7 +66,7 @@ if(WIN32)
 
     set(LIB_TYPE SHARED)
     
-    link_directories(${PROJECT_SOURCE_DIR}/llvm/llvm-2.7/lib)        
+	#link_directories(${PROJECT_SOURCE_DIR}/llvm/llvm-2.7/lib)        
     #if(CMAKE_BUILD_TYPE STREQUAL Release)
     #    link_directories(${PROJECT_SOURCE_DIR}/llvm/llvm-2.7/lib/Release)        
     #else(CMAKE_BUILD_TYPE STREQUAL Release)
