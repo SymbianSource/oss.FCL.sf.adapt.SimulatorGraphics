@@ -193,6 +193,10 @@ ProcPointer CGuestEGL::eglGetProcAddress(const char* aName)
         {
         return NULL;
         }
+	else if (strncmp("Egl_Private_SignalSyncNOK", aName, strlen("Egl_Private_SignalSyncNOK")) = 0)
+		{
+		return (ProcPointer)CEglSyncExtension::egl_Private_SignalSyncNOK;
+		}
     else
         {
         return NULL;
