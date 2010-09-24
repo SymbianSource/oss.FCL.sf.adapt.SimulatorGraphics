@@ -16,6 +16,7 @@
 #ifndef __GUEST__EGL_H
 #define __GUEST__EGL_H
 
+#include <graphics/surfacemanager.h>
 
 // CLASS DECLARATION
 typedef enum

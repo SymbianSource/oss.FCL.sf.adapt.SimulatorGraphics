@@ -224,9 +224,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 	window = (RWindow*) aNativeWindow;
 	TSize size = window->Size();
 	
-	EGLSurface newSurfaceId = EGL_NO_SURFACE;
 	TSurfaceInfo* surfaceInfo = NULL;
-	EGLint error = EGL_BAD_DISPLAY;
 	TSurfaceId surfaceId;
 
     RSurfaceManager::TSurfaceCreationAttributesBuf buf;
@@ -237,7 +235,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
     attributes.iPixelFormat = EUidPixelFormatARGB_8888;  // this is a guess; either query or hardcode to match syborg
     attributes.iStride = 4 * size.iWidth;          // Number of bytes between start of one line and start of next
     attributes.iOffsetToFirstBuffer = 0;
-    attributes.iAlignment = EPageAligned;                      // alignment, 1,2,4,8,16,32,64 byte aligned or EPageAligned
+    attributes.iAlignment = RSurfaceManager::EPageAligned;                      // alignment, 1,2,4,8,16,32,64 byte aligned or EPageAligned
     attributes.iHintCount=0;  
     attributes.iSurfaceHints = NULL;
     attributes.iOffsetBetweenBuffers = 0;
@@ -259,7 +257,6 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				surfaceInfo->iConfigId = aConfig;
 				surfaceInfo->iSurfaceManager.Open();
 				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceId);
-				(*pDispInfo)->iSurfaceMap.Insert(surfaceId, surfaceInfo);
 				(void) surfaceInfo->iSurfaceManager.MapSurface(surfaceId, surfaceInfo->iChunk);
 				RemoteFunctionCallData rfcdata;
 				EglRFC eglApiData( rfcdata );
@@ -273,6 +270,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				eglApiData.AppendEGLint(1000); // horizontalPitch arbitrary
 				eglApiData.AppendEGLint(1000); // verticalPitch arbitrary
 				surfaceInfo->iHostSurfaceId = aThreadState.ExecEglSurfaceCmd(eglApiData); // todo check if is valid
+				(*pDispInfo)->iSurfaceMap.Insert(surfaceInfo->iHostSurfaceId, surfaceInfo);
 				EglInternalFunction_CreateSurface(aThreadState, aDisplay, surfaceInfo->iHostSurfaceId, aConfig, window, *surfaceInfo);
 				surfaceInfo->iSurfaceUpdateSession.Connect();
 				TSurfaceConfiguration surfaceConfig;
