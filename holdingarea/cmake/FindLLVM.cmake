@@ -44,7 +44,9 @@ if(NOT WIN32)
 	    OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 else(NOT WIN32)
-    # set(LLVM_LFLAGS "-L${PROJECT_SOURCE_DIR}/llvm/llvm-2.7/lib")
+	set(LLVM_LIB_PATH "${PROJECT_SOURCE_DIR}/llvm/llvm-2.7/x86-win32-vs${VISUAL_STUDIO_VERSION}/${CMAKE_BUILD_TYPE}/lib")
+	message("LLVM_LIB_PATH ${LLVM_LIB_PATH}")
+	link_directories(${LLVM_LIB_PATH})
 endif(NOT WIN32)
 
 if(NOT WIN32)
