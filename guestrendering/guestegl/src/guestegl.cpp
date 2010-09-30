@@ -316,7 +316,46 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 
 const char* CGuestEGL::eglQueryString(EGLDisplay aDisplay, EGLint aName)
 	{
-	return NULL; // stub code
+	RemoteFunctionCallData rfcdata;
+	EglRFC eglApiData( rfcdata );
+	eglApiData.Init( EglRFC::EeglQueryString );
+	eglApiData.AppendEGLDisplay(aDisplay);
+	eglApiData.AppendEGLint(aName);
+	TEglThreadState* threadState = CVghwUtils::CreateThreadState();
+	EGLBoolean result = EGL_FALSE;
+	if (threadState)
+		{
+		/*
+		 * This command is pointless at the moment.  We actually want the host
+		 * to return a string, not a boolean.  The serialization interface does
+		 * not currently support the returning of strings from the host side,
+		 * so there is no way to get back the result of the query properly.
+		 * 
+		 * We should improve the guest/host interface to add this support.  Then
+		 * this code can be made "useful".  At the moment, returning true means
+		 * the host knows about the extension and wants to reply with a non-NULL
+		 * string. 
+		 */
+		result = threadState->ExecEglBooleanCmd(eglApiData);
+		if (result == EGL_FALSE)
+			{
+			return NULL;
+			}
+		}
+		
+	switch (aName)
+		{
+		case EGL_CLIENT_APIS:
+			return "OpenVG OpenGL_ES OpenGL_ES2";
+		case EGL_EXTENSIONS:
+			return "KHR_reusable_sync EGL_SYMBIAN_COMPOSITION";
+		case EGL_VENDOR:
+			return "Symbian Foundation";
+		case EGL_VERSION:
+			return "1.4 guestegl";
+		}
+	
+	return NULL;
 	}
 // FAISALMEMON END OF STUB CODE
 
