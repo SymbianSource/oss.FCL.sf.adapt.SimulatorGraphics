@@ -34,12 +34,39 @@
     </collection>
     <collection id="hostsupport" name="Graphics Host Support" level="host">
       <component id="hostegl" name="Host EGL" target="desktop" introduced="^4">
+        <meta rel="License">
+          <license type="other">
+            <supplier>Khronos Group</supplier>
+            <description>Khronos Free Use License</description>
+          </license>
+        </meta>
         <unit bldFile="hostsupport/hostegl/group"/>
       </component>
       <component id="hostopengles11" name="Host OpenGL ES 1.1" target="desktop" introduced="^4">
+        <meta rel="License">
+          <license type="other">
+            <supplier>Khronos Group</supplier>
+            <description>Khronos Free Use License</description>
+          </license>
+        </meta>
+        <unit bldFile="hostsupport/hostopengles11/group"/>
+      </component>
+      <component id="hostopengles20" name="Host OpenGL ES 1.0" target="desktop" introduced="^4">
+        <meta rel="License">
+          <license type="other">
+            <supplier>Nokia</supplier>
+            <description>MIT License</description>
+          </license>
+        </meta>
         <unit bldFile="hostsupport/hostopengles11/group"/>
       </component>
       <component id="hostopenvg" name="Host OpenVG" target="desktop" introduced="^4">
+        <meta rel="License">
+          <license type="other">
+            <supplier>Khronos Group</supplier>
+            <description>Khronos Free Use License</description>
+          </license>
+        </meta>
         <unit bldFile="hostsupport/hostopenvg/group"/>
       </component>
       <component id="hostthreadadapter" name="Host Thread Adapater" target="desktop" introduced="^4">

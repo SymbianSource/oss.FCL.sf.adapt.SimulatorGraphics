@@ -76,7 +76,7 @@
 <SystemDefinition schema="2.0.1" name="Graphics Simulator">
 <systemModel>
 <layer name="anonymous">
-<block name="graphics.simulator" long-name="Graphics Simulator" levels="host guest">
+<block name="graphics.simulator" long-name="Graphics Simulator" levels="host interface guest">
 <collection name="guestrendering" long-name="Graphics Guest Rendering" level="guest">
 <component name="guestegl" long-name="Guest EGL" introduced="^4">
 <unit bldFile="guestrendering/guestegl/group"/>
@@ -90,14 +90,19 @@
 <component name="guestopenvgu" long-name="Guest OpenVG Utilities" introduced="^4">
 <unit bldFile="guestrendering/guestopenvgu/group"/>
 </component>
-<component name="guestvideodriver" long-name="Guest Video Driver" introduced="^4">
-<unit bldFile="guestrendering/guestvideodriver/group"/>
+</collection>
+<collection name="vghwinterface" long-name="Virtual Graphics Hardware Interface" level="interface">
+<component name="vghwapiwrapper" long-name="Virtual Graphics Hardware API Wrapper" introduced="^4" class="PC">
+<unit bldFile="vghwinterface/vghwapiwrapper/group"/>
+</component>
+<component name="vghwdriver" long-name="Virtual Graphics Hardware Driver" introduced="^4">
+<unit bldFile="vghwinterface/vghwdriver/group"/>
 </component>
 <component name="vghwserialiser" long-name="Virtual Graphics Hardware Serialiser" introduced="^4">
-<unit bldFile="guestrendering/vghwserialiser/group"/>
+<unit bldFile="vghwinterface/vghwserialiser/group"/>
 </component>
 <component name="vghwutils" long-name="Virtual Graphics Hardware Utilities" introduced="^4">
-<unit bldFile="guestrendering/vghwutils/group"/>
+<unit bldFile="vghwinterface/vghwutils/group"/>
 </component>
 </collection>
 <collection name="hostsupport" long-name="Graphics Host Support" level="host">
@@ -109,12 +114,6 @@
 </component>
 <component name="hostopenvg" long-name="Host OpenVG" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostopenvg/group"/>
-</component>
-<component name="khronosapiwrapper" long-name="Host Khronos API Wrapper" introduced="^4" class="PC">
-<unit bldFile="hostsupport/khronosapiwrapper/group"/>
-</component>
-<component name="syborggraphicswrapper" long-name="Host Syborg Graphics Wrapper" introduced="^4" class="PC">
-<unit bldFile="hostsupport/syborggraphicswrapper/group"/>
 </component>
 <component name="hostthreadadapter" long-name="Host Thread Adapater" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostthreadadapter/group"/>
