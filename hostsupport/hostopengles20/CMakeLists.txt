@@ -27,8 +27,12 @@
 # Description:
 # CMake meta build file for host libGLESv2
 
-set(GLES2_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/GLES2)
-set(GLES2_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
+set(GLES2_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(GLES2_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+configure_file(${GLES2_INC_DIR}/GLES2/gl2.h ${EXPORTED_INC_DIR}/GLES2/gl2.h COPYONLY)
+configure_file(${GLES2_INC_DIR}/GLES2/gl2ext.h ${EXPORTED_INC_DIR}/GLES2/gl2ext.h COPYONLY)
+configure_file(${GLES2_INC_DIR}/GLES2/gl2platform.h ${EXPORTED_INC_DIR}/GLES2/gl2platform.h COPYONLY)
 
 if(WIN32)
 	message("*** EGL Win32")
@@ -83,6 +87,7 @@ include_directories(
   ${GLES2_SRC_DIR}
   ${GLES2_INC_DIR}
   ${COMMON_INC_DIR}
+  ${EXPORTED_INC_DIR}
   )
 
 if (WIN32)

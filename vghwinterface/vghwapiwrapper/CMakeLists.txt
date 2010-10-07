@@ -20,8 +20,6 @@ set(SERIALIZER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../vghwserialiser/src)
 # For guestvideodriverinterfaceconstants.h file
 set(VIDEODRIVER_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../inc)
 
-set(WRAPPER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
-
 if(WIN32)
 	message("*** KhronosAPIWrapper Win32")
 	set(WRAPPER_SSE_FLAGS "/arch:SSE2")
@@ -72,12 +70,12 @@ set(WRAPPER_SRC_FILES
 include_directories(
   ${WRAPPER_INC_DIR}
   ${SERIALIZER_INC_DIR}
-  ${KHRONOS_API_INC}
   ${VIDEODRIVER_INC_DIR}
   ${COMMON_INC_DIR}
+  ${EXPORTED_INC_DIR}
   )
 
-link_directories(${WRAPPER_LIBS_DIR} ${GLOBAL_LIB_DIR})
+link_directories(${GLOBAL_LIB_DIR})
 
 add_definitions(-DKHRONOSAPIWRAPPER_EXPORTS -DSYBORG_GRAPHICSWRAPPER_EXPORTS)
 

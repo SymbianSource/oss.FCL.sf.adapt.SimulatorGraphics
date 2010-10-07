@@ -30,6 +30,12 @@
 set(EGL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(EGL_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
+configure_file(${EGL_INC_DIR}/EGL/egl.h ${EXPORTED_INC_DIR}/EGL/egl.h COPYONLY)
+configure_file(${EGL_INC_DIR}/EGL/eglext.h ${EXPORTED_INC_DIR}/EGL/eglext.h COPYONLY)
+configure_file(${EGL_INC_DIR}/EGL/eglplatform.h ${EXPORTED_INC_DIR}/EGL/eglplatform.h COPYONLY)
+
+configure_file(${EGL_INC_DIR}/KHR/khrplatform.h ${EXPORTED_INC_DIR}/KHR/khrplatform.h COPYONLY)
+
 find_package(OpenGL)
 
 if(WIN32)
@@ -91,6 +97,7 @@ include_directories(
   ${EGL_SRC_DIR}
   ${EGL_INC_DIR}
   ${COMMON_INC_DIR}
+  ${EXPORTED_INC_DIR}
   )
 
 # \todo MSVC:
@@ -98,11 +105,11 @@ include_directories(
 # set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse2 -mfpmath=sse -march=pentium4")
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2 -mfpmath=sse -march=pentium4")
 
-if(PLATSIM_EXTENSIONS)
-   add_definitions(-DKHRONOS_APICALL_EXPORT -DEGLI_USE_PLATSIM_EXTENSIONS)
-else(PLATSIM_EXNTENSIONS)
+if(SIMULATOR_EXTENSIONS)
+   add_definitions(-DKHRONOS_APICALL_EXPORT -DEGLI_USE_SIMULATOR_EXTENSIONS)
+else(SIMULATOR_EXNTENSIONS)
    add_definitions(-DKHRONOS_APICALL_EXPORT)
-endif(PLATSIM_EXTENSIONS)
+endif(SIMULATOR_EXTENSIONS)
 
 add_library(${LIBRARY_NAME_PREFIX}EGL SHARED ${EGL_SRC_FILES})
 

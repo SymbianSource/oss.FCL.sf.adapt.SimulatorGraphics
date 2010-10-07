@@ -30,8 +30,8 @@
  * \brief	Implementation of the VGU utility library for OpenVG
  *//*-------------------------------------------------------------------*/
 
-#include "vgu.h"
-#include "openvg.h"
+#include "VG/vgu.h"
+#include "VG/openvg.h"
 #include "riMath.h"
 
 using namespace OpenVGRI;

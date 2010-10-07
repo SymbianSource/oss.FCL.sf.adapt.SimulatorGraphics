@@ -11,13 +11,13 @@
 // Contributors:
 //
 // Description:
-// Guest OpenVG IBY File
+// ROM IBY file for Virtual Graphics Hardware Serialiser
 
-#ifndef __GUEST_OPENVG_IBY__
-#define __GUEST_OPENVG_IBY__
+#ifndef VGHWSERIALISER_IBY
+#define VGHWSERIALISER_IBY
 
-#include "vghwserialiser.iby"
+file=ABI_DIR\BUILD_DIR\vghwserialiser.dll sys\bin\vghwserialiser.dll
 
-file=ABI_DIR\BUILD_DIR\guestopenvg.dll   sys\bin\libopenvg.dll
-file=ABI_DIR\BUILD_DIR\guestopenvgu.dll  sys\bin\libopenvgu.dll
-#endif
+#endif // VGHWSERIALISER_IBY
+
+//  End of File

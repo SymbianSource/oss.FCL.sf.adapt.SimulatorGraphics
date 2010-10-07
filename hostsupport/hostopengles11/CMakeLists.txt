@@ -30,6 +30,12 @@
 set(GLES_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(GLES_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 
+configure_file(${GLES_INC_DIR}/GLES/egl.h ${EXPORTED_INC_DIR}/GLES/egl.h COPYONLY)
+configure_file(${GLES_INC_DIR}/GLES/gl.h ${EXPORTED_INC_DIR}/GLES/gl.h COPYONLY)
+configure_file(${GLES_INC_DIR}/GLES/glext.h ${EXPORTED_INC_DIR}/GLES/glext.h COPYONLY)
+configure_file(${GLES_INC_DIR}/GLES/glplatform.h ${EXPORTED_INC_DIR}/GLES/glplatform.h COPYONLY)
+configure_file(${GLES_INC_DIR}/GLES/glextplatform.h ${EXPORTED_INC_DIR}/GLES/glextplatform.h COPYONLY)
+
 if(WIN32)
 	message("*** EGL Win32")
 	set(GLES_SSE_FLAGS "/arch:SSE2")
@@ -65,6 +71,7 @@ include_directories(
   ${GLES_SRC_DIR}
   ${GLES_INC_DIR}
   ${COMMON_INC_DIR}
+  ${EXPORTED_INC_DIR}
   )
 
 add_definitions(-DKHRONOS_APICALL_EXPORT)

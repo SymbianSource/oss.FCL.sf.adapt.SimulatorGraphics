@@ -77,7 +77,7 @@ CEGLThread* CEGLProcess::HasThread( EGLI_THREAD_ID threadId ) const
 
 void CEGLProcess::SetCurrentThread( EGLI_THREAD_ID threadId )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     EGLI_ASSERT(m_currentThread != NULL);
     if( m_currentThread->Id() != threadId )
         {
@@ -91,7 +91,7 @@ void CEGLProcess::SetCurrentThread( EGLI_THREAD_ID threadId )
 
 CEGLThread* CEGLProcess::CurrentThread() const
     { 
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     EGLI_ASSERT( m_currentThread != NULL );
     return m_currentThread;
 #elif defined(_WIN32)

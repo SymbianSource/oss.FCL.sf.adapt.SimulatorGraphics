@@ -13,13 +13,11 @@
 // Description:
 
 
-#ifndef GUESTRENDERING_VGHWUTILS_IBY
-#define GUESTRENDERING_VGHWUTILS_IBY
-
+#ifndef VGHWUTILS_IBY
+#define VGHWUTILS_IBY
 
 file=ABI_DIR\BUILD_DIR\vghwutils.dll           \sys\bin\vghwutils.dll
 
-
-#endif // GUESTRENDERING_VGHWUTILS_IBY
+#endif // VGHWUTILS_IBY
 
 //  End of File

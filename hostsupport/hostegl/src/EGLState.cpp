@@ -57,7 +57,7 @@ CEGLState::CEGLState(void) :
 	m_dummyWindow( NULL )
     {
 
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     CEGLProcess* p = EGLI_NEW CEGLProcess(0);
     EGLI_ASSERT( p != NULL );
     AddObject<CEGLProcess>( m_processes, p );
@@ -74,7 +74,7 @@ CEGLState::~CEGLState(void)
     if( m_GLES1Lib ) EGLI_ASSERT( CEGLOs::FreeClientLibrary(m_GLES1Lib) );
     if( m_GLES2Lib ) EGLI_ASSERT( CEGLOs::FreeClientLibrary(m_GLES2Lib) );
 #if defined(_WIN32)
-#   if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#   if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( m_defaultDisplay )
         {
         // \todo If at some point EGL_DEFAULT_DISPLAY is created
@@ -153,7 +153,7 @@ bool CEGLState::Initialize()
 
 CEGLDisplay* CEGLState::AddDisplay( EGLINativeDisplayType nativeType, EGLint processId )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     CEGLDisplay* display = EGLI_NEW CEGLDisplay( nativeType, processId );
 #else
     CEGLDisplay* display = EGLI_NEW CEGLDisplay( nativeType, m_currentProcess->Id() );
@@ -177,7 +177,7 @@ CEGLDisplay* CEGLState::GetDisplayByNativeType( EGLINativeDisplayType nativeType
         iter != m_displays.end();
         iter++)
         {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
         if( (*iter)->NativeType() == nativeType && (*iter)->ProcessId() == processId )
 #else
         if( (*iter)->NativeType() == nativeType )
@@ -197,7 +197,7 @@ CEGLDisplay* CEGLState::GetDisplay( EGLDisplay display ) const
 
 CEGLProcess* CEGLState::AddProcess( EGLint processId, bool setCurrent )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     CEGLProcess* process = EGLI_NEW CEGLProcess( processId );
     if( process )
         {
@@ -216,7 +216,7 @@ CEGLProcess* CEGLState::AddProcess( EGLint processId, bool setCurrent )
 
 void CEGLState::RemoveProcess( EGLint processId )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( m_currentProcess && m_currentProcess->Id() == processId )
         {
         m_currentProcess = NULL;
@@ -229,7 +229,7 @@ void CEGLState::RemoveProcess( EGLint processId )
 
 CEGLProcess* CEGLState::GetProcess( EGLint processId ) const
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     return FindObjectById<CEGLProcess>( m_processes, processId, NULL );
 #else
     return m_currentProcess;
@@ -238,7 +238,7 @@ CEGLProcess* CEGLState::GetProcess( EGLint processId ) const
 
 void CEGLState::SetCurrentProcessThread( EGLint processId, EGLI_THREAD_ID threadId )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( m_currentProcess && m_currentProcess->Id() == processId )
         {
         m_currentProcess->SetCurrentThread( threadId );
@@ -246,7 +246,7 @@ void CEGLState::SetCurrentProcessThread( EGLint processId, EGLI_THREAD_ID thread
     else
         {
         CEGLProcess* process = FindObjectById<CEGLProcess>( m_processes, processId, NULL);
-        // processes are created in eglPlatsimSetProcessInformation()
+        // processes are created in eglSimulatorSetProcessInformation()
         EGLI_ASSERT( process != NULL );
         process->SetCurrentThread( threadId );
         m_currentProcess = process;

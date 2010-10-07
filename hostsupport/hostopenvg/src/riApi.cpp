@@ -31,8 +31,8 @@
  * \note	The actual processing is done in Path, Image, Rasterizer and PixelPipe classes.
  *//*-------------------------------------------------------------------*/
 
-#include "openvg.h"
-#include "vgext.h"
+#include "VG/openvg.h"
+#include "VG/vgext.h"
 #include "riContext.h"
 #include "riRasterizer.h"
 #include "riPixelPipe.h"
@@ -148,7 +148,7 @@ VGErrorCode RI_APIENTRY vgGetError(void)
     RI_RETURN(error);
 }
 
-VGErrorCode RI_APIENTRY vgPlatsimGetError(void)
+VGErrorCode RI_APIENTRY vgSimulatorGetError(void)
 {
     RI_GET_CONTEXT(VG_NO_CONTEXT_ERROR);
     VGErrorCode error = context->m_error;

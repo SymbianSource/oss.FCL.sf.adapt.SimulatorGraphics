@@ -3,3 +3,5 @@ holdingarea/bin/
 holdingarea/lib/
 holdingarea/vg/bin/c_utils.pyc
 holdingarea/build/
+build/
+hostsupport/hostopenvg/genheader/c_utils.pyc

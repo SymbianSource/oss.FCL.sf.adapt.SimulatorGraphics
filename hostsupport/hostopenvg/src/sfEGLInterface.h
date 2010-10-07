@@ -29,7 +29,7 @@
 
 // Get pointer to global interface object.
 extern "C" { RI_API_CALL IEGLtoVGInterface* getVGInterface(void); }
-extern "C" { RI_API_CALL VGErrorCode vgPlatsimGetError(void); }
+extern "C" { RI_API_CALL VGErrorCode vgSimulatorGetError(void); }
 
 namespace OpenVGRI 
 {

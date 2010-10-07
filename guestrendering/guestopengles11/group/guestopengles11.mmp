@@ -27,10 +27,10 @@ OS_LAYER_ESTLIB_SYSTEMINCLUDE
 
 systeminclude   /epoc32/include                                 // General Symbian include files
 userinclude     ../inc                                          // Local include files
-userinclude     ../../vghwutils/inc                             // Local include files
+userinclude     ../../../vghwinterface/vghwutils/inc            // Local include files
 
-USERINCLUDE     ../../vghwserialiser/inc
-SOURCEPATH      ../../vghwserialiser/src                            // Relative path to source files
+USERINCLUDE     ../../../vghwinterface/vghwserialiser/inc
+SOURCEPATH      ../../../vghwinterface/vghwserialiser/src       // Relative path to source files
 SOURCE          opengles11rfc.cpp
 
 sourcepath      ../src                                          // Relative path to source files

@@ -34,7 +34,7 @@
  *//*-------------------------------------------------------------------*/
 
 #ifndef _OPENVG_H
-#include "openvg.h"
+#include "VG/openvg.h"
 #endif
 
 #ifndef __RIMATH_H

@@ -122,8 +122,8 @@ SurfaceDescriptor* CEGLSurface::Descriptor()
     else
         {
         m_surfaceDescriptor.m_luminanceShift = 0;
-        /*  Found these from CPlatsimEGL::egliGetSymbianPixelFormat()
-            in platsim_graphics/platsimegl/src/platsimegl.cpp. Pixel format
+        /*  Found these from CGuestEGL::egliGetSymbianPixelFormat()
+            in guestegl/src/guestegl.cpp. Pixel format
             should be transfered through serialization.
 
             EUidPixelFormatARGB_8888
@@ -135,12 +135,9 @@ SurfaceDescriptor* CEGLSurface::Descriptor()
 
             EUidPixelFormatRGB_565
             EUidPixelFormatARGB_1555
-            
-            -- 
-            Harri
         */
         // \todo We need pixel format through serialization.
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
         m_surfaceDescriptor.m_blueShift = 0;
         m_surfaceDescriptor.m_greenShift = blueSize;
         m_surfaceDescriptor.m_redShift = blueSize + greenSize;
@@ -156,7 +153,7 @@ SurfaceDescriptor* CEGLSurface::Descriptor()
         m_surfaceDescriptor.m_greenShift = blueSize;
         m_surfaceDescriptor.m_redShift = blueSize + greenSize;
         m_surfaceDescriptor.m_alphaShift = redSize + greenSize + blueSize;
-#endif //EGLI_USE_PLATSIM_EXTENSIONS
+#endif //EGLI_USE_SIMULATOR_EXTENSIONS
         }
     
     m_surfaceDescriptor.m_maskSize = m_surfaceDescriptor.m_colorDescriptor.AlphaMaskSize();

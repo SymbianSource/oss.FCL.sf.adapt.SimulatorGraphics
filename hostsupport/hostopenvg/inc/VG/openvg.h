@@ -739,7 +739,7 @@ VG_API_CALL VGHardwareQueryResult VG_API_ENTRY vgHardwareQuery(VGHardwareQueryTy
 /* Renderer and Extension Information */
 VG_API_CALL const VGubyte * VG_API_ENTRY vgGetString(VGStringID name) VG_API_EXIT;
 
-VG_API_CALL VGErrorCode VG_API_ENTRY vgPlatsimGetError(void) VG_API_EXIT;
+VG_API_CALL VGErrorCode VG_API_ENTRY vgSimulatorGetError(void) VG_API_EXIT;
 
 #ifdef __cplusplus 
 } /* extern "C" */

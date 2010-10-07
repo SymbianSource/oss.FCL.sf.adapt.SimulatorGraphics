@@ -28,12 +28,12 @@ OS_LAYER_KERNEL_SYSTEMINCLUDE
 OS_LAYER_ESTLIB_SYSTEMINCLUDE
 
 USERINCLUDE     ../inc
-USERINCLUDE     ../../vghwutils/inc
-USERINCLUDE     ../../vghwserialiser/inc
+USERINCLUDE     ../../../vghwinterface/vghwutils/inc
+USERINCLUDE     ../../../vghwinterface/vghwserialiser/inc
 USERINCLUDE     ../../guestopenvg/inc
 USERINCLUDE     ../../guestopengles11/inc
 
-SOURCEPATH      ../../vghwserialiser/src
+SOURCEPATH      ../../../vghwinterface/vghwserialiser/src
 SOURCE          eglrfc.cpp
 
 SOURCEPATH      ../src

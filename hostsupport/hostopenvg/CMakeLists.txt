@@ -27,15 +27,21 @@
 # Description:
 # CMake meta build file for host libOpenVG
 
-set(SF_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(VG_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(VG_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
+
+configure_file(${VG_INC_DIR}/VG/openvg.h ${EXPORTED_INC_DIR}/VG/openvg.h COPYONLY)
+configure_file(${VG_INC_DIR}/VG/vgext.h ${EXPORTED_INC_DIR}/VG/vgext.h COPYONLY)
+configure_file(${VG_INC_DIR}/VG/vgplatform.h ${EXPORTED_INC_DIR}/VG/vgplatform.h COPYONLY)
+configure_file(${VG_INC_DIR}/VG/vgu.h ${EXPORTED_INC_DIR}/VG/vgu.h COPYONLY)
 
 # Some of the source files are generated using scripts. Check if the
 # scripts were modified and rebuild if necessary.
 set(ALPHA_RCP_GEN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/genheader/make_alpha_rcp.py)
 set(GAMMA_LUT_GEN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/genheader/make_gamma_lut.py)
 
-set(ALPHA_RCP_FILE ${SF_SRC_DIR}/sfAlphaRcp.h)
-set(GAMMA_LUT_FILE ${SF_SRC_DIR}/sfGammaLUT.h)
+set(ALPHA_RCP_FILE ${VG_SRC_DIR}/sfAlphaRcp.h)
+set(GAMMA_LUT_FILE ${VG_SRC_DIR}/sfGammaLUT.h)
 
 add_custom_command(
     OUTPUT ${ALPHA_RCP_FILE}
@@ -59,11 +65,7 @@ if(WIN32)
     set(C_WARNING_FLAGS "")
 	add_definitions(-DOPENVG_DLL_EXPORTS -DNOMINMAX)
 
-	set(GLUT_LIBRARY "")
-	set(GLUT_INCLUDE_DIR "")
-
     set(LIB_TYPE SHARED)
-    
 else(WIN32)
 	set(SF_SSE_FLAGS ${GCC_SSE_FLAGS})
 	set(SF_PLATFORM_LINK_LIBRARIES m stdc++)
@@ -74,60 +76,54 @@ else(WIN32)
     # \todo Just use BUILD_SHARED_LIBRARIES: This way debug builds can be made with static
     # and release with dynamic linking.
     set(LIB_TYPE SHARED)
-
-	find_library(GLUT_LIBRARY glut)
-	find_path(GLUT_INCLUDE_DIR GL/glut.h)
 endif(WIN32)
 
 
 set(VG_SF_SRC_FILES
-  ${SF_SRC_DIR}/sfEGLInterface.h
-  ${SF_SRC_DIR}/sfEGLInterface.cpp
-  ${SF_SRC_DIR}/riApi.cpp
-  ${SF_SRC_DIR}/riArray.h
-  ${SF_SRC_DIR}/riContext.cpp
-  ${SF_SRC_DIR}/riContext.h
-  ${SF_SRC_DIR}/riDefs.h
-  ${SF_SRC_DIR}/riFont.cpp
-  ${SF_SRC_DIR}/riUtils.h
-  ${SF_SRC_DIR}/riUtils.cpp
-  ${SF_SRC_DIR}/riFont.h
-  ${SF_SRC_DIR}/riImage.cpp
-  ${SF_SRC_DIR}/riImage.h
-  ${SF_SRC_DIR}/riMath.cpp
-  ${SF_SRC_DIR}/riMath.h
-  ${SF_SRC_DIR}/riPath.cpp
-  ${SF_SRC_DIR}/riPath.h
-  ${SF_SRC_DIR}/riPixelPipe.cpp
-  ${SF_SRC_DIR}/riPixelPipe.h
-  ${SF_SRC_DIR}/riRasterizer.cpp
-  ${SF_SRC_DIR}/riRasterizer.h
-  ${SF_SRC_DIR}/riVGU.cpp
-  ${SF_SRC_DIR}/sfMask.h
-  ${SF_SRC_DIR}/sfDynamicPixelPipe.h
-  ${SF_SRC_DIR}/sfDynamicPixelPipe.cpp
-  ${SF_SRC_DIR}/sfBlitter.h
-  ${SF_SRC_DIR}/sfBlitter.cpp
-  ${SF_SRC_DIR}/sfDynamicBlitter.h
-  ${SF_SRC_DIR}/sfDynamicBlitter.cpp
-  ${SF_SRC_DIR}/sfFunctionCache.h
-  ${SF_SRC_DIR}/sfCompiler.h
-  ${SF_SRC_DIR}/sfCompiler.cpp
+  ${VG_SRC_DIR}/sfEGLInterface.h
+  ${VG_SRC_DIR}/sfEGLInterface.cpp
+  ${VG_SRC_DIR}/riApi.cpp
+  ${VG_SRC_DIR}/riArray.h
+  ${VG_SRC_DIR}/riContext.cpp
+  ${VG_SRC_DIR}/riContext.h
+  ${VG_SRC_DIR}/riDefs.h
+  ${VG_SRC_DIR}/riFont.cpp
+  ${VG_SRC_DIR}/riUtils.h
+  ${VG_SRC_DIR}/riUtils.cpp
+  ${VG_SRC_DIR}/riFont.h
+  ${VG_SRC_DIR}/riImage.cpp
+  ${VG_SRC_DIR}/riImage.h
+  ${VG_SRC_DIR}/riMath.cpp
+  ${VG_SRC_DIR}/riMath.h
+  ${VG_SRC_DIR}/riPath.cpp
+  ${VG_SRC_DIR}/riPath.h
+  ${VG_SRC_DIR}/riPixelPipe.cpp
+  ${VG_SRC_DIR}/riPixelPipe.h
+  ${VG_SRC_DIR}/riRasterizer.cpp
+  ${VG_SRC_DIR}/riRasterizer.h
+  ${VG_SRC_DIR}/riVGU.cpp
+  ${VG_SRC_DIR}/sfMask.h
+  ${VG_SRC_DIR}/sfDynamicPixelPipe.h
+  ${VG_SRC_DIR}/sfDynamicPixelPipe.cpp
+  ${VG_SRC_DIR}/sfBlitter.h
+  ${VG_SRC_DIR}/sfBlitter.cpp
+  ${VG_SRC_DIR}/sfDynamicBlitter.h
+  ${VG_SRC_DIR}/sfDynamicBlitter.cpp
+  ${VG_SRC_DIR}/sfFunctionCache.h
+  ${VG_SRC_DIR}/sfCompiler.h
+  ${VG_SRC_DIR}/sfCompiler.cpp
   ${ALPHA_RCP_FILE}
   ${GAMMA_LUT_FILE}
   )
-
-# This VG requires OpenGL to render into window
-find_package(OpenGL)
 
 # pthreads on linux, native threads on win32?
 # \note Porting...
 find_package(Threads)
 
 include_directories(
-    ${SF_SRC_DIR}
+    ${VG_SRC_DIR}
     ${COMMON_INC_DIR}
-    ${COMMON_INC_DIR}/VG
+    ${EXPORTED_INC_DIR}
     ${LLVM_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
   )
@@ -144,7 +140,7 @@ add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS -DRI_COMPILE_LLVM
 # LLVM bitcode files. \todo Create a macro to add these (LLVMTarget has some
 # code that needs expansion, especially on the dependencies, which aren't
 # handled well enough for our use.
-set(BC_CFLAGS ${BC_CFLAGS} -DNDEBUG -O1 -msse2 -mfpmath=sse -march=pentium4 -c -emit-llvm -I${COMMON_INC_DIR} )
+set(BC_CFLAGS ${BC_CFLAGS} -DNDEBUG -O1 -msse2 -mfpmath=sse -march=pentium4 -c -emit-llvm -I${EXPORTED_INC_DIR} )
 
 # This macro assumes that a pixelpipe is generated from one source-code file atm.
 macro(make_pixelpipe target_name input_file output_file array_name)
@@ -156,7 +152,7 @@ macro(make_pixelpipe target_name input_file output_file array_name)
     set_source_files_properties(${BINARY_PIXELPIPE_HEADER}
         PROPERTIES GENERATED true)
 
-    set(LLVM_PIXELPIPE_FILES ${SF_SRC_DIR}/${input_file})
+    set(LLVM_PIXELPIPE_FILES ${VG_SRC_DIR}/${input_file})
 
     # Note: Adds all project files as dependency to bitcode file.
     add_custom_command(
@@ -184,7 +180,7 @@ macro(make_pixelpipe target_name input_file output_file array_name)
 
     add_custom_command(
         OUTPUT ${BINARY_PIXELPIPE_HEADER}
-        COMMAND python ${PROJECT_SOURCE_DIR}/vg/bin/bin2h.py ${BINARY_PIXELPIPE_FILE} ${array_name} > ${BINARY_PIXELPIPE_HEADER}
+        COMMAND python ${CMAKE_CURRENT_SOURCE_DIR}/genheader/bin2h.py ${BINARY_PIXELPIPE_FILE} ${array_name} > ${BINARY_PIXELPIPE_HEADER}
         DEPENDS ${BINARY_PIXELPIPE_HEADER_DEPS}
     )
 
@@ -198,4 +194,4 @@ add_library(${LIBRARY_NAME_PREFIX}OpenVG ${LIB_TYPE} ${VG_SF_SRC_FILES})
 
 set_target_properties(${LIBRARY_NAME_PREFIX}OpenVG PROPERTIES LINK_INTERFACE_LIBRARIES "")
 
-target_link_libraries(${LIBRARY_NAME_PREFIX}OpenVG ${SF_PLATFORM_LINK_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} ${CMAKE_THREAD_LIBS_INIT} ${LLVM_JIT_LIBS})
+target_link_libraries(${LIBRARY_NAME_PREFIX}OpenVG ${SF_PLATFORM_LINK_LIBRARIES} ${OPENGL_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${LLVM_JIT_LIBS})

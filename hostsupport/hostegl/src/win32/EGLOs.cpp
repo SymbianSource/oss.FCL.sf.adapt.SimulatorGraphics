@@ -36,7 +36,7 @@
 #include "EGLDisplay.h"
 #include "EGLContext.h"
 
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 void doBlit( EGLIOsWindowContext* context, void* buf, int width, int height, int stride )
     {
     if( !context->osBuffer || !context->pixmap || context->width != width || context->height != height )
@@ -121,28 +121,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void CEGLOs::InitializeLock( EGLI_LOCK *lock )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     InitializeCriticalSection( lock );
 #endif
     }
 
 void CEGLOs::GetLock( EGLI_LOCK *lock )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     EnterCriticalSection( lock );
 #endif
     }
 
 void CEGLOs::ReleaseLock(EGLI_LOCK *lock )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     LeaveCriticalSection( lock );
 #endif
     }
 
 void CEGLOs::DestroyLock( EGLI_LOCK *lock )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     DeleteCriticalSection( lock );
 #endif
     }
@@ -185,7 +185,7 @@ EGLINativeContextType CEGLOs::CreateNativeContext( const CEGLConfig& config, EGL
     {
     EGLINativeContextType ret = NULL;
     DWORD error = ERROR_SUCCESS;
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     PIXELFORMATDESCRIPTOR pfd;
     memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
     CEGLOs::ConfigToNativePixelFormat( config, &pfd );
@@ -221,7 +221,7 @@ EGLINativeContextType CEGLOs::CurrentNativeContext()
 
 EGLINativeDisplayType CEGLOs::CurrentNativeSurface()
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     return wglGetCurrentDC();
 #else
     return NULL;
@@ -231,7 +231,7 @@ EGLINativeDisplayType CEGLOs::CurrentNativeSurface()
 bool CEGLOs::MakeNativeContextCurrent( struct EGLINativeGLFunctions* func, EGLINativeDisplayType draw, EGLINativeDisplayType read, EGLINativeContextType context )
     {
     bool ret = true;
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     DWORD err;
     EGLINativeContextType prevContext = wglGetCurrentContext();
     EGLINativeDisplayType prevDraw = wglGetCurrentDC();
@@ -264,7 +264,7 @@ bool CEGLOs::MakeNativeContextCurrent( struct EGLINativeGLFunctions* func, EGLIN
 bool CEGLOs::DestroyNativeContext( EGLINativeContextType context )
     {
     bool ret = true;
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( context != NULL )
         {
         //warning C4800: 'BOOL' : forcing value to bool 'true' or 'false' (performance warning)
@@ -278,7 +278,7 @@ bool CEGLOs::InitializeNativeGLFunctions( struct EGLINativeGLFunctions* func, EG
     {
     bool ret = true;
     DWORD error = ERROR_SUCCESS;
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     HDC currentDC = wglGetCurrentDC();
     HGLRC currentContext = wglGetCurrentContext();
     
@@ -321,7 +321,7 @@ bool CEGLOs::InitializeNativeGLFunctions( struct EGLINativeGLFunctions* func, EG
             ret = false;
             }
         }
-#endif //EGLI_USE_PLATSIM_EXTENSIONS
+#endif //EGLI_USE_SIMULATOR_EXTENSIONS
     return ret;
     }
 
@@ -332,7 +332,7 @@ struct EGLINativePbufferContainer* CEGLOs::CreateNativePbuffer( EGLINativeDispla
     struct EGLINativePbufferContainer* ret = EGLI_NEW EGLINativePbufferContainer;
     if( !ret ) return NULL;
     memset( ret, 0, sizeof(struct EGLINativePbufferContainer) );
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     EGLINativeContextType context = CEGLOs::CreateNativeContext( config, display, NULL );
     if( !context )
         {
@@ -441,7 +441,7 @@ struct EGLINativePbufferContainer* CEGLOs::CreateNativePbuffer( EGLINativeDispla
         ret = NULL;
         return ret;
         }
-#endif // EGLI_USE_PLATSIM_EXTENSIONS
+#endif // EGLI_USE_SIMULATOR_EXTENSIONS
     return ret;
     }
 
@@ -449,7 +449,7 @@ bool CEGLOs::DestroyNativePbuffer( struct EGLINativePbufferContainer* container 
     {
     // \todo Handle errors!
     bool ret = true;
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     DWORD err;
     if( container->display && container->pbuffer && container->functions.wglReleasePbufferDCARB )
         {
@@ -475,7 +475,7 @@ bool CEGLOs::DestroyNativePbuffer( struct EGLINativePbufferContainer* container 
             err = GetLastError();
             }
         }
-#endif //EGLI_USE_PLATSIM_EXTENSIONS
+#endif //EGLI_USE_SIMULATOR_EXTENSIONS
     return ret;
     }
 
@@ -495,7 +495,7 @@ EGLINativeDisplayType CEGLOs::CreateDefaultDisplay()
 
 void CEGLOs::DestroyDefaultDisplay( EGLINativeDisplayType display )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     // no-op
 #else
     DeleteDC( display );
@@ -528,7 +528,7 @@ EGLINativeWindowType CEGLOs::CreateNativeWindow( int width, int height )
 
     EGLINativeWindowType window = CreateWindow(
         "EGLMainWndClass",
-        "Platsim EGL window",
+        "Simulator EGL window",
         WS_OVERLAPPEDWINDOW,
         0, 0,
         width /*+ 2*xBorder*/,
@@ -542,7 +542,7 @@ EGLINativeWindowType CEGLOs::CreateNativeWindow( int width, int height )
 
 void CEGLOs::DestroyNativeWindow( EGLINativeWindowType wnd )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( wnd )
         EGLI_ASSERT( DestroyWindow( wnd ) );
     // \todo Should use stored WNDCLASS to unregister, see CEGLOs::CreateNativeWindow()
@@ -552,7 +552,7 @@ void CEGLOs::DestroyNativeWindow( EGLINativeWindowType wnd )
 
 bool CEGLOs::IsValidNativeDisplay( EGLINativeDisplayType dsp )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     // we can't validate symbian display
     return true;
 #else
@@ -572,7 +572,7 @@ bool CEGLOs::IsValidNativeDisplay( EGLINativeDisplayType dsp )
 
 bool CEGLOs::IsValidNativeWindow( EGLINativeWindowType wnd )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     // We can't validate symbian window
     return true;
 #else
@@ -587,13 +587,13 @@ bool CEGLOs::IsValidNativeWindow( EGLINativeWindowType wnd )
         ret = ((threadId == windowThreadId) && (processId == windowProcessId));
         }
     return ret;
-#endif //EGLI_USE_PLATSIM_EXTENSIONS
+#endif //EGLI_USE_SIMULATOR_EXTENSIONS
     }
 
 bool CEGLOs::GetNativeWindowSize( EGLINativeWindowType wnd, int& width, int& height )
     {
-#if defined( EGLI_USE_PLATSIM_EXTENSIONS )
-    // Window size is transferred through eglPlatsimSetSurfaceParameters()
+#if defined( EGLI_USE_SIMULATOR_EXTENSIONS )
+    // Window size is transferred through eglSimulatorSetSurfaceParameters()
     return true;
 
 #else
@@ -625,7 +625,7 @@ EGLIOsWindowContext* CEGLOs::CreateOSWindowContext( EGLINativeWindowType wnd, co
     ctx->width = 0;
     ctx->height = 0;
     ctx->colorBuf = NULL;
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     // no-op
 #else
     if( ctx->window )
@@ -671,7 +671,7 @@ EGLIOsWindowContext* CEGLOs::CreateOSWindowContext( EGLINativeWindowType wnd, co
 
 void CEGLOs::DestroyOSWindowContext( EGLIOsWindowContext* context )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if(!context->vgDisplay)
         {
         SelectObject(context->vgDisplay, NULL);
@@ -693,7 +693,7 @@ void CEGLOs::DestroyOSWindowContext( EGLIOsWindowContext* context )
 
 void CEGLOs::BlitToOSWindow( EGLenum api, CEGLDisplay* display, EGLIOsWindowContext* context, void* buf, int width, int height, int stride )
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     // \todo GLES
     CEGLState* state = getState();
     if( !state )

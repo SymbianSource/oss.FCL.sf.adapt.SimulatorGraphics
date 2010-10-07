@@ -50,8 +50,8 @@
 
 #define EGLI_NO_RET
 
-// \note PlatSim specific hack
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+// \note Simulator specific hack
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     typedef int     EGLINativeDisplayType;
     typedef void*   EGLINativePixmapType;
     typedef void*   EGLINativeWindowType;
@@ -85,11 +85,11 @@
 
 #if defined(_WIN32)
 
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 #   define EGLI_THREAD_ID EGLint
 #else
 #   define EGLI_THREAD_ID DWORD
-#endif // EGLI_USE_PLATSIM_EXTENSIONS
+#endif // EGLI_USE_SIMULATOR_EXTENSIONS
     typedef CRITICAL_SECTION        EGLI_LOCK;
     typedef HGLRC                   EGLINativeContextType;
     typedef HPBUFFERARB             EGLINativePbufferType;
@@ -97,11 +97,11 @@
     typedef HMODULE                 EGLILibraryHandle;
 #else // Linux
 
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 #   define EGLI_THREAD_ID EGLint
 #else
 #   define EGLI_THREAD_ID pid_t
-#endif // EGLI_USE_PLATSIM_EXTENSIONS
+#endif // EGLI_USE_SIMULATOR_EXTENSIONS
     typedef pthread_mutex_t EGLI_LOCK;
     typedef GLXContext      EGLINativeContextType;
     typedef GLXPbuffer      EGLINativePbufferType;

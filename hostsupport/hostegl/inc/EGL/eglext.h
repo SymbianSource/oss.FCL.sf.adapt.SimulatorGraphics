@@ -215,16 +215,16 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLSIGNALSYNCNVPROC) (EGLSyncNV sync, EGLenu
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLGETSYNCATTRIBNVPROC) (EGLSyncNV sync, EGLint attribute, EGLint *value);
 #endif
 
-/* Platsim related functions (non-standard)*/
+/* Simulator related functions (non-standard)*/
 
-EGLAPI void EGLAPIENTRY eglPlatsimSetProcessInformation( EGLint process, EGLint thread );
+EGLAPI void EGLAPIENTRY eglSimulatorSetProcessInformation( EGLint process, EGLint thread );
 
-EGLAPI EGLint EGLAPIENTRY eglPlatsimGetError();
+EGLAPI EGLint EGLAPIENTRY eglSimulatorGetError();
 
-EGLAPI void EGLAPIENTRY eglPlatsimSetSurfaceParams( EGLDisplay display, EGLSurface surface, EGLint width, EGLint height,
+EGLAPI void EGLAPIENTRY eglSimulatorSetSurfaceParams( EGLDisplay display, EGLSurface surface, EGLint width, EGLint height,
     EGLint stride, void* buffer0, void *buffer1);
 
-EGLAPI EGLNativePixmapType EGLAPIENTRY eglPlatsimGetPixmapSurfaceBitmap( EGLDisplay display, EGLSurface surface);
+EGLAPI EGLNativePixmapType EGLAPIENTRY eglSimulatorGetPixmapSurfaceBitmap( EGLDisplay display, EGLSurface surface);
 
 #ifdef __cplusplus
 }

@@ -167,7 +167,7 @@ CEGLSurface* CEGLDisplay::FindSurfaceByClientBuffer( void* clientBuffer ) const
 
 EGLINativeDisplayType CEGLDisplay::NativeType() const
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     return m_nativeType; 
 #else
     return m_nativeType; 

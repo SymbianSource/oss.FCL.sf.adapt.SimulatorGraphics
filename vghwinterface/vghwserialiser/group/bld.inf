@@ -16,6 +16,7 @@ PRJ_PLATFORMS
 DEFAULT -WINSCW
 
 PRJ_EXPORTS
+../rom/vghwserialiser.iby  /epoc32/rom/include/vghwserialiser.iby
 
 PRJ_MMPFILES
 vghwserialiser.mmp

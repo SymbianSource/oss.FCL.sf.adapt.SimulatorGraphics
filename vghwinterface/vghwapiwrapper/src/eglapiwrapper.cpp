@@ -47,13 +47,13 @@ EGLAPIWrapper::EGLAPIWrapper( RemoteFunctionCallData& currentFunctionCallData,
 void EGLAPIWrapper::SetProcessInformation( TUint32 aProcess, TUint32 aThread )
 {
     TRACE("EGLAPIWrapper::SetProcessInformation()\n");
-	::eglPlatsimSetProcessInformation( aProcess, aThread );
+	::eglSimulatorSetProcessInformation( aProcess, aThread );
 }
 
 void EGLAPIWrapper::Cleanup( TUint32 aProcess, TUint32 aThread )
 {
     TRACE("EGLAPIWrapper::Cleanup()\n");
-	::eglPlatsimSetProcessInformation( aProcess, aThread );
+	::eglSimulatorSetProcessInformation( aProcess, aThread );
 	::eglReleaseThread();
 }
 
@@ -62,7 +62,7 @@ int EGLAPIWrapper::WriteReply()
     TRACE("EGLAPIWrapper::WriteReply()\n");
 #ifdef LOG_ERROR
 	int operationid = (int)m_currentFunctionCall.Data().Header().iOpCode;
-	int eglerror = ::eglPlatsimGetError();
+	int eglerror = ::eglSimulatorGetError();
 	if ( m_lastEglError != eglerror )
 	{
 		if ( EGL_SUCCESS != eglerror )
@@ -817,9 +817,9 @@ int EGLAPIWrapper::eglCopyBuffers()
 }
 
 
-int EGLAPIWrapper::eglPlatsimSetSurfaceParams()
+int EGLAPIWrapper::eglSimulatorSetSurfaceParams()
 {
-    TRACE("EGLAPIWrapper::eglPlatsimSetSurfaceParams() ->\n");
+    TRACE("EGLAPIWrapper::eglSimulatorSetSurfaceParams() ->\n");
     EGLDisplay display;
     EGLSurface surface;
     EGLint width;
@@ -841,16 +841,16 @@ int EGLAPIWrapper::eglPlatsimSetSurfaceParams()
     void* buffer0 = (void*)((EGLint)m_surfaceBuffer + buffer0Offset);
     void* buffer1 = (void*)((EGLint)m_surfaceBuffer + buffer1Offset);
 
-	::eglPlatsimSetSurfaceParams(display, surface, width, height, stride, buffer0, buffer1);
+	::eglSimulatorSetSurfaceParams(display, surface, width, height, stride, buffer0, buffer1);
 	m_currentFunctionCall.SetReturnValue( 0 );
-	TRACE("EGLAPIWrapper::eglPlatsimSetSurfaceParams() <-\n");
+	TRACE("EGLAPIWrapper::eglSimulatorSetSurfaceParams() <-\n");
     return WriteReply();
 }
 
 
-int EGLAPIWrapper::eglPlatsimCopyImageData()
+int EGLAPIWrapper::eglSimulatorCopyImageData()
 {
-    TRACE("EGLAPIWrapper::eglPlatsimCopyImageData() ->\n");
+    TRACE("EGLAPIWrapper::eglSimulatorCopyImageData() ->\n");
     void* data(NULL);
     int size(0);
     m_currentFunctionCall.GetVectorData( data, size, 0 );
@@ -859,14 +859,14 @@ int EGLAPIWrapper::eglPlatsimCopyImageData()
 		{
 		EGLDisplay display = ::eglGetCurrentDisplay();
 		EGLSurface surface = ::eglGetCurrentSurface(EGL_DRAW);
-		NativePixmapType nativePixmap = eglPlatsimGetPixmapSurfaceBitmap(display,surface);
+		NativePixmapType nativePixmap = eglSimulatorGetPixmapSurfaceBitmap(display,surface);
 		SymbianPixmap* symbianBitmap = (SymbianPixmap*)nativePixmap;
 		if ( symbianBitmap )
 			{
 			m_currentFunctionCall.SetVectorData( symbianBitmap->data, size, 0 );
 			}
 		}	
-    TRACE("EGLAPIWrapper::eglPlatsimCopyImageData() <-\n");
+    TRACE("EGLAPIWrapper::eglSimulatorCopyImageData() <-\n");
     return WriteReply();
 }
 
@@ -888,7 +888,7 @@ int EGLAPIWrapper::eglPixmapSurfaceSizeChanged()
 	EGLint stride;
     m_currentFunctionCall.GetEGLint( stride, 6 );
 
-	NativePixmapType nativePixmap = eglPlatsimGetPixmapSurfaceBitmap(display,surface);
+	NativePixmapType nativePixmap = eglSimulatorGetPixmapSurfaceBitmap(display,surface);
 	SymbianPixmap* symbianBitmap = (SymbianPixmap*)nativePixmap;
 	if ( symbianBitmap )
 	{
@@ -1255,12 +1255,12 @@ int EGLAPIWrapper::DispatchRequest( unsigned long aCode )
         }
         case EglRFC::EeglSimulatorSetSurfaceParams:
         {
-            ret = eglPlatsimSetSurfaceParams();
+            ret = eglSimulatorSetSurfaceParams();
             break;
         }
 		case EglRFC::EeglSimulatorCopyImageData:
         {
-            ret = eglPlatsimCopyImageData();
+            ret = eglSimulatorCopyImageData();
             break;
         }
 		case EglRFC::EeglPixmapSurfaceSizeChanged:

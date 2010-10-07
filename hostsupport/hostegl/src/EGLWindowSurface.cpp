@@ -67,7 +67,7 @@ CEGLWindowSurface::CEGLWindowSurface( CEGLConfig* config, EGLint colorSpace, EGL
 
 CEGLWindowSurface::~CEGLWindowSurface(void)
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( m_currentBuffer ) free( m_currentBuffer );
 #endif
     if( m_osContext )
@@ -76,7 +76,7 @@ CEGLWindowSurface::~CEGLWindowSurface(void)
 
 void* CEGLWindowSurface::CurrentBuffer()
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     m_currentBuffer = (m_currentBuffer && m_currentBuffer == m_buffer0) ? m_buffer1 : m_buffer0;
     EGLI_ASSERT( m_currentBuffer != NULL );
     return m_currentBuffer;

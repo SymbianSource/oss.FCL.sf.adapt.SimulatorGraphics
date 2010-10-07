@@ -20,11 +20,11 @@
 //        pvbus.pvbus_m_range[0x60000000..0x62ffffff] => graphicsvirtualhw.mbus; //=>Reserve own memory area later
 //        pvbus.pvbus_m_range[0x63000000..0x63000fff] => graphicsvirtualhw.pbus; //=>Reserve own memory area later                
 
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
 #define VVI_BASE 0x60000000
 #else
 #define VVI_BASE 0x00000000
-#endif // PLATSIM_CONFIG
+#endif // FIXED_MEMORY_LOCATION
 
 // base address
 #define VVI_REGISTERS_BASE_ADDRESS VVI_BASE + 0x03000000 
@@ -61,11 +61,11 @@
 #define VVI_EXECUTE 0
 
 //IRQ number
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
 #define VVI_IRQ 391
 #else
 // Jani - This is defined in syborg.h "EIntGraphics" - should we get it from there?
 #define VVI_IRQ 13
-#endif // PLATSIM_CONFIG
+#endif // FIXED_MEMORY_LOCATION
 
 #endif

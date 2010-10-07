@@ -1661,7 +1661,7 @@ int OpenVGAPIWrapper::WriteReply()
 #ifdef LOG_ERROR
 	int operationid = (int)m_currentFunctionCall.Data().Header().iOpCode;
 	
-	/*int vgerror*/VGErrorCode vgerror = ::vgPlatsimGetError();
+	/*int vgerror*/VGErrorCode vgerror = ::vgSimulatorGetError();
 	if ( m_lastVgError != vgerror )
 	{
 		if ( VG_NO_ERROR != vgerror )

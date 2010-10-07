@@ -26,7 +26,7 @@
 #include "sfEGLInterface.h"
 #include "riContext.h"
 #include "riPath.h"
-#include "vgext.h"
+#include "VG/vgext.h"
 #include "riImage.h"
 
 namespace 

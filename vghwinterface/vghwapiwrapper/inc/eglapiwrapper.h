@@ -121,8 +121,8 @@ private:
     int eglWaitNative();
     int eglSwapBuffers();
     int eglCopyBuffers();
-    int eglPlatsimSetSurfaceParams();
-	int eglPlatsimCopyImageData();
+    int eglSimulatorSetSurfaceParams();
+	int eglSimulatorCopyImageData();
 	int eglPixmapSurfaceSizeChanged();
 
 private://Meta calls

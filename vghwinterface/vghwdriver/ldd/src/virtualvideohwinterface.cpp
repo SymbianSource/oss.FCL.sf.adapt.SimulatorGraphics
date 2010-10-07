@@ -21,12 +21,13 @@
 #include <graphics/guestvideodriverinterfaceconstants.h>
 #include <graphics/virtualvideohwinterface.h>
 #include <graphics/virtualvideotracing.h>
-#include "syborg.h"
 
 // CONSTANTS
 
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
 _LIT( KVirtualVideoHwInterfacePanic, "DVirtualVideoHwInterface" );
+#else
+#include "syborg.h"
 #endif
 
 // ============================ LOCAL DATA TYPES ===============================
@@ -75,7 +76,7 @@ DVirtualVideoHwInterface::DVirtualVideoHwInterface()
     iOutputParametersMemoryChunk = NULL;
     iRegisterMemoryChunk = NULL;
 
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
 	iVideoRamBasePhys = VVI_BASE;
 #else
 	// Reserve a contiguous memory chunk for graphics usage
@@ -92,7 +93,7 @@ DVirtualVideoHwInterface::DVirtualVideoHwInterface()
  	SetSharedCmdMemBase( iVideoRamBasePhys + VVI_PARAMETERS_INPUT_BASE_ADDRESS );
 	SetSharedSurfacebufferMemBase( iVideoRamBasePhys + VVI_SURFACEBUFFER_BASE_ADDRESS );
 
-#endif // PLATSIM_CONFIG
+#endif // FIXED_MEMORY_LOCATION
     VVHW_TRACE("DVirtualVideoHwInterface::DVirtualVideoHwInterface()<");
     }
 
@@ -145,13 +146,13 @@ TInt DVirtualVideoHwInterface::InitParametersOutputMemory()
 
 TInt DVirtualVideoHwInterface::InitRegisterMemory()
     {
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
     return InitPhysicalMemory( VVI_REGISTERS_BASE_ADDRESS, 
             VVI_REGISTERS_MEMORY_SIZE, iRegisterMemoryChunk, 
             iRegisterChunkKernelAddress );        
 #else
     return KErrNone;    
-#endif // PLATSIM_CONFIG	
+#endif // FIXED_MEMORY_LOCATION	
     }
 
 // -----------------------------------------------------------------------------
@@ -280,12 +281,12 @@ void DVirtualVideoHwInterface::GetRegisterValue(
         }
     else
         {
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
         Kern::PanicCurrentThread( KVirtualVideoHwInterfacePanic, KErrNotReady );
 #else
         TLinAddr offset = RegisterOffset( aRegister );
 		aValue = ReadReg( KHwGraphicsRegBase, offset );
-#endif // PLATSIM_CONFIG
+#endif // FIXED_MEMORY_LOCATION
         }
     }
 
@@ -306,12 +307,12 @@ void DVirtualVideoHwInterface::SetRegisterValue(
         }
     else
         {
-#ifdef PLATSIM_CONFIG
+#ifdef FIXED_MEMORY_LOCATION
         Kern::PanicCurrentThread( KVirtualVideoHwInterfacePanic, KErrNotReady );
 #else
         TLinAddr offset = RegisterOffset( aRegister );
 		WriteReg( KHwGraphicsRegBase, offset, aValue );
-#endif // PLATSIM_CONFIG
+#endif // FIXED_MEMORY_LOCATION
         }
     }
 

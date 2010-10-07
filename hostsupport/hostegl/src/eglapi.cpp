@@ -52,7 +52,7 @@
     // \todo other platforms
 #endif
 
-#if defined(_WIN32) && !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(_WIN32) && !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 static DWORD g_tlsIndex = TLS_OUT_OF_INDEXES;
 #endif
 
@@ -62,7 +62,7 @@ EGLI_LOCK g_eglLock;
 
 CEGLState* getState()
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( !g_eglState )
         {
         g_eglState = EGLI_NEW CEGLState();
@@ -106,7 +106,7 @@ CEGLState* getState()
     CEGLThread* thread = (CEGLThread*)TlsGetValue( g_tlsIndex );
     if( g_eglState && !thread )
         {
-        // \todo Remove CEGLProcess when platsim extensions are not needed any more
+        // \todo Remove CEGLProcess when Simulator extensions are not needed any more
         thread = g_eglState->GetCurrentProcess()->AddThread( GetCurrentThreadId(), true, g_eglState->SupportedApis() );
         if( !thread ) 
             {
@@ -130,7 +130,7 @@ CEGLState* getState()
 
 static void releaseState()
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( g_eglState )
         {
         if( g_eglState->RemoveRef() )
@@ -164,7 +164,7 @@ static void releaseState()
 
 /*static*/ CEGLThread* getThread()
     {
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     CEGLState* state = getState();
     CEGLProcess* process = state->GetCurrentProcess();
     if( process )
@@ -287,7 +287,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglTerminate(EGLDisplay dpy)
     {
     EGLI_ENTER_RET( EGL_FALSE );
     CEGLDisplay* display = state->GetDisplay( dpy );
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     if( display && display->ProcessId() != process->Id() )
         {
         EGLI_LEAVE_RET( EGL_FALSE, EGL_BAD_DISPLAY );
@@ -405,7 +405,7 @@ EGLAPI const char * EGLAPIENTRY eglQueryString(EGLDisplay dpy, EGLint name)
             }
         case EGL_VERSION:
             {
-            ret ="1.4 PlatSim";
+            ret ="1.4 Simulator";
             break;
             }
 
@@ -659,7 +659,7 @@ EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy, EGLConfig c
         {
         EGLI_LEAVE_RET( EGL_NO_SURFACE, EGL_BAD_ALLOC );
         }
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     int width = 0;
     int height = 0;
     if( !CEGLOs::GetNativeWindowSize( win, width, height ) ||
@@ -680,7 +680,7 @@ EGLAPI EGLSurface EGLAPIENTRY eglCreateWindowSurface(EGLDisplay dpy, EGLConfig c
             EGLI_LEAVE_RET( EGL_NO_SURFACE, EGL_BAD_ALLOC );
             }
         }
-#endif // EGLI_USE_PLATSIM_EXTENSIONS
+#endif // EGLI_USE_SIMULATOR_EXTENSIONS
 
     surface->AddRef();
 
@@ -1165,7 +1165,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglWaitClient(void)
 
 EGLAPI EGLBoolean EGLAPIENTRY eglReleaseThread(void)
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 #if defined(_WIN32)
     EGLI_ASSERT( g_tlsIndex != TLS_OUT_OF_INDEXES );
     if( TlsGetValue( g_tlsIndex ) == NULL )
@@ -1179,7 +1179,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglReleaseThread(void)
 #endif
 #else
     EGLI_ENTER_RET( EGL_FALSE );
-#endif //EGLI_USE_PLATSIM_EXTENSIONS
+#endif //EGLI_USE_SIMULATOR_EXTENSIONS
 
     CEGLThread* thread = getThread();
     EGLenum api = thread->CurrentApi();
@@ -1198,7 +1198,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglReleaseThread(void)
         eglMakeCurrent( (EGLDisplay)display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT );
         }
     thread->SetApi( api );
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     process->RemoveThread( thread->Id() );
     if( process->ThreadCount() == 0 )
         {
@@ -2381,7 +2381,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy, EGLSurface surfaceI
         {
         EGLI_LEAVE_RET( EGL_FALSE, EGL_BAD_NATIVE_WINDOW ); 
         }
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     int w, h;
     if( !(CEGLOs::GetNativeWindowSize(((CEGLWindowSurface*)surface)->NativeType(), w, h)) )
         {
@@ -2415,7 +2415,7 @@ EGLAPI EGLBoolean EGLAPIENTRY eglSwapBuffers(EGLDisplay dpy, EGLSurface surfaceI
 
     EGLint stride = surface->Stride();
     void* buf = ((CEGLWindowSurface*)surface)->CurrentBuffer();
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     buf = (void*)((char*)buf + ((surface->Height() - 1) * stride));
 #else
     switch( currentApi )
@@ -2478,9 +2478,9 @@ EGLAPI __eglMustCastToProperFunctionPointerType EGLAPIENTRY
     EGLI_LEAVE_RET( ret, EGL_SUCCESS );
     }
 
-#if defined(EGLI_USE_PLATSIM_EXTENSIONS)
-// non-standard platsim functions
-EGLAPI void EGLAPIENTRY eglPlatsimSetProcessInformation( EGLint processId, EGLint threadId )
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
+// non-standard Simulator functions
+EGLAPI void EGLAPIENTRY eglSimulatorSetProcessInformation( EGLint processId, EGLint threadId )
     {
     EGLI_ENTER_RET(EGLI_NO_RET);
     if( process && process->Id() != processId )
@@ -2506,7 +2506,7 @@ EGLAPI void EGLAPIENTRY eglPlatsimSetProcessInformation( EGLint processId, EGLin
     EGLI_LEAVE_RET( EGLI_NO_RET, EGL_SUCCESS );
     }
 
-EGLAPI EGLint EGLAPIENTRY eglPlatsimGetError()
+EGLAPI EGLint EGLAPIENTRY eglSimulatorGetError()
     {
     //TODO
     EGLI_ENTER_RET( EGL_SUCCESS );
@@ -2518,7 +2518,7 @@ EGLAPI EGLint EGLAPIENTRY eglPlatsimGetError()
     }
 
 // This is called after eglCreateWindowSurface()
-EGLAPI void EGLAPIENTRY eglPlatsimSetSurfaceParams(
+EGLAPI void EGLAPIENTRY eglSimulatorSetSurfaceParams(
     EGLDisplay displayId, EGLSurface surfaceId, EGLint width, EGLint height,
     EGLint stride, void* buffer0, void *buffer1)
     {
@@ -2576,7 +2576,7 @@ EGLAPI void EGLAPIENTRY eglPlatsimSetSurfaceParams(
     EGLI_LEAVE_RET( EGLI_NO_RET, EGL_SUCCESS );
     }
 
-EGLAPI EGLNativePixmapType EGLAPIENTRY eglPlatsimGetPixmapSurfaceBitmap( EGLDisplay display, EGLSurface surface)
+EGLAPI EGLNativePixmapType EGLAPIENTRY eglSimulatorGetPixmapSurfaceBitmap( EGLDisplay display, EGLSurface surface)
     {
     //TODO
     return NULL;
@@ -2589,7 +2589,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL,
                      DWORD fdwReason,
                      LPVOID lpvReserved )
     {
-#if !defined(EGLI_USE_PLATSIM_EXTENSIONS)
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     switch( fdwReason )
         {
         case DLL_PROCESS_ATTACH:
@@ -2648,7 +2648,7 @@ switch( fdwReason )
             break;
             }
         }
-#endif // EGLI_USE_PLATSIM_EXTENSIONS
+#endif // EGLI_USE_SIMULATOR_EXTENSIONS
 
     return TRUE;
     }

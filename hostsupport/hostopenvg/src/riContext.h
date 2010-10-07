@@ -35,7 +35,7 @@
  *//*-------------------------------------------------------------------*/
 
 #ifndef OPENVG_H
-#include "openvg.h"
+#include "VG/openvg.h"
 #endif
 
 #ifndef __RIDEFS_H
