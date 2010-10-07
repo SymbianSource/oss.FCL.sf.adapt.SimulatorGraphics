@@ -69,9 +69,6 @@
         </meta>
         <unit bldFile="hostsupport/hostopenvg/group"/>
       </component>
-      <component id="hostthreadadapter" name="Host Thread Adapater" target="desktop" introduced="^4">
-        <unit bldFile="hostsupport/hostthreadadapter/group"/>
-      </component>
     </collection>
   </package>
 </SystemDefinition>

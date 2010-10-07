@@ -115,9 +115,6 @@
 <component name="hostopenvg" long-name="Host OpenVG" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostopenvg/group"/>
 </component>
-<component name="hostthreadadapter" long-name="Host Thread Adapater" introduced="^4" class="PC">
-<unit bldFile="hostsupport/hostthreadadapter/group"/>
-</component>
 </collection>
 </block>
 </layer>
