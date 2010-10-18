@@ -38,8 +38,8 @@
 
 CEGLImage::CEGLImage( EGLenum target, EGLClientBuffer buffer, 
                       SurfaceDescriptor desc, void* data) :
-    m_buffer( buffer ),
     m_target( target ),
+    m_buffer( buffer ),
 	m_data(data)
     {
     m_siblings = EGLI_NEW EGLImageSibling;
@@ -115,8 +115,6 @@ void CEGLImage::UpdateData( CEGLState *state, void* data )
             case EGL_GL_TEXTURE_CUBE_MAP_NEGATIVE_Z_KHR:
                 {
                 // GLES
-                IEGLtoGLES2Interface* iFace = (IEGLtoGLES2Interface*)state->GLESInterface(2);
-                //iFace->UpdateBuffers(
                 }
                 break;
             default:

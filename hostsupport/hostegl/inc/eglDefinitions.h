@@ -73,13 +73,13 @@
 #   if defined(_DEBUG)
 #       define EGLI_ASSERT assert
 #   else
-#      define EGLI_ASSERT
+#      define EGLI_ASSERT (void)
 #   endif //_DEBUG
 #else
 #   if !defined(NDEBUG)
 #       define EGLI_ASSERT assert
 #   else
-#       define EGLI_ASSERT
+#       define EGLI_ASSERT (void)
 #   endif
 #endif
 

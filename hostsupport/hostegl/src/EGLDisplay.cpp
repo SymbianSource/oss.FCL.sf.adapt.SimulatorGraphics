@@ -38,7 +38,6 @@
 #include "ColorDescriptor.h"
 #include "EGLOs.h"
 #include "EGLUtils.h"
-#include "EGLState.h"
 #include "EGLProcess.h"
 #include "EGLThread.h"
 
@@ -186,8 +185,6 @@ bool CEGLDisplay::TerminateDisplay()
     bool ret = true;
     std::vector<CEGLSurface*> boundSurfaces;
     std::vector<CEGLSurface*>::iterator sIter = m_surfaces.begin();
-    CEGLState* state = getState();
-    CEGLThread* thread = state->GetCurrentProcess()->CurrentThread();
     while( sIter != m_surfaces.end() )
         {
         if( (*sIter)->IsTerminated() || !((*sIter)->RemoveRef()) )

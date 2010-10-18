@@ -108,7 +108,6 @@ SurfaceDescriptor* CEGLSurface::Descriptor()
     EGLint blueSize = colorDesc->BlueSize();
     EGLint greenSize = colorDesc->GreenSize();
     EGLint redSize = colorDesc->RedSize();
-    EGLint luminanceSize = colorDesc->LuminanceSize();
 
     if( colorDesc->isLuminance() )
         {

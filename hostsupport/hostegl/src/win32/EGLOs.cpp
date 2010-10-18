@@ -184,8 +184,8 @@ void CEGLOs::ConfigToNativePixelFormat( const CEGLConfig& config, EGLINativePixe
 EGLINativeContextType CEGLOs::CreateNativeContext( const CEGLConfig& config, EGLINativeDisplayType display, EGLINativeContextType shareContext )
     {
     EGLINativeContextType ret = NULL;
-    DWORD error = ERROR_SUCCESS;
 #if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
+    DWORD error = ERROR_SUCCESS;
     PIXELFORMATDESCRIPTOR pfd;
     memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
     CEGLOs::ConfigToNativePixelFormat( config, &pfd );
@@ -216,7 +216,11 @@ EGLINativeContextType CEGLOs::CreateNativeContext( const CEGLConfig& config, EGL
 
 EGLINativeContextType CEGLOs::CurrentNativeContext()
     {
+#if defined(EGLI_USE_SIMULATOR_EXTENSIONS)
+    return 0;
+#else
     return wglGetCurrentContext();
+#endif
     }
 
 EGLINativeDisplayType CEGLOs::CurrentNativeSurface()
@@ -224,7 +228,7 @@ EGLINativeDisplayType CEGLOs::CurrentNativeSurface()
 #if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
     return wglGetCurrentDC();
 #else
-    return NULL;
+    return 0;
 #endif
     }
 
@@ -277,8 +281,8 @@ bool CEGLOs::DestroyNativeContext( EGLINativeContextType context )
 bool CEGLOs::InitializeNativeGLFunctions( struct EGLINativeGLFunctions* func, EGLINativeDisplayType display, EGLINativeContextType context )
     {
     bool ret = true;
-    DWORD error = ERROR_SUCCESS;
 #if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
+    DWORD error = ERROR_SUCCESS;
     HDC currentDC = wglGetCurrentDC();
     HGLRC currentContext = wglGetCurrentContext();
     
@@ -490,7 +494,7 @@ EGLINativeDisplayType CEGLOs::CreateDefaultDisplay()
     //return (EGLINativeDisplayType)CreateDC(TEXT("DISPLAY"), TEXT("DISPLAY")/*NULL*/, NULL, NULL);
     //return (EGLINativeDisplayType)GetDC(NULL);
     //return GetWindowDC(NULL);
-    return NULL;
+    return 0;
     }
 
 void CEGLOs::DestroyDefaultDisplay( EGLINativeDisplayType display )
@@ -504,11 +508,6 @@ void CEGLOs::DestroyDefaultDisplay( EGLINativeDisplayType display )
 
 EGLINativeWindowType CEGLOs::CreateNativeWindow( int width, int height )
     {
-    int xBorder = GetSystemMetrics( SM_CXBORDER );
-    int yBorder = GetSystemMetrics( SM_CYBORDER );
-    int caption = GetSystemMetrics( SM_CYCAPTION );
-    
-
     WNDCLASS wndclass;
     wndclass.style		   = 0;
     wndclass.lpfnWndProc   = WndProc;
@@ -618,8 +617,8 @@ EGLIOsWindowContext* CEGLOs::CreateOSWindowContext( EGLINativeWindowType wnd, co
         return NULL;
         }
     ctx->window = wnd;
-    ctx->vgDisplay = NULL;
-    ctx->glesDisplay = NULL;
+    ctx->vgDisplay = 0;
+    ctx->glesDisplay = 0;
     ctx->pixmap = NULL;
     ctx->osBuffer = NULL;
     ctx->width = 0;
@@ -742,11 +741,13 @@ EGLILibraryHandle CEGLOs::LoadHostGL()
 
 void* CEGLOs::GetGLProcAddress(EGLILibraryHandle& libraryHandle, const char* proc)
     {
-    void* addr = GetProcAddress(libraryHandle, proc);
+    void* addr = (void*)GetProcAddress(libraryHandle, proc);
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 	if(!addr)
 		{
-		addr = wglGetProcAddress(proc);
+		addr = (void*)wglGetProcAddress(proc);
 		}
+#endif
 
 	return addr;
     }

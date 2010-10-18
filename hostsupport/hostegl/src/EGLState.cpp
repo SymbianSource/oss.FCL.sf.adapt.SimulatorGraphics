@@ -53,7 +53,7 @@ CEGLState::CEGLState(void) :
     m_GLES2Interface( NULL ),
 	m_hostGL( NULL ),
     m_supportedApis( 0 ),
-	m_defaultDisplay( NULL ),
+	m_defaultDisplay( 0 ),
 	m_dummyWindow( NULL )
     {
 
@@ -446,9 +446,6 @@ bool CEGLState::SyncSurface( EGLenum api, EGLint apiVersion, CEGLSurface* surfac
 				{
 				if( surface != currentGLESReadSurface )
 					{
-					EGLINativeContextType glesCopyContext = NULL;
-                    EGLINativeDisplayType glesCopyDisplay = NULL;
-                    EGLINativeGLFunctions* funcs = NULL;
 					bool pbuffer = ( surface->Type() == CEGLSurface::PBUFFER_SURFACE );
 					if( pbuffer )
 						{
@@ -461,12 +458,7 @@ bool CEGLState::SyncSurface( EGLenum api, EGLint apiVersion, CEGLSurface* surfac
 						}
 					else if( surface->Type() == CEGLSurface::WINDOW_SURFACE )
 						{
-						// \todo Remove this or handle window surface sync properly
-						/*
-						funcs = thread->CurrentGLESContext()->NativeGLFunctions();
-						glesCopyContext = thread->CurrentGLESContext()->NativeContext();
-						glesCopyDisplay = ((CEGLWindowSurface*)surface)->OsContext()->glesDisplay;
-						*/
+						// \todo Handle window surface sync properly
 						}
 					if( !(GLESInterface(glesVersion)->CopyBuffers(surface->GLESColorBuffer(), surface->Descriptor())) )
 						{

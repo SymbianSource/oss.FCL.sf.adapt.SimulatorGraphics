@@ -37,7 +37,7 @@ const int KPbufferWidth = 16384;
 const int KPbufferPixels = KPbufferHeight * KPbufferWidth;
 
 CEGLConfig::CEGLConfig(void) :
-    m_nativeVisualId( NULL )
+    m_nativeVisualId( 0 )
     {
     }
 
@@ -72,7 +72,7 @@ CEGLConfig::CEGLConfig( CColorDescriptor&   colorDescriptor,
     m_maxSwapInterval( maxSwapInterval ),
     m_minSwapInterval( minSwapInterval ),
     m_nativeRenderable( nativeRenderable ),
-    m_nativeVisualId( NULL ),
+    m_nativeVisualId( 0 ),
     m_nativeVisualType( nativeVisualType ),
     m_renderableType( renderableType ),
     m_sampleBuffers( samples > 1 ? 1 : 0 ),
@@ -814,9 +814,9 @@ bool CEGLConfig::Match( const CEGLConfig& filter ) const
     
     if( m_colorDescriptor.AlphaMaskSize() < filter.m_colorDescriptor.AlphaMaskSize() ) return false;
     
-    if( filter.m_bindToTexRGB != EGL_DONT_CARE && (m_bindToTexRGB != filter.m_bindToTexRGB) ) return false;
+    if( (EGLint)filter.m_bindToTexRGB != EGL_DONT_CARE && (m_bindToTexRGB != filter.m_bindToTexRGB) ) return false;
     
-    if( filter.m_bindToTexRGBA != EGL_DONT_CARE && (m_bindToTexRGBA != filter.m_bindToTexRGBA) ) return false;
+    if( (EGLint)filter.m_bindToTexRGBA != EGL_DONT_CARE && (m_bindToTexRGBA != filter.m_bindToTexRGBA) ) return false;
     
     if( filter.m_colorDescriptor.Format() != EGL_DONT_CARE )
         {
@@ -825,7 +825,7 @@ bool CEGLConfig::Match( const CEGLConfig& filter ) const
         if( thisBufType != filterBufType ) return false;
         }
 
-    if( filter.m_configCaveat != EGL_DONT_CARE && (m_configCaveat != filter.m_configCaveat) ) return false;
+    if( (EGLint)filter.m_configCaveat != EGL_DONT_CARE && (m_configCaveat != filter.m_configCaveat) ) return false;
 
     if( m_configId == filter.m_configId ) return false;
     
@@ -839,7 +839,7 @@ bool CEGLConfig::Match( const CEGLConfig& filter ) const
 
     if( filter.m_minSwapInterval != EGL_DONT_CARE && (m_minSwapInterval != filter.m_minSwapInterval) ) return false;
 
-    if( filter.m_nativeRenderable != EGL_DONT_CARE && (m_nativeRenderable != filter.m_nativeRenderable) ) return false;
+    if( (EGLint)filter.m_nativeRenderable != EGL_DONT_CARE && (m_nativeRenderable != filter.m_nativeRenderable) ) return false;
 
     if( filter.m_nativeVisualType != EGL_DONT_CARE && (m_nativeVisualType != filter.m_nativeVisualType) ) return false;
 

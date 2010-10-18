@@ -57,7 +57,9 @@ static DWORD g_tlsIndex = TLS_OUT_OF_INDEXES;
 #endif
 
 static CEGLState* g_eglState = NULL;
+#if !defined(EGLI_USE_SIMULATOR_EXTENSIONS)
 static bool g_lockInitialized = false;
+#endif
 EGLI_LOCK g_eglLock;
 
 CEGLState* getState()
@@ -457,14 +459,14 @@ EGLAPI EGLBoolean EGLAPIENTRY eglChooseConfig(EGLDisplay dpy, const EGLint *attr
     colorDesc->SetAttribute( EGL_COLOR_BUFFER_TYPE, EGL_RGB_BUFFER );
     CEGLConfig* filter = EGLI_NEW CEGLConfig(
                     *colorDesc,
-                    EGL_DONT_CARE,  
-                    EGL_DONT_CARE,
-                    EGL_DONT_CARE,
+                    (EGLBoolean)EGL_DONT_CARE,  
+                    (EGLBoolean)EGL_DONT_CARE,
+                    (EGLenum)EGL_DONT_CARE,
                     EGL_DONT_CARE,
                     0, 0, 0,
                     EGL_DONT_CARE,
                     EGL_DONT_CARE,
-                    EGL_DONT_CARE,
+                    (EGLBoolean)EGL_DONT_CARE,
                     EGL_DONT_CARE,
                     EGL_OPENGL_ES_BIT,
                     0, 0, 0,
@@ -906,7 +908,6 @@ EGLAPI EGLBoolean EGLAPIENTRY eglDestroySurface(EGLDisplay dpy, EGLSurface surfa
         }
 
     // \note EGLI_ENTER_RET macro will fail if thread allocation didn't succeed
-    CEGLThread* thread = getThread();
 
     surface->Lock();
     //TODO: client apis
@@ -1206,9 +1207,8 @@ EGLAPI EGLBoolean EGLAPIENTRY eglReleaseThread(void)
         state->RemoveProcess( process->Id() );
         process = NULL;
         }
-#else
-    releaseState();
 #endif
+    releaseState();
     return EGL_TRUE;
     }
 
@@ -1940,8 +1940,8 @@ EGLAPI EGLBoolean EGLAPIENTRY eglMakeCurrent(EGLDisplay dpy, EGLSurface draw,
                         }
                     context->SetNativeGLFucntions( nativeFuncs );
                     }
-                EGLINativeDisplayType drawDC = NULL;
-                EGLINativeDisplayType readDC = NULL;
+                EGLINativeDisplayType drawDC = 0;
+                EGLINativeDisplayType readDC = 0;
                 if( drawSurface->Type() == CEGLSurface::PBUFFER_SURFACE ) 
                     {
                     drawDC = ((CEGLPbufferSurface*)drawSurface)->NativeDisplay();
