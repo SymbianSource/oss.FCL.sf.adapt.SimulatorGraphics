@@ -1119,9 +1119,9 @@ EGLBoolean CGuestEGL::eglMakeCurrent(TEglThreadState& aThreadState, EGLDisplay a
 		RemoteFunctionCallData rfcdata; EglRFC eglApiData( rfcdata );
 		eglApiData.Init( EglRFC::EeglMakeCurrent );
 		eglApiData.AppendEGLDisplay(aDisplay);
-		eglApiData.AppendEGLSurface(EGL_NO_SURFACE);
-		eglApiData.AppendEGLSurface(EGL_NO_SURFACE);
-		eglApiData.AppendEGLContext(EGL_NO_CONTEXT);
+		eglApiData.AppendEGLSurface(aDraw);
+		eglApiData.AppendEGLSurface(aRead);
+		eglApiData.AppendEGLContext(aContext);
 
 		EGLBoolean ret = aThreadState.ExecEglBooleanCmd(eglApiData);
 		EGL_TRACE("CGuestEGL::eglMakeCurrent end success=%d", ret);
