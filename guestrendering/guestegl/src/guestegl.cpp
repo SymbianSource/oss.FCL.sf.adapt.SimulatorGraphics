@@ -1118,10 +1118,10 @@ EGLBoolean CGuestEGL::eglMakeCurrent(TEglThreadState& aThreadState, EGLDisplay a
 		EGL_TRACE("CGuestEGL::eglMakeCurrent call host");
 		RemoteFunctionCallData rfcdata; EglRFC eglApiData( rfcdata );
 		eglApiData.Init( EglRFC::EeglMakeCurrent );
-		eglApiData.AppendEGLDisplay(aDisplay);
-		eglApiData.AppendEGLSurface(aDraw);
-		eglApiData.AppendEGLSurface(aRead);
-		eglApiData.AppendEGLContext(aContext);
+		eglApiData.AppendEGLDisplay(EGL_NO_DISPLAY);
+		eglApiData.AppendEGLSurface(EGL_NO_SURFACE);
+		eglApiData.AppendEGLSurface(EGL_NO_SURFACE);
+		eglApiData.AppendEGLContext(EGL_NO_CONTEXT);
 
 		EGLBoolean ret = aThreadState.ExecEglBooleanCmd(eglApiData);
 		EGL_TRACE("CGuestEGL::eglMakeCurrent end success=%d", ret);
@@ -1154,6 +1154,7 @@ EGLBoolean CGuestEGL::eglMakeCurrent(TEglThreadState& aThreadState, EGLDisplay a
 				{
 				EGL_TRACE("CGuestEGL::eglMakeCurrent check surface %d", surfaces[i] );
 				surfaceInfo[i] = EglInternalFunction_GetPlatformSurface( aDisplay, surfaces[i] );
+				EGL_TRACE("CGuestEGL::eglMakeCurrent surfaces[%d] is %x", i, surfaces[i]);
 				//EGL_CHECK_ERROR( surfaceInfo, EGL_BAD_SURFACE , EGL_FALSE );
 				if ( surfaceInfo[i] )
 					{
@@ -1216,7 +1217,7 @@ EGLBoolean CGuestEGL::eglMakeCurrent(TEglThreadState& aThreadState, EGLDisplay a
 
 		eglApiData.AppendEGLContext(aContext);
 		EGLBoolean ret = aThreadState.ExecEglBooleanCmd(eglApiData);
-		EGL_TRACE("CGuestEGL::eglMakeCurrent end success=%d", ret);
+		EGL_TRACE("CGuestEGL::eglMakeCurrent last end success=%d", ret);
 		return (EGLBoolean)ret;
 		}
 	}
