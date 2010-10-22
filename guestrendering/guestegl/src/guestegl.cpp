@@ -249,7 +249,6 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 	TSize size = window->Size();
 	
 	TSurfaceInfo* surfaceInfo = NULL;
-	TSurfaceId surfaceId;
 
     RSurfaceManager::TSurfaceCreationAttributesBuf buf;
     RSurfaceManager::TSurfaceCreationAttributes& attributes = buf();
@@ -281,8 +280,8 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				surfaceInfo->iNativeWindow = (RWindow*)aNativeWindow;
 				surfaceInfo->iConfigId = aConfig;
 				surfaceInfo->iSurfaceManager.Open();
-				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceId);
-				TInt err = surfaceInfo->iSurfaceManager.MapSurface(surfaceId, surfaceInfo->iChunk);
+				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceInfo->iSurfaceId);
+				TInt err =  surfaceInfo->iSurfaceManager.MapSurface(surfaceInfo->iSurfaceId, surfaceInfo->iChunk);
 				EGL_TRACE("CGuestEGL::eglCreateWindowSurface surface manager returned chunk %x and ret val %d", surfaceInfo->iChunk, err);
 				RemoteFunctionCallData rfcdata;
 				EglRFC eglApiData( rfcdata );
@@ -300,7 +299,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				EglInternalFunction_CreateSurface(aThreadState, aDisplay, surfaceInfo->iHostSurfaceId, aConfig, window, *surfaceInfo);
 				surfaceInfo->iSurfaceUpdateSession.Connect();
 				TSurfaceConfiguration surfaceConfig;
-				surfaceConfig.SetSurfaceId(surfaceId);
+				surfaceConfig.SetSurfaceId(surfaceInfo->iSurfaceId);
 				window->SetBackgroundSurface(surfaceConfig, ETrue);
 				}
 			CVghwUtils::SwitchFromVghwHeap(threadHeap);
@@ -1234,6 +1233,7 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
 	{
     RSurfaceManager::TSurfaceCreationAttributesBuf attributes;
     RSurfaceManager::TInfoBuf info;
+	TInt r;
 
     aSurfaceInfo.iNativeWindow = aNativeWindow;
     aSurfaceInfo.iSurfaceType = ESurfaceTypeWindow;
@@ -1262,9 +1262,18 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     // FAISALMEMON HOLE 1
 
     // FAISALMEMON STUB CODE
-    TUint8 offsetToFirstBuffer = 0; // This is wrong; just stub code
-    TUint8 offsetToSecondBuffer = 0; // This is wrong; just stub code
-    // FAISALMEMON END OF STUB CODE
+
+    TInt offsetToFirstBuffer = -1;
+    TInt offsetToSecondBuffer = -1;
+	r = aSurfaceInfo.iSurfaceManager.GetBufferOffset(aSurfaceInfo.iSurfaceId,0,offsetToFirstBuffer);
+	if(r!=KErrNone)
+		return EGL_FALSE;
+	r = aSurfaceInfo.iSurfaceManager.GetBufferOffset(aSurfaceInfo.iSurfaceId,1,offsetToSecondBuffer);
+	if(r!=KErrNone)
+		return EGL_FALSE;
+    EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface offsetToFirstBuffer=0x%x offsetToSecondBuffer=0x%x",offsetToFirstBuffer,offsetToSecondBuffer);
+
+	// FAISALMEMON END OF STUB CODE
     
     TUint32 chunkHWBase = 0;
     TInt err = CVghwUtils::MapToHWAddress(aSurfaceInfo.iChunk.Handle(), chunkHWBase);
