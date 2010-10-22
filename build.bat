@@ -29,7 +29,7 @@ IF '%1'=='/NOBUILD' goto DISABLEBUILD
 
 if "%VISUAL_STUDIO_SOLUTION%"=="ON" (
 	set GENERATOR=Visual Studio 8 2005
-	if '%TOOLCHAIN_VARIANT%'=='2008' set GENERATOR=Visual Studio 9 2008
+	if '%TOOLCHAIN_VARIANT%'=='vs2008' set GENERATOR=Visual Studio 9 2008
 ) else (
 	set GENERATOR=NMake Makefiles
 )
