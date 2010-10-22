@@ -16,6 +16,7 @@
 #ifndef __VGHWUTILS_H__
 #define __VGHWUTILS_H__
 
+#define _DEBUG // FAISALMEMON temporary
 //  Include Files
 #include <e32base.h>	// CBase
 #include <EGL/egl.h>

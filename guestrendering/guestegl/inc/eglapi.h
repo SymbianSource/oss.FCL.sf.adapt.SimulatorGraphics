@@ -16,6 +16,8 @@
 #ifndef EGLAPI_H_
 #define EGLAPI_H_
 
+#define _DEBUG // FAISALMEMON temporary
+
 // INCLUDES
 #include <e32std.h>
 #include <e32base.h>

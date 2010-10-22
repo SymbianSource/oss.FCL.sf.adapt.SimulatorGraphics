@@ -265,6 +265,7 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
     attributes.iOffsetBetweenBuffers = 0;
     attributes.iContiguous = ETrue;
     attributes.iCacheAttrib = RSurfaceManager::ENotCached;      // Cache attributes
+    attributes.iMappable = ETrue;
 
 	iDisplayMapLock.WriteLock();
 	CEglDisplayInfo** pDispInfo;
@@ -281,7 +282,8 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				surfaceInfo->iConfigId = aConfig;
 				surfaceInfo->iSurfaceManager.Open();
 				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceId);
-				(void) surfaceInfo->iSurfaceManager.MapSurface(surfaceId, surfaceInfo->iChunk);
+				TInt err = surfaceInfo->iSurfaceManager.MapSurface(surfaceId, surfaceInfo->iChunk);
+				EGL_TRACE("CGuestEGL::eglCreateWindowSurface surface manager returned chunk %x and ret val %d", surfaceInfo->iChunk, err);
 				RemoteFunctionCallData rfcdata;
 				EglRFC eglApiData( rfcdata );
 				eglApiData.Init( EglRFC::EeglCreateWindowSurface);
@@ -1264,14 +1266,15 @@ TBool CGuestEGL::EglInternalFunction_CreateSurface(TEglThreadState& aThreadState
     // FAISALMEMON END OF STUB CODE
     
     TUint32 chunkHWBase = 0;
-    (void)CVghwUtils::MapToHWAddress(aSurfaceInfo.iChunk.Handle(), chunkHWBase);
+    TInt err = CVghwUtils::MapToHWAddress(aSurfaceInfo.iChunk.Handle(), chunkHWBase);
+    EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface MapToHWAddress returned %d", err);
     // FAISALMEMON write code to handle errors in the above function
     EGL_TRACE("CGuestEGL::EglInternalFunction_CreateSurface AFTER VGHWUtils::MapToHWAddress");
 
 	TUint32 surfaceBufferBaseAddress(0);
 	(void)CVghwUtils::GetSurfaceBufferBaseAddress(surfaceBufferBaseAddress);
-	EGL_TRACE("CPlatsimEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
-
+	EGL_TRACE("CGuestEGL::egliCreateSurface AFTER VGHWUtils::MapToHWAddress");
+	EGL_TRACE("CGuestEGL::egliCreateSurface aSurfaceInfo.iChunk.Base() is %x", aSurfaceInfo.iChunk.Base());
     /* Store the pointer to the pixel data */
     aSurfaceInfo.iBuffer0 = aSurfaceInfo.iChunk.Base() + offsetToFirstBuffer;
     aSurfaceInfo.iBuffer1 = aSurfaceInfo.iChunk.Base() + offsetToSecondBuffer;

@@ -21,9 +21,10 @@
 #include <e32hashtab.h>
 #include "vghwutils.h"
 
-
+#define _DEBUG // FAISALMEMON temporary
 
 // tracing
+
 #include <e32debug.h>
 #ifdef _DEBUG
 	#define OPENVG_TRACE(fmt, args...) RDebug::Printf(fmt, ##args)
