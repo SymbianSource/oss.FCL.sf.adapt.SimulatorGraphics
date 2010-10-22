@@ -286,6 +286,8 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				surfaceInfo->iConfigId = aConfig;
 				surfaceInfo->iSurfaceManager.Open();
 				surfaceInfo->iSurfaceManager.CreateSurface(buf, surfaceInfo->iSurfaceId);
+				surfaceInfo->iStride = attributes.iStride;
+
 				TInt err =  surfaceInfo->iSurfaceManager.MapSurface(surfaceInfo->iSurfaceId, surfaceInfo->iChunk);
 				EGL_TRACE("CGuestEGL::eglCreateWindowSurface surface manager returned chunk %x and ret val %d", surfaceInfo->iChunk, err);
 				RemoteFunctionCallData rfcdata;
