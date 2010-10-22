@@ -33,8 +33,13 @@
 
 // FAISALMEMON STUB CODE
 #define EGL_CHECK_ERROR(a, b, c)      /* This does no checking; just a stub */
-void CGuestEGL::EglInternalFunction_DestroyWindowSurface(TSurfaceInfo&)
+void CGuestEGL::EglInternalFunction_DestroyWindowSurface(TSurfaceInfo& aSurfaceInfo)
 	{
+	RWindow* window = aSurfaceInfo.iNativeWindow;
+	TInt screen = window->ScreenNumber();
+	RWsSession* session = window->Session();
+	session->UnregisterSurface(screen, aSurfaceInfo.iSurfaceId);
+
 	return; // stub code
 	}
 
@@ -300,6 +305,11 @@ EGLSurface CGuestEGL::eglCreateWindowSurface(TEglThreadState& aThreadState, EGLD
 				surfaceInfo->iSurfaceUpdateSession.Connect();
 				TSurfaceConfiguration surfaceConfig;
 				surfaceConfig.SetSurfaceId(surfaceInfo->iSurfaceId);
+
+				TInt screen = window->ScreenNumber();
+				RWsSession& session = *window->Session();
+				session.RegisterSurface(screen, surfaceInfo->iSurfaceId);
+
 				window->SetBackgroundSurface(surfaceConfig, ETrue);
 				}
 			CVghwUtils::SwitchFromVghwHeap(threadHeap);
