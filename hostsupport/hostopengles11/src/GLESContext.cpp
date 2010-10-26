@@ -32,9 +32,9 @@
 #include "GLESTexture.h"
 
 GLESContext::GLESContext(void* nativeContext) :
+	m_initialized(false),
 	m_nativeContext(nativeContext),
-	m_texCoordArray(NULL),
-	m_initialized(false)
+	m_texCoordArray(NULL)
 {
 }
 
@@ -84,7 +84,7 @@ bool GLESContext::Initialize()
 	// The maximum number of texture units supported by the wrapper depends on the number
 	// of bits in the array state variable (four bits are used by vertex, normal, color
 	// and point size arrays).
-	m_maxTextureUnits = GLES_MIN(maxTextureUnits, sizeof(m_enabledArrays) * 8 - 4);
+	m_maxTextureUnits = GLES_MIN(maxTextureUnits, (int)(sizeof(m_enabledArrays) * 8 - 4));
 	m_maxClipPlanes = maxClipPlanes;
 	m_maxLights = maxLights;
 

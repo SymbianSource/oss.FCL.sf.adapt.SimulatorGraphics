@@ -42,7 +42,7 @@ PRJ_EXPORTS
 PRJ_EXTENSIONS
 
 // Dynamic library.
-start extension tools/x86tool
+start extension graphics_simulator/hostbuild
 option TARGET_NAME EGL
 option TARGET_TYPE dll
 option SOURCE_DIRS ../src ../src/win32

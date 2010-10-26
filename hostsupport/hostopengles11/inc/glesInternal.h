@@ -50,7 +50,7 @@
 #if defined(_DEBUG)
 #define GLES_ASSERT assert
 #else // defined(_DEBUG)
-#define GLES_ASSERT
+#define GLES_ASSERT (void)
 #endif // !defined(_DEBUG)
 
 #define GLES_NEW new(std::nothrow)

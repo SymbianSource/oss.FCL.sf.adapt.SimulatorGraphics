@@ -273,7 +273,7 @@ static void surfaceDescriptorToGLEnums(const SurfaceDescriptor& desc, GLenum& in
 
 int EGLtoGLESInterface::BindTexImage( void* surface, int level, bool generateMipmap, const SurfaceDescriptor* desc, void* buffer )
 {
-    GLES_ENTER_RET(NULL);
+    GLES_ENTER_RET(0);
 
 	GLuint ret = 0;
 

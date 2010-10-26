@@ -2105,7 +2105,7 @@ GL_API void GL_APIENTRY glTexImage2D (GLenum target, GLint level, GLint internal
 	GLES_ERROR_IF(!isValidPixelFormatEnum(internalformat), GL_INVALID_ENUM);
 	GLES_ERROR_IF(!isValidPixelFormatEnum(format), GL_INVALID_ENUM);
 	GLES_ERROR_IF(!isValidPixelTypeEnum(type), GL_INVALID_ENUM);
-	GLES_ERROR_IF(internalformat != format, GL_INVALID_ENUM);
+	GLES_ERROR_IF(internalformat != (GLint)format, GL_INVALID_ENUM);
 	GLES_ERROR_IF(isPalettedFormat(internalformat), GL_INVALID_OPERATION);
 	
 	ctx->DGL().glTexImage2D (target, level, internalformat, width, height, border, format, type, pixels);
