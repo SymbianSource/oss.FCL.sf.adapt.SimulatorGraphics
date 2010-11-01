@@ -2002,7 +2002,7 @@ void RI_APIENTRY vgRenderToMask(VGPath path, VGbitfield paintModes, VGMaskOperat
          
         //Drawable drawable(Color::formatToDescriptor(VG_A_8), curr->getWidth(), curr->getHeight(), curr->getNumSamples(), 1);    //TODO 0 mask bits (mask buffer is not used)
 
-        Rasterizer& rasterizer = context->m_rasterizer;
+        OpenVGRI::Rasterizer& rasterizer = context->m_rasterizer;
         rasterizer.clear();
 
         rasterizer.setScissoring(context->m_scissoring ? true : false);
@@ -2447,7 +2447,7 @@ static bool drawPath(VGContext* context, VGPath path, const Matrix3x3& userToSur
     if(!drawable)
         return false;   //no EGL surface is current at the moment
 
-    Rasterizer& rasterizer = context->m_rasterizer;
+    OpenVGRI::Rasterizer& rasterizer = context->m_rasterizer;
     rasterizer.clear();
 
     if(context->m_scissoring)
@@ -3098,7 +3098,7 @@ static bool drawImage(VGContext* context, VGImage image, const Matrix3x3& userTo
     p2 *= 1.0f/p2.z;
     p3 *= 1.0f/p3.z;
 
-    Rasterizer& rasterizer = context->m_rasterizer;
+    OpenVGRI::Rasterizer& rasterizer = context->m_rasterizer;
     rasterizer.clear();
 
     rasterizer.setScissoring(context->m_scissoring ? true : false);
@@ -3812,14 +3812,14 @@ VGImage vgCreateEGLImageTargetKHR(VGeglImageKHR image)
     eglvgGetImageDescriptor( image, desc, width, height, stride );
     // There is some error.
     // EGLImage is null or EGLImage target is EGL_VG_PARENT_IMAGE_KHR.
-    RI_IF_ERROR(!width || !height || !stride, VG_ILLEGAL_ARGUMENT_ERROR, NULL);
+    RI_IF_ERROR(!width || !height || !stride, VG_ILLEGAL_ARGUMENT_ERROR, VG_INVALID_HANDLE);
     // Data is created in EGLImage class.
     data = (OpenVGRI::RIuint8*)eglvgGetImageData( image );    
     // Create VGImage
     // allowedQuality = VG_IMAGE_QUALITY_NONANTIALIASED | VG_IMAGE_QUALITY_FASTER | VG_IMAGE_QUALITY_BETTER
     ret = vgCreateImage( desc.vgFormat, width, height, VG_IMAGE_QUALITY_NONANTIALIASED );
     // If VGImage is not created raise error and return null
-    RI_IF_ERROR(!ret, VG_UNSUPPORTED_IMAGE_FORMAT_ERROR, NULL);
+    RI_IF_ERROR(!ret, VG_UNSUPPORTED_IMAGE_FORMAT_ERROR, VG_INVALID_HANDLE);
     // Set data for VGImage.
     // This will copy that data-object.
     vgImageSubData( ret, 

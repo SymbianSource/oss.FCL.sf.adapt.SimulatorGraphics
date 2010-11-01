@@ -40,8 +40,10 @@
 #ifndef __SFDYNAMICPIXELPIPE_H
 #   include "sfDynamicPixelPipe.h"
 #endif
+#if defined(RI_COMPILE_LLVM_BYTECODE)
 #ifndef __SFCOMPILER_H
 #   include "sfCompiler.h"
+#endif
 #endif
 
 //==============================================================================================
@@ -1417,7 +1419,7 @@ void PixelPipe::colorTransform(Color& c) const
 
 void PixelPipe::fillSpans(PPVariants& variants, const Span* spans, int nSpans) const
 {
-#if 1
+#if defined(RI_COMPILE_LLVM_BYTECODE)
     PPCompiler& compiler = PPCompiler::getCompiler();
 
     PPCompiler::PixelPipeHandle handle = compiler.compilePixelPipeline(m_derivedState);

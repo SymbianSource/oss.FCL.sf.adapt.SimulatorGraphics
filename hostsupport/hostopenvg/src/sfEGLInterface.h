@@ -48,7 +48,7 @@ class EGLtoVGInterface : public IEGLtoVGInterface
 {
 public:
     EGLtoVGInterface();
-    ~EGLtoVGInterface();
+    virtual ~EGLtoVGInterface();
 
     void    SetEGLInterface( IVGtoEGLInterface* egl );
     void*   CreateContext( void* shareContext );

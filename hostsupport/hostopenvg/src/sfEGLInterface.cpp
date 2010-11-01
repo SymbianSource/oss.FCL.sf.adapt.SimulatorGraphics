@@ -182,8 +182,6 @@ bool EGLtoVGInterface::CreateSurface(const SurfaceDescriptor* desc, BufferContai
 
     int w = desc->m_width;
     int h = desc->m_height;
-    int stride = OpenVGRI::Image::descriptorToStride(vgColorDescriptor, w);
-    size_t bufSize = h * stride;
 
     OpenVGRI::RIuint8* dataPtr = NULL;
 

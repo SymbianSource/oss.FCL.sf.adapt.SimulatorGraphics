@@ -20,9 +20,13 @@
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  */
 
-#include "sfBlitter.h"
+#ifndef __SFDYNAMICBLITTER_H
+#include "sfDynamicBlitter.h"
+#endif
 
+#if defined(RI_COMPILE_LLVM_BYTECODE)
 #include "sfCompiler.h"
+#endif
 
 namespace OpenVGRI {
 
@@ -108,7 +112,7 @@ void DynamicBlitter::prepareBlit(Image* dst, const Image* src, int sx, int sy, i
 
 void DynamicBlitter::blit()
 {
-#if 1
+#if defined(RI_COMPILE_LLVM_BYTECODE)
     bool compiledBlitter = false;
     {
         PPCompiler& compiler = PPCompiler::getCompiler();
@@ -125,7 +129,7 @@ void DynamicBlitter::blit()
     if (!compiledBlitter)
 #endif
     {
-        executeBlitter(getSignatureState(), getUniforms());
+        OpenVGRI::executeBlitter(getSignatureState(), getUniforms());
     }
 }
 

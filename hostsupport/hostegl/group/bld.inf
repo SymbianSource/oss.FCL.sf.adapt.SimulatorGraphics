@@ -43,7 +43,7 @@ PRJ_EXTENSIONS
 
 // Dynamic library.
 start extension graphics_simulator/hostbuild
-option TARGET_NAME EGL
+option TARGET_NAME libEGL
 option TARGET_TYPE dll
 option SOURCE_DIRS ../src ../src/win32
 option INCLUDES ../inc ../../../inc

@@ -131,7 +131,9 @@ int riInsertBits32(RIuint32* hash, size_t hashSize, RIuint32 bits, RIuint32 bitS
     } 
     else
     {
+#if defined(RI_DEBUG)
         int new_ib = (ib + bitSize) & 0x1f;
+#endif
         RI_ASSERT((ib + bitSize == 32) ? new_ib == 0 : true);
         hash[idw] |= (bits << ib);
     }

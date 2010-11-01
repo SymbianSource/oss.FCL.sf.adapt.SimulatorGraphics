@@ -153,7 +153,7 @@ RI_INLINE float	getFloatMax()
 #endif
 
 #if defined(RI_DEBUG)
-#   if defined(_WIN32)
+#   if defined(_WIN32) && !defined(__GNUG__)
 #       define RI_TRACE(...) do { \
         char buf[512]; \
         snprintf(buf, sizeof(buf), __VA_ARGS__); \

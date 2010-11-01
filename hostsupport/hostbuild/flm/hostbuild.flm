@@ -91,13 +91,13 @@ OUTPUTPATH:=$(EPOCROOT)/epoc32/build/x86tools/$(CFG_PATH)/$(TARGET_NAME)/
 
 # Target names differ depending on what we're building
 ifeq ($(TARGET_TYPE),lib)
-  TARGET_FULLNAME:=$(TARGET_DIR)lib$(TARGET_NAME)$(if $(findstring .,$(TARGET_NAME)),,.a)
+  TARGET_FULLNAME:=$(TARGET_DIR)$(TARGET_NAME)$(if $(findstring .,$(TARGET_NAME)),,.a)
 endif
 ifeq ($(TARGET_TYPE),exe)
   TARGET_FULLNAME:=$(TARGET_DIR)$(TARGET_NAME)$(if $(findstring .,$(TARGET_NAME)),,$(DOTEXE))
 endif
 ifeq ($(TARGET_TYPE),dll)
-  TARGET_FULLNAME:=$(TARGET_DIR)lib$(TARGET_NAME)$(if $(findstring .,$(TARGET_NAME)),,$(DOTDLL))
+  TARGET_FULLNAME:=$(TARGET_DIR)$(TARGET_NAME)$(if $(findstring .,$(TARGET_NAME)),,$(DOTDLL))
 endif
 
 # Object files are the same name as the source files with a .o extension
@@ -123,7 +123,7 @@ define hosttargets
 		$(call endrule,compile)
 
   # Link
-  $(TARGET_FULLNAME) : $(OBJECTFILES) $(foreach lib,$(LIBS),$(TARGET_DIR)lib$(lib).a) $(foreach lib,$(SHARED_LIBS),$(TARGET_DIR)lib$(lib)$(DOTDLL))
+  $(TARGET_FULLNAME) : $(OBJECTFILES) $(foreach lib,$(LIBS),$(TARGET_DIR)$(lib).a) $(foreach lib,$(SHARED_LIBS),$(TARGET_DIR)$(lib)$(DOTDLL))
   ifeq ($(TARGET_TYPE),lib)
 		$(call startrule,linklib) \
 		$(AR) -r $$@ $(OBJECTFILES) \
@@ -131,12 +131,12 @@ define hosttargets
   endif
   ifeq ($(TARGET_TYPE),exe)
 		$(call startrule,linkexe) \
-		$(CXX) -L$(TARGET_DIR) $(if $(GCOVDIR),-L$(GCOVDIR)) -o$$@ $(OBJECTFILES) $(foreach lib,$(LIBS) $(SHARED_LIBS),-l$(lib)) $(if $(CODE_COVERAGE),-lgcov) $(if $(WIN32),-Wl$(CHAR_COMMA)--enable-auto-import,-ldl) \
+		$(CXX) -L$(TARGET_DIR) $(if $(GCOVDIR),-L$(GCOVDIR)) -o$$@ $(OBJECTFILES) $(foreach lib,$(LIBS),$(TARGET_DIR)$(lib).a) $(foreach slib,$(SHARED_LIBS),$(TARGET_DIR)$(slib)$(DOTDLL)) $(if $(CODE_COVERAGE),-lgcov) $(if $(WIN32),-Wl$(CHAR_COMMA)--enable-auto-import,-ldl) \
 		$(call endrule,linkexe)
   endif
   ifeq ($(TARGET_TYPE),dll)
 		$(call startrule,linkdll) \
-		$(CXX) -L$(TARGET_DIR) $(if $(GCOVDIR),-L$(GCOVDIR)) -shared -o$$@ $(OBJECTFILES) $(foreach lib,$(LIBS) $(SHARED_LIBS), -l$(lib)) $(if $(WIN32),$(DLL_WIN_LINKER_OPTS),$(DLL_LIN_LINKER_OPTS)) \
+		$(CXX) -L$(TARGET_DIR) $(if $(GCOVDIR),-L$(GCOVDIR)) -shared -o$$@ $(OBJECTFILES) $(foreach lib,$(LIBS),$(TARGET_DIR)$(lib).a) $(foreach slib,$(SHARED_LIBS),$(TARGET_DIR)$(slib)$(DOTDLL)) $(if $(WIN32),$(DLL_WIN_LINKER_OPTS),$(DLL_LIN_LINKER_OPTS)) \
 		$(call endrule,linkdll)
   endif
 endef

@@ -1,0 +1,52 @@
+/* Copyright (c) 2010 Nokia Corporation and/or its subsidiary(-ies).
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and /or associated documentation files
+ * (the "Materials "), to deal in the Materials without restriction,
+ * including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Materials,
+ * and to permit persons to whom the Materials are furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Materials.
+ *
+ * THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
+ * THE USE OR OTHER DEALINGS IN THE MATERIALS.
+ *
+ * Initial Contributors:
+ * Nokia Corporation - initial contribution.
+ *
+ * Contributors:
+ *
+ * Description:
+ * Build information for host OpenGL ES 2.0
+ */
+
+PRJ_PLATFORMS
+TOOLS2
+
+PRJ_EXPORTS
+
+../inc/GLES2/gl2.h          OS_LAYER_PUBLIC_EXPORT_PATH(tools/GLES2/gl2.h)
+../inc/GLES2/gl2ext.h       OS_LAYER_PUBLIC_EXPORT_PATH(tools/GLES2/gl2ext.h)
+../inc/GLES2/gl2platform.h  OS_LAYER_PUBLIC_EXPORT_PATH(tools/GLES2/gl2platform.h)
+
+PRJ_EXTENSIONS
+
+// Dynamic library.
+start extension graphics_simulator/hostbuild
+option TARGET_NAME      libGLESv2
+option TARGET_TYPE      dll
+option SOURCE_DIRS      ../src
+option INCLUDES         ../inc ../../../inc
+option SYS_INCLUDES     OS_LAYER_PUBLIC_EXPORT_PATH(tools)
+option MACROS           KHRONOS_APICALL_EXPORT CONFIG_OFFSCREEN BUILD_GLES2
+option COMPILE_OPTIONS  -msse2 -mfpmath=sse -march=pentium4
+option NO_STD_INCLUDE   ON
+end

@@ -25,7 +25,7 @@
  * Contributors:
  *
  * Description:
- * Build information for host EGL
+ * Build information for host OpenGL ES 1.1
  */
 
 PRJ_PLATFORMS
@@ -45,7 +45,7 @@ PRJ_EXTENSIONS
 
 // Dynamic library.
 start extension graphics_simulator/hostbuild
-option TARGET_NAME      GLESv1
+option TARGET_NAME      libGLESv1
 option TARGET_TYPE      dll
 option SOURCE_DIRS      ../src
 option INCLUDES         ../inc ../../../inc

@@ -33,9 +33,11 @@
 
 #include "riRasterizer.h"
 
+#if defined(RI_COMPILE_LLVM_BYTECODE)
 // TEMP!
 #ifndef __SFCOMPILER_H
 #   include "sfCompiler.h"
+#endif
 #endif
 
 
@@ -450,7 +452,12 @@ RI_INLINE static void print128(__m128i ll)
 #if defined(USE_SSE2)
 RI_INLINE static __m128i mm_mul4x32(const __m128i a, const __m128i b) {
      __m128i res;
-#if (_MSC_VER > 1400 )
+#if defined(__GNUG__)
+     __m128i m0 = _mm_mul_epu32(a, _mm_shuffle_epi32(b, _MM_SHUFFLE(1, 1, 0, 0)));
+     __m128i m1 = _mm_mul_epu32(a, _mm_shuffle_epi32(b, _MM_SHUFFLE(3, 3, 2, 2)));
+
+     res = _mm_cvtps_epi32(_mm_shuffle_ps(_mm_cvtepi32_ps(m0), _mm_cvtepi32_ps(m1), _MM_SHUFFLE(2, 0, 2, 0)));
+#elif (_MSC_VER > 1400)
      // \todo Simpler way to do this on intel?
      __m128i m0 = _mm_mul_epu32(a, _mm_shuffle_epi32(b, _MM_SHUFFLE(1, 1, 0, 0)));
      __m128i m1 = _mm_mul_epu32(a, _mm_shuffle_epi32(b, _MM_SHUFFLE(3, 3, 2, 2)));
@@ -785,8 +792,6 @@ void Rasterizer::fill()
     }
 
 #endif
-    int debugMagic = 0;
-
     m_aet.clear();
 
 #if defined(RI_DEBUG)

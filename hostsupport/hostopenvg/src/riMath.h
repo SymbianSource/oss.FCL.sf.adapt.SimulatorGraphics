@@ -246,7 +246,7 @@ RI_INLINE int RI_SHR(int a, int sh)
     return r;
 }
 
-RI_INLINE RIfloat RI_FLOAT_TO_FX(RIfloat f, unsigned int n) { return (RIfloat)RI_ROUND_TO_INT(f * (RIfloat)RI_SHL(1, n)); }
+RI_INLINE int RI_FLOAT_TO_FX(RIfloat f, unsigned int n) { return RI_ROUND_TO_INT(f * (RIfloat)RI_SHL(1, n)); }
 
 class Matrix3x3;
 class Vector2;
