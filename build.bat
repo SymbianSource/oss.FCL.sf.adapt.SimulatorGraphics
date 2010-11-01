@@ -10,6 +10,7 @@ set TOOLCHAIN_VARIANT=vs2005
 set CMAKE_BUILD_TARGET=Release
 set VISUAL_STUDIO_SOLUTION=OFF
 set BUILD=ON
+set CLEANBUILD=OFF
 set EPOCROOTX=%EPOCROOT:\=/%
 
 :PARSECOMMANDLINE
@@ -26,6 +27,8 @@ IF '%1'=='/debug' goto ENABLEDEBUG
 IF '%1'=='/DEBUG' goto ENABLEDEBUG
 IF '%1'=='/nobuild' goto DISABLEBUILD
 IF '%1'=='/NOBUILD' goto DISABLEBUILD
+IF '%1'=='/clean' goto CLEANBUILD
+IF '%1'=='/CLEAN' goto CLEANBUILD
 
 if "%VISUAL_STUDIO_SOLUTION%"=="ON" (
 	set GENERATOR=Visual Studio 8 2005
@@ -41,13 +44,14 @@ echo TOOLCHAIN_VARIANT    = %TOOLCHAIN_VARIANT%
 echo GENERATOR            = %GENERATOR%
 echo CMAKE_BUILD_TARGET   = %CMAKE_BUILD_TARGET%
 echo BUILD                = %BUILD%
+echo CLEANBUILD           = %CLEANBUILD%
 echo EPOCROOT (modified)  = %EPOCROOTX%
 echo.
 
 rem Execute
 echo on
-rmdir /s /q build
-mkdir build
+if '%CLEANBUILD%'=='ON' rmdir /s /q build
+if '%CLEANBUILD%'=='ON' mkdir build
 cd build
 cmake -DEPOCROOT=%EPOCROOTX% -DSIMULATOR_EXTENSIONS:Bool=%SIMULATOR_EXTENSIONS% -DTOOLCHAIN_VARIANT:String=%TOOLCHAIN_VARIANT% -DCMAKE_BUILD_TYPE=%CMAKE_BUILD_TARGET% -G "%GENERATOR%" ..
 @echo off
@@ -74,6 +78,7 @@ echo                             (default: generate NMake makefiles and build)
 echo     [/DEBUG]            configure for debug build (default: release)
 echo     [/NOBUILD]          call cmake but do not call nmake
 echo                             note: has no effect if /SOLUTION is specified
+echo     [/CLEAN]            perform a clean build by deleting the ./build directory.
 echo.
 echo Note: EPOCROOT must be defined to be the directory containing the epoc32 tree.
 goto END
@@ -101,6 +106,11 @@ goto PARSECOMMANDLINE
 
 :DISABLEBUILD
 set BUILD=OFF
+shift
+goto PARSECOMMANDLINE
+
+:CLEANBUILD
+set CLEANBUILD=ON
 shift
 goto PARSECOMMANDLINE
 
