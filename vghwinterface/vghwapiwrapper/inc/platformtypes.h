@@ -26,7 +26,7 @@
 #endif
 
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(__GNUG__)
 
 #if !defined(__STDC_CONSTANT_MACROS) && !defined(HAVE_STDINT_H)
 #define __STDC_CONSTANT_MACROS

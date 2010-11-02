@@ -54,7 +54,7 @@ class KHRONOSAPIWRAPPER_API KhronosAPIWrapper: private MRequestBufferBookKeeping
 
         KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer,
             void* inputdata, void* outputdata );
-        ~KhronosAPIWrapper();
+        virtual ~KhronosAPIWrapper();
 
         void WorkerThread();
 

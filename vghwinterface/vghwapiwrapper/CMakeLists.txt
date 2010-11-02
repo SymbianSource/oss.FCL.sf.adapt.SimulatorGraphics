@@ -38,7 +38,7 @@ set(WRAPPER_SRC_FILES
     ${WRAPPER_INC_DIR}/openvgapiwrapper.h
     ${WRAPPER_INC_DIR}/driverapiwrapper.h
     ${WRAPPER_INC_DIR}/opengles11apiwrapper.h
-    ${WRAPPER_INC_DIR}/syborg-graphicswrapper.h
+    ${WRAPPER_INC_DIR}/simulator_graphicswrapper.h
     ${WRAPPER_INC_DIR}/hostthreadadapter.h
     ${WRAPPER_INC_DIR}/platformthreading.h
     ${WRAPPER_INC_DIR}/platformtypes.h
@@ -56,7 +56,7 @@ set(WRAPPER_SRC_FILES
     ${WRAPPER_SRC_DIR}/openvgapiwrapper.cpp
     ${WRAPPER_SRC_DIR}/driverapiwrapper.cpp
     ${WRAPPER_SRC_DIR}/opengles11apiwrapper.cpp    
-    ${WRAPPER_SRC_DIR}/syborg-graphicswrapper.cpp
+    ${WRAPPER_SRC_DIR}/simulator_graphicswrapper.cpp
     ${WRAPPER_SRC_DIR}/platformthreading.cpp
 
     ${SERIALIZER_SRC_DIR}/eglrfc.cpp
@@ -77,10 +77,8 @@ include_directories(
 
 link_directories(${GLOBAL_LIB_DIR})
 
-add_definitions(-DKHRONOSAPIWRAPPER_EXPORTS -DSYBORG_GRAPHICSWRAPPER_EXPORTS)
+add_definitions(-DKHRONOSAPIWRAPPER_EXPORTS -DSIMULATOR_GRAPHICSWRAPPER_EXPORTS)
 
 add_library(KhronosAPIWrapper SHARED ${WRAPPER_SRC_FILES})
-add_library(syborg-graphicswrapper SHARED ${WRAPPER_SRC_FILES})
 
 target_link_libraries(KhronosAPIWrapper ${WRAPPER_PLATFORM_LINK_LIBRARIES})
-target_link_libraries(syborg-graphicswrapper ${WRAPPER_PLATFORM_LINK_LIBRARIES})

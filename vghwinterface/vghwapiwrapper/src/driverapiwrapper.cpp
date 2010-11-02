@@ -245,13 +245,6 @@ int DriverAPIWrapper::CreateVGImageSg(  )
 
 	::eglMakeCurrent( m_Dpy, m_DudSurface, m_DudSurface, m_PoolContext );
 
-	//eglCreatePbufferSurface
-	EGLint pbuffer_surface_attribs[] =
-	{
-      EGL_WIDTH,    w,
-	  EGL_HEIGHT,   h,
-      EGL_NONE
-	};
 	VGImageFormat format = getVGColorFormat( pixelformat );
 	img = ::vgCreateImage(format, w, h, VG_IMAGE_QUALITY_NONANTIALIASED);//todo: quality; how to decide (TSgImageInfo only provides w,h, pixelformat)?
 		if( img != VG_INVALID_HANDLE )

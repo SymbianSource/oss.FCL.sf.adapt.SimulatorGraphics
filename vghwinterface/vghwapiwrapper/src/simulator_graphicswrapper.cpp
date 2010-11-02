@@ -5,13 +5,13 @@
 #include <guestvideodriverinterfaceconstants.h>  //Registers and enums 
 #include <platformthreading.h>  //mutex
 #include <graphicsvhwcallback.h>
-#include "syborg-graphicswrapper.h"
+#include "simulator_graphicswrapper.h"
 
-SyborgGraphicsWrapper::SyborgGraphicsWrapper()
+SimulatorGraphicsWrapper::SimulatorGraphicsWrapper()
     {															
     }
 
-SyborgGraphicsWrapper::~SyborgGraphicsWrapper()
+SimulatorGraphicsWrapper::~SimulatorGraphicsWrapper()
     {
     delete m_wrapper;
     m_wrapper = 0;
@@ -19,7 +19,7 @@ SyborgGraphicsWrapper::~SyborgGraphicsWrapper()
     Psu::platform_release_semaphore(m_outputBufferSemaphore);
     }
 
-int SyborgGraphicsWrapper::Reset( uint32_t *aGraphicsMemBase,  uint32_t *aCommandMemBase )
+int SimulatorGraphicsWrapper::Reset( uint32_t *aGraphicsMemBase,  uint32_t *aCommandMemBase )
     {
     int ret = -1;
     if ( m_wrapper )
@@ -46,101 +46,101 @@ int SyborgGraphicsWrapper::Reset( uint32_t *aGraphicsMemBase,  uint32_t *aComman
     return ret;
     }
 
-void SyborgGraphicsWrapper::LockOutputBuffer()
+void SimulatorGraphicsWrapper::LockOutputBuffer()
     {
     #ifdef KHRONOS_API_W_MULTITHREAD
     Psu::platform_wait_for_signal(m_outputBufferSemaphore);
     #endif
     }
 
-void SyborgGraphicsWrapper::ReleaseOutputBuffer(){}
+void SimulatorGraphicsWrapper::ReleaseOutputBuffer(){}
 
-void SyborgGraphicsWrapper::ProcessingDone(int i)
+void SimulatorGraphicsWrapper::ProcessingDone(int i)
     {
     m_pythonCallBack( i );
     }
 
 extern "C"
     {
-    SYBORG_GRAPHICSWRAPPER_API SyborgGraphicsWrapper* create_SyborgGraphicsWrapper()
+    SIMULATOR_GRAPHICSWRAPPER_API SimulatorGraphicsWrapper* create_SimulatorGraphicsWrapper()
         {
-        return new SyborgGraphicsWrapper();
+        return new SimulatorGraphicsWrapper();
         }
-    SYBORG_GRAPHICSWRAPPER_API int initialize_SyborgGraphicsWrapper( SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API int initialize_SimulatorGraphicsWrapper( SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         Psu::platform_create_semaphore(m_outputBufferSemaphore, 1, 1);
         // Change to proper error handling
         return 0;
         }
 
-    SYBORG_GRAPHICSWRAPPER_API int set_GraphicsCallBack( SyborgGraphicsWrapper* aSyborgGraphicsWrapper, int (*aGraphicsCallBack) (int) )
+    SIMULATOR_GRAPHICSWRAPPER_API int set_GraphicsCallBack( SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, int (*aGraphicsCallBack) (int) )
         {
         m_pythonCallBack = aGraphicsCallBack;
         // Change to proper error handling
         return 0;
         }
 
-    SYBORG_GRAPHICSWRAPPER_API int reset_SyborgGraphicsWrapper(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t *aGraphicsMemBase,  uint32_t *aCommandMemBase )
+    SIMULATOR_GRAPHICSWRAPPER_API int reset_SimulatorGraphicsWrapper(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t *aGraphicsMemBase,  uint32_t *aCommandMemBase )
         {
-        return aSyborgGraphicsWrapper->Reset( aGraphicsMemBase, aCommandMemBase );
+        return aSimulatorGraphicsWrapper->Reset( aGraphicsMemBase, aCommandMemBase );
         }
 
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_InputBufferTail(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_InputBufferTail(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->InputBufferTail();
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_InputBufferHead(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_InputBufferHead(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->InputBufferHead( );
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_InputBufferReadCount(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_InputBufferReadCount(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->InputBufferReadCount( );
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_InputBufferWriteCount(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_InputBufferWriteCount(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->InputBufferWriteCount( );
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_InputMaxTailIndex(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_InputMaxTailIndex(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->InputMaxTailIndex( );
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_cmd_memsize( void )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_cmd_memsize( void )
         {
         return (VVI_PARAMETERS_INPUT_MEMORY_SIZE +
                 VVI_PARAMETERS_OUTPUT_MEMORY_SIZE);
         }
-    SYBORG_GRAPHICSWRAPPER_API uint32_t get_framebuffer_memsize( void )
+    SIMULATOR_GRAPHICSWRAPPER_API uint32_t get_framebuffer_memsize( void )
         {
         return VVI_SURFACEBUFFER_BASE_ADDRESS;
         }
 
     
-    SYBORG_GRAPHICSWRAPPER_API unsigned int execute_command(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API unsigned int execute_command(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         return m_wrapper->Execute( );
         }
-    SYBORG_GRAPHICSWRAPPER_API void set_InputBufferTail(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t aVal )
+    SIMULATOR_GRAPHICSWRAPPER_API void set_InputBufferTail(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t aVal )
         {
         m_wrapper->SetInputBufferTail( aVal );
         }
-    SYBORG_GRAPHICSWRAPPER_API void set_InputBufferHead(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t aVal )
+    SIMULATOR_GRAPHICSWRAPPER_API void set_InputBufferHead(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t aVal )
         {
         m_wrapper->SetInputBufferHead( aVal );
         }
-    SYBORG_GRAPHICSWRAPPER_API void set_InputBufferReadCount(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t aVal )
+    SIMULATOR_GRAPHICSWRAPPER_API void set_InputBufferReadCount(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t aVal )
         {
         m_wrapper->SetInputBufferReadCount( aVal );
         }
-    SYBORG_GRAPHICSWRAPPER_API void set_InputBufferWriteCount(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t aVal )
+    SIMULATOR_GRAPHICSWRAPPER_API void set_InputBufferWriteCount(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t aVal )
         {
         m_wrapper->SetInputBufferWriteCount( aVal );
         }
-    SYBORG_GRAPHICSWRAPPER_API void set_InputMaxTailIndex(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper, uint32_t aVal )
+    SIMULATOR_GRAPHICSWRAPPER_API void set_InputMaxTailIndex(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper, uint32_t aVal )
         {
         m_wrapper->SetInputMaxTailIndex( aVal );
         }
-    SYBORG_GRAPHICSWRAPPER_API void signal_outputbuffer_semafore(  SyborgGraphicsWrapper* aSyborgGraphicsWrapper )
+    SIMULATOR_GRAPHICSWRAPPER_API void signal_outputbuffer_semafore(  SimulatorGraphicsWrapper* aSimulatorGraphicsWrapper )
         {
         #ifdef KHRONOS_API_W_MULTITHREAD
             Psu::platform_signal_semaphore(m_outputBufferSemaphore);

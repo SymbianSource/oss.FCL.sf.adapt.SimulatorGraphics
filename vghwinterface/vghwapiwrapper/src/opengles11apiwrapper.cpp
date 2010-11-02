@@ -526,7 +526,9 @@ int OGLES11Wrapper::DispatchRequest(unsigned long aCode)
 int OGLES11Wrapper::WriteReply()
 {
 #ifdef LOG_ERROR
+#ifdef PRINT_TRACES
     int operationid = (int)m_currentFunctionCall.Data().Header().iOpCode;
+#endif
     
     int glerror = ::glGetError();
     if ( m_lastGlError != glerror )

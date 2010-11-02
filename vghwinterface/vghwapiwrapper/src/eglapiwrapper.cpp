@@ -61,7 +61,9 @@ int EGLAPIWrapper::WriteReply()
 {
     TRACE("EGLAPIWrapper::WriteReply()\n");
 #ifdef LOG_ERROR
+#ifdef PRINT_TRACES
 	int operationid = (int)m_currentFunctionCall.Data().Header().iOpCode;
+#endif
 	int eglerror = ::eglSimulatorGetError();
 	if ( m_lastEglError != eglerror )
 	{
@@ -573,7 +575,6 @@ int EGLAPIWrapper::eglCreateContext()
     EGLDisplay dpy;
     EGLConfig config;
     EGLContext share_context;
-	EGLBoolean sgSupporting(EGL_FALSE);
 
     m_currentFunctionCall.GetEGLDisplay( dpy, 0 );
     m_currentFunctionCall.GetEGLConfig( config, 1 );
@@ -926,7 +927,6 @@ int EGLAPIWrapper::eglMetaGetConfigs()
 
 	//For storing all the configs
 	EGLConfig*  allConfigs = 0;
-	EGLint      allConfigsSize = 0;//size of the array
 	EGLint      allConfigsCnt = 0;//Number of actually received configurations
 
 	//Allocate temporary storage for the attributes for each config
