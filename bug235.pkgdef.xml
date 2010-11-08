@@ -106,6 +106,9 @@
 </component>
 </collection>
 <collection name="hostsupport" long-name="Graphics Host Support" level="host">
+<component name="hostbuild" long-name="Host Build Support" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostbuild/group"/>
+</component>
 <component name="hostegl" long-name="Host EGL" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostegl/group"/>
 </component>

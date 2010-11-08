@@ -55,7 +55,6 @@
 // \todo SSE2 probably has everything necessary and matches the minimum platform requirements.
 // SSE4 is probably too new. SSE3?
 // \note This will cause the code to not compile on MSVC...
-#define USE_SSE2
 
 #if defined(USE_SSE2)
 // \todo only the last include is needed: QT creator does not find types if others not included.
