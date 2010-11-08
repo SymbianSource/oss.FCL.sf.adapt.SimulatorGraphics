@@ -303,9 +303,9 @@ uint32_t KhronosAPIWrapper::InputBufferWriteCount()
 }
 
 
-KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer, void* inputdata, void* outputdata )
+void KhronosAPIWrapper::Construct( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer, void* inputdata, void* outputdata )
 {
-    TRACE("KhronosAPIWrapper::KhronosAPIWrapper()\n");
+    TRACE("KhronosAPIWrapper::Construct()\n");
 	m_lastVgError = VG_NO_ERROR;
 	m_lastEglError = EGL_SUCCESS;
 
@@ -344,6 +344,16 @@ KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* su
 //Error
     }
 #endif
+}
+
+KhronosAPIWrapper::KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer, void* inputdata, void* outputdata )
+{
+    Construct( aServiceIf, surfacebuffer, inputdata, outputdata );
+}
+
+KhronosAPIWrapper::KhronosAPIWrapper( protocol_MGraphicsVHWCallback* aServiceIf, void* surfacebuffer, void* inputdata, void* outputdata )
+{
+    Construct( (MGraphicsVHWCallback*)aServiceIf, surfacebuffer, inputdata, outputdata );
 }
 
 KhronosAPIWrapper::~KhronosAPIWrapper()

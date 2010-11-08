@@ -47,12 +47,15 @@ class OGLES11Wrapper;
 #endif
 
 class MGraphicsVHWCallback;
+class protocol_MGraphicsVHWCallback;
 
 class KHRONOSAPIWRAPPER_API KhronosAPIWrapper: private MRequestBufferBookKeepingReader
 {
     public:
 
         KhronosAPIWrapper( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer,
+            void* inputdata, void* outputdata );
+        KhronosAPIWrapper( protocol_MGraphicsVHWCallback* aServiceIf, void* surfacebuffer,
             void* inputdata, void* outputdata );
         virtual ~KhronosAPIWrapper();
 
@@ -78,6 +81,8 @@ class KHRONOSAPIWRAPPER_API KhronosAPIWrapper: private MRequestBufferBookKeeping
 		EGLAPIWrapper* GetEGLWrapper() { return m_EGLWrapper; }
 
     private:
+        void Construct( MGraphicsVHWCallback* aServiceIf, void* surfacebuffer,
+            void* inputdata, void* outputdata );
 //From MRequestBufferBookKeeping
         TUint32 GetWriteCount();
         void IncrementReadCount( TUint32 aReadCount );
