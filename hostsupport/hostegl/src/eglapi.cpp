@@ -78,7 +78,6 @@ CEGLState* getState()
             g_eglState = NULL;
             return NULL;
             }
-        g_eglState->AddRef();
         }
     return g_eglState;
 #elif defined(_WIN32)
@@ -2493,11 +2492,13 @@ EGLAPI void EGLAPIENTRY eglSimulatorSetProcessInformation( EGLint processId, EGL
         EGLI_ASSERT( process != NULL );
         CEGLThread* thread = process->AddThread( threadId, true, state->SupportedApis() );
         EGLI_ASSERT( thread != NULL );
+        state->AddRef();
         }
     else if( !(process->HasThread( threadId )) )
         {
         CEGLThread* thread = process->AddThread( threadId, true, state->SupportedApis() );
         EGLI_ASSERT( thread != NULL );
+        state->AddRef();
         }
     else
         {
