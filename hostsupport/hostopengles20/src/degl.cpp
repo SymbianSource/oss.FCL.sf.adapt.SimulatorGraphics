@@ -366,7 +366,7 @@ fpGLProc EGLtoGLES2Interface::GetGLProcAddress(const char *procname)
 
 int EGLtoGLES2Interface::BindTexImage( void* surface, int level, bool generate_mipmap, const SurfaceDescriptor* desc, void* buffer )
 {
-	DGLES2_ENTER_RET(NULL);
+	DGLES2_ENTER_RET(0);
 
 	GLuint ret = 0;
 
@@ -495,7 +495,7 @@ static GLenum dglImageTargetToGLenum(EImageTarget target)
 	}
 
 	// Not reached.
-	return -1;
+	return (GLenum)-1;
 }
 
 static bool dglPrepareState(DGLContext& ctx, GLuint name, EImageTarget target, GLint level, GLenum& query_target, GLenum& bind_target, GLint& binding)
@@ -617,7 +617,7 @@ EStatus EGLtoGLES2Interface::GetTextureInfo(void* context, EImageTarget target, 
 	surfDesc.m_blueShift = 0;
 	surfDesc.m_luminanceShift = 0;
 	surfDesc.m_alphaShift = 0;
-	int bpp = 0;
+
 	switch(format)
 	{
 #ifndef DGLES2_NO_SRGB

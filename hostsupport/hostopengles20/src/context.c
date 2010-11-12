@@ -31,7 +31,7 @@
 
 DGLContext* DGLContext_create(void* native_context)
 {
-    DGLContext* ctx = malloc(sizeof(DGLContext));
+    DGLContext* ctx = (DGLContext*)malloc(sizeof(DGLContext));
     if(ctx == NULL)
     {
         return NULL;
@@ -61,7 +61,7 @@ GLboolean DGLContext_initialize(DGLContext* ctx)
     ctx->hgl.GetIntegerv(GL_MAX_VERTEX_ATTRIBS, &temp);
     ctx->max_vertex_attribs = temp;
 
-    ctx->vertex_arrays = malloc(ctx->max_vertex_attribs * sizeof(DGLVertexArray));
+    ctx->vertex_arrays = (DGLVertexArray*)malloc(ctx->max_vertex_attribs * sizeof(DGLVertexArray));
     if(ctx->vertex_arrays == NULL)
     {
         return GL_FALSE;
@@ -363,7 +363,7 @@ GLboolean DGLContext_setShaderSource(DGLContext* ctx, GLuint name, const char* s
         DGLES2_ASSERT(source != NULL);
         DGLES2_ASSERT(length >= 0);
 
-        shader->source = malloc(length + 1);
+        shader->source = (char*)malloc(length + 1);
         if(shader->source == NULL)
         {
             return GL_FALSE;

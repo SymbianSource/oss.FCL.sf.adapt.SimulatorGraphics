@@ -254,4 +254,3 @@ GL_APICALL_BUILD const GLubyte* GL_APIENTRY glGetString(GLenum name)
 		DGLES2_LEAVE_RET(str);
 	}
 }
-

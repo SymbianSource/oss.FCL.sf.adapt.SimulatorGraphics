@@ -33,7 +33,7 @@
 
 DGLShader* DGLShader_create(GLuint name)
 {
-	DGLShader* shader = malloc(sizeof(DGLShader));
+	DGLShader* shader = (DGLShader*)malloc(sizeof(DGLShader));
 	if(shader == NULL)
 	{
 		return NULL;
@@ -255,7 +255,7 @@ static const char *opengl_strtok(const char *s, int *n)
 			if (buffer) {
 				free(buffer);
 			}
-			buffer = malloc(buffersize + 1);
+			buffer = (char*)malloc(buffersize + 1);
 		}
 		memcpy(buffer, prev, s - prev);
 		buffer[s - prev] = 0;
@@ -269,7 +269,7 @@ static const char *opengl_strtok(const char *s, int *n)
 			if (buffer) {
 				free(buffer);
 			}
-			buffer = malloc(buffersize + 1);
+			buffer = (char*)malloc(buffersize + 1);
 		}
 		memcpy(buffer, s, e - s);
 		buffer[e - s] = 0;
@@ -299,7 +299,7 @@ static char* do_eglShaderPatch(char *source, int len, int *patched_len)
 		
 		*patched_len = 0;
 		buffer_size = len;
-		patched = malloc(buffer_size + 1);
+		patched = (char*)malloc(buffer_size + 1);
 		if(patched == NULL)	{
 			return NULL;
 		}
@@ -342,7 +342,7 @@ static char* do_eglShaderPatch(char *source, int len, int *patched_len)
 				tok_len = strlen(p);
 				if(*patched_len + tok_len > buffer_size) {
 					buffer_size *= 2;
-					patched = realloc(patched, buffer_size + 1);
+					patched = (char*)realloc(patched, buffer_size + 1);
 					if(patched == NULL) {
 						return NULL;
 					}
@@ -357,7 +357,7 @@ static char* do_eglShaderPatch(char *source, int len, int *patched_len)
 		if (!version_found) {
 			char* new_patched;
 			*patched_len += strlen("#version 120\n");
-			new_patched = malloc(*patched_len + 1);
+			new_patched = (char*)malloc(*patched_len + 1);
 			if (new_patched == NULL) {
 				return NULL;
 			}
@@ -405,8 +405,8 @@ GL_APICALL_BUILD void GL_APIENTRY glShaderSource(GLuint shader, GLsizei count, c
 	}
 	Dprintf("---END-ORIGINAL-SHADER---\n");
 #endif // !NDEBUG
-	char** string_dgl = malloc(sizeof(char*)*count);
-	GLint* length_dgl = malloc(sizeof(GLint)*count);
+	char** string_dgl = (char**)malloc(sizeof(char*)*count);
+	GLint* length_dgl = (GLint*)malloc(sizeof(GLint)*count);
 
 	// Remove the non OpenGL 2.x compilant keywords.
 	for(unsigned i = 0; i < count; ++i)
@@ -423,7 +423,7 @@ GL_APICALL_BUILD void GL_APIENTRY glShaderSource(GLuint shader, GLsizei count, c
 		};
 
 		length_dgl[i] = length ? length[i] : strlen(string[i]);
-		string_dgl[i] = malloc(length_dgl[i] + 1);
+		string_dgl[i] = (char*)malloc(length_dgl[i] + 1);
 		memcpy(string_dgl[i], string[i], length_dgl[i]);
 		string_dgl[i][length_dgl[i]] = 0;
 
@@ -487,7 +487,7 @@ GL_APICALL_BUILD void GL_APIENTRY glShaderSource(GLuint shader, GLsizei count, c
 
 					if(source == NULL)
 					{
-						source = malloc(total_len + 1);
+						source = (char*)malloc(total_len + 1);
 						if(source == NULL)
 						{
 							DGLES2_ERROR(GL_OUT_OF_MEMORY);
@@ -496,7 +496,7 @@ GL_APICALL_BUILD void GL_APIENTRY glShaderSource(GLuint shader, GLsizei count, c
 					}
 					else
 					{
-						source = realloc(source, total_len + 1);
+						source = (char*)realloc(source, total_len + 1);
 						if(source == NULL)
 						{
 							DGLES2_ERROR(GL_OUT_OF_MEMORY);

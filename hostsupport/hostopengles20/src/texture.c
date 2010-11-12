@@ -33,9 +33,16 @@
 #include "util.h"
 #include "degl.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+GL_APICALL void GL_APIENTRY glEGLImageTargetTexture2DOES (GLenum target, GLeglImageOES image);
+}
+#endif
+
 DGLTexture* DGLTexture_create(GLuint name, DGLTextureType type, GLint num_levels)
 {
-	DGLTexture* texture = malloc(sizeof(DGLTexture));
+	DGLTexture* texture = (DGLTexture*)malloc(sizeof(DGLTexture));
 	if(texture == NULL)
 	{
 		return NULL;
@@ -51,7 +58,7 @@ DGLTexture* DGLTexture_create(GLuint name, DGLTextureType type, GLint num_levels
 		for(face = 0; face < 6; face++)
 		{
 			texture->num_levels[face] = 0;
-			texture->levels[face] = malloc(num_levels * sizeof(DGLTextureLevel));
+			texture->levels[face] = (DGLTextureLevel*)malloc(num_levels * sizeof(DGLTextureLevel));
 			if(texture->levels[face] == NULL)
 			{
 				while(face--)
@@ -118,7 +125,7 @@ static GLenum dglFaceToTarget(DGLTexture* texture, int face)
 
 			default:
 				DGLES2_ASSERT(GL_FALSE);
-				return -1;
+				return (GLenum)-1;
 		}
 	}
 }
@@ -384,7 +391,7 @@ static void* dglDecompressETCTexture(int width, int height, const unsigned char*
 {
 	int bytes_per_pixel = 3; // RGB888
 
-	unsigned char* decompressed = malloc(width * height * bytes_per_pixel);
+	unsigned char* decompressed = (unsigned char*)malloc(width * height * bytes_per_pixel);
 	if(decompressed == NULL)
 	{
 		return NULL;
@@ -582,7 +589,7 @@ static GLenum dglMapPalettedToBaseFormat(GLenum format)
 
 static void* dglDecompressPalettedTexture(int level, GLenum format, int width, int height, int imageSize, const void* data)
 {
-	const unsigned char* palette = data;
+	const unsigned char* palette = (const unsigned char*)data;
 	int bits_per_pixel;
 	int palette_entry_size;
 	int num_palette_entries;
@@ -666,7 +673,7 @@ static void* dglDecompressPalettedTexture(int level, GLenum format, int width, i
 		bytes_per_pixel = 4;
 	}
 
-	decompressed_data = malloc(width * height * bytes_per_pixel);
+	decompressed_data = (char*)malloc(width * height * bytes_per_pixel);
 	if(decompressed_data == NULL)
 	{
 		return NULL;
@@ -880,7 +887,7 @@ GL_APICALL_BUILD void GL_APIENTRY glCompressedTexImage2D(GLenum target, GLint le
 				DGLES2_ERROR(GL_INVALID_VALUE);
 			}
 
-			decompressed_data = dglDecompressETCTexture(width, height, data);
+			decompressed_data = dglDecompressETCTexture(width, height, (const unsigned char*)data);
 			ctx->hgl.TexImage2D(target, level, GL_RGB, width, height, border, GL_RGB, GL_UNSIGNED_BYTE, decompressed_data);
 			free(decompressed_data);
 			if(DGLContext_getHostError(ctx) == GL_NO_ERROR)
@@ -1135,7 +1142,7 @@ static GLfloat* dglConvertHalfTextureToFloat(GLsizei width, GLsizei height, GLen
 			DGLES2_ASSERT(GL_FALSE);
 	}
 
-	conv = malloc(width * height * components * sizeof(GLfloat));
+	conv = (GLfloat*)malloc(width * height * components * sizeof(GLfloat));
 	if(conv == NULL)
 	{
 		return NULL;

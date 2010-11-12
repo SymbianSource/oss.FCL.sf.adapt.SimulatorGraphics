@@ -32,7 +32,7 @@
 
 DGLBuffer* DGLBuffer_create(GLuint name)
 {
-	DGLBuffer* buffer = malloc(sizeof(DGLBuffer));
+	DGLBuffer* buffer = (DGLBuffer*)malloc(sizeof(DGLBuffer));
 	if(buffer == NULL)
 	{
 		return NULL;

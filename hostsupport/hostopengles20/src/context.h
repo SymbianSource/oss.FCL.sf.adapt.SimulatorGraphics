@@ -29,10 +29,6 @@
 #ifndef _GLESCONTEXT_H_
 #define _GLESCONTEXT_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "platform.h"
 #include "degl.h"
 #include "vertex.h"
@@ -41,6 +37,10 @@ extern "C" {
 #include "program.h"
 #include "texture.h"
 #include "fbo.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct DGLContext
 {

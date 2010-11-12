@@ -115,6 +115,9 @@
 <component name="hostopengles11" long-name="Host OpenGL ES 1.1" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostopengles11/group"/>
 </component>
+<component name="hostopengles20" long-name="Host OpenGL ES 2.0" introduced="^4" class="PC">
+<unit bldFile="hostsupport/hostopengles20/group"/>
+</component>
 <component name="hostopenvg" long-name="Host OpenVG" introduced="^4" class="PC">
 <unit bldFile="hostsupport/hostopenvg/group"/>
 </component>

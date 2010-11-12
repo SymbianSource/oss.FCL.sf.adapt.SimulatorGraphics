@@ -35,7 +35,7 @@ const char* const DGLES2_INFO_LOG_INVALID_SHADERS = \
 
 DGLProgram* DGLProgram_create(GLuint name)
 {
-	DGLProgram* program = malloc(sizeof(DGLProgram));
+	DGLProgram* program = (DGLProgram*)malloc(sizeof(DGLProgram));
 	if(program == NULL)
 	{
 		return NULL;

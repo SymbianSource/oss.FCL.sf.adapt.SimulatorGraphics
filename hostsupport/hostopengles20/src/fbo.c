@@ -30,9 +30,16 @@
 #include "hgl.h"
 #include "context.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+GL_APICALL void GL_APIENTRY glEGLImageTargetRenderbufferStorageOES (GLenum target, GLeglImageOES image);
+}
+#endif
+
 DGLRenderbuffer* DGLRenderbuffer_create(GLuint name)
 {
-	DGLRenderbuffer* buffer = malloc(sizeof(DGLRenderbuffer));
+	DGLRenderbuffer* buffer = (DGLRenderbuffer*)malloc(sizeof(DGLRenderbuffer));
 	if(buffer == NULL)
 	{
 		return NULL;

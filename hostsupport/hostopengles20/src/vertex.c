@@ -89,12 +89,12 @@ GLboolean dglGetVertexAttrib(const DGLContext *ctx, GLuint index, GLenum pname, 
 			{
 				if(type == DGLES2_TYPE_INT)
 				{
-					ctx->hgl.GetVertexAttribiv(index, GL_CURRENT_VERTEX_ATTRIB, params);
+					ctx->hgl.GetVertexAttribiv(index, GL_CURRENT_VERTEX_ATTRIB, (GLint*)params);
 				}
 				else
 				{
 					DGLES2_ASSERT(type == DGLES2_TYPE_FLOAT);
-					ctx->hgl.GetVertexAttribfv(index, GL_CURRENT_VERTEX_ATTRIB, params);
+					ctx->hgl.GetVertexAttribfv(index, GL_CURRENT_VERTEX_ATTRIB, (GLfloat*)params);
 				}
 			}
 			return GL_TRUE;
@@ -165,7 +165,7 @@ static void dglConvertArrays(DGLContext* ctx, GLint first, GLsizei count)
 
 				if(va->floatptr) free(va->floatptr);
 
-				va->floatptr = malloc(sizeof(GLfloat)*count*va->size);
+				va->floatptr = (GLfloat*)malloc(sizeof(GLfloat)*count*va->size);
 				{
 					GLsizei j;
 					for(j = 0; j < count; ++j)
@@ -449,4 +449,3 @@ GL_APICALL_BUILD void GL_APIENTRY glVertexAttribPointer(GLuint indx, GLint size,
 	}
 	DGLES2_LEAVE();
 }
-

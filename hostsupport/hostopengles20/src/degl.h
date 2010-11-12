@@ -62,6 +62,7 @@ class EGLtoGLES2Interface : public IEGLtoGLES2Interface
 {
 public:
     EGLtoGLES2Interface();
+    virtual ~EGLtoGLES2Interface() {}
 
 	void SetEGLInterface( IGLEStoEGLInterface* );
 	void* CreateContext( void* nativeContext );
