@@ -56,6 +56,11 @@ typedef struct DGLTexture
 	GLeglImageOES egl_image[6]; // EGLimage this texture is a sibling of.
 } DGLTexture;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 DGLTexture*			DGLTexture_create(GLuint name, DGLTextureType type, GLint num_levels);
 void				DGLTexture_destroy(DGLTexture* texture);
 GLboolean			DGLTexture_isComplete(const DGLTexture* texture);
@@ -66,5 +71,9 @@ void				DGLTexture_setLevel(DGLTexture* texture, GLenum target, GLint level, GLe
 GLeglImageOES		DGLTexture_getEGLImage(DGLTexture* texture, GLenum target);
 void				DGLTexture_setEGLImage(DGLTexture* texture, GLenum target, GLeglImageOES image);
 void				DGLTexture_generateMipmap(DGLTexture* texture);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // TEXTURE_H_

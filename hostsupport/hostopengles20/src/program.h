@@ -37,7 +37,16 @@ typedef struct DGLProgram
 	GLboolean	validate_status;
 } DGLProgram;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 DGLProgram*	DGLProgram_create(GLuint name);
 void		DGLProgram_destroy(DGLProgram* program);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // PROGRAM_H_

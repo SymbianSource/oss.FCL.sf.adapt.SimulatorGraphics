@@ -37,8 +37,17 @@ typedef struct DGLObject
 	struct DGLObject* next;
 } DGLObject;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 void		DGLObject_insert(DGLObject** root, DGLObject* object);
 DGLObject*	DGLObject_remove(DGLObject** root, GLuint name);
 DGLObject*	DGLObject_find(DGLObject* root, GLuint name);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* OBJECT_H_ */

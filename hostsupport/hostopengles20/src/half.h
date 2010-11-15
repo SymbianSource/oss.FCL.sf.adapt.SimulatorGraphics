@@ -31,6 +31,15 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 GLfloat dglConvertHalfToFloat(khronos_int16_t half);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* HALF_H_ */

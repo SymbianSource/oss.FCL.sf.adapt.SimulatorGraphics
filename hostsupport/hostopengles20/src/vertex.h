@@ -47,7 +47,16 @@ typedef struct DGLVertexArray
 	struct DGLBuffer* buffer;	// Buffer binding.
 } DGLVertexArray;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 extern void dglVertexFinish();
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // VERTEX_H_
 

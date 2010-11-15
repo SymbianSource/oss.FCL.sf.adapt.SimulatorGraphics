@@ -219,7 +219,17 @@ typedef struct HGL
 #ifndef HGL_NO_VARIABLES
 extern HGL hgl;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 extern int hglLoad(HGL* hgl);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
 #endif // HGL_NO_VARIABLES
 
 #endif // HGL_H_

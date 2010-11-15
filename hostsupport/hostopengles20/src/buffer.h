@@ -41,7 +41,16 @@ typedef struct DGLBuffer
 	GLenum usage;
 } DGLBuffer;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 DGLBuffer*	DGLBuffer_create(GLuint name);
 void		DGLBuffer_destroy(DGLBuffer* buffer);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* BUFFER_H_ */

@@ -36,7 +36,16 @@ typedef struct DGLRenderbuffer
 	GLeglImageOES egl_image; // EGLimage this renderbuffer is a sibling of.
 } DGLRenderbuffer;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 DGLRenderbuffer*	DGLRenderbuffer_create(GLuint name);
 void				DGLRenderbuffer_destroy(DGLRenderbuffer* buffer);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // FBO_H_

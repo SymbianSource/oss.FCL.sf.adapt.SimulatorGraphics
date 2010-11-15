@@ -37,8 +37,17 @@ typedef struct DGLShader
 	GLsizei length;
 } DGLShader;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 DGLShader*	DGLShader_create(GLuint name);
 void		DGLShader_destroy(DGLShader* shader);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // SHADER_H_
 

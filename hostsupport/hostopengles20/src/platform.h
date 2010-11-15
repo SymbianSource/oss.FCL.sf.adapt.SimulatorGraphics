@@ -40,8 +40,17 @@
 	typedef pthread_mutex_t DGLES2_LOCK;
 #endif
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 void dglGetLock(void);
 void dglReleaseLock(void);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif /* PLATFORM_H_ */
 

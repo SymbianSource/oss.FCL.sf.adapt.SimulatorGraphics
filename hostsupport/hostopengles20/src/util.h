@@ -29,8 +29,17 @@
 #ifndef UTIL_H_
 #define UTIL_H_
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+
 int dglLog2(unsigned int x);
 int dglMin(int a, int b);
 int dglMax(int a, int b);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif  // UTIL_H_
